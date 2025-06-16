@@ -139,7 +139,7 @@ export function useHelpers() {
    */
   const formatDate = (date?: string | null): string => {
     if (!date) return '';
-    return new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    return new Date(date).toLocaleDateString('en-GB', { month: 'long', day: 'numeric', year: 'numeric' });
   };
 
   /**
@@ -147,7 +147,7 @@ export function useHelpers() {
    * @param {string} price - The price string to format.
    * @returns {string} The formatted price string.
    */
-  const formatPrice = (price: string): string => parseFloat(price).toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
+  const formatPrice = (price: string): string => parseFloat(price).toLocaleString('en-GB', { style: 'currency', currency: 'EUR' });
 
   /**
    * Scrolls to the top of the page.
