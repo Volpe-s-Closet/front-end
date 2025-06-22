@@ -31,7 +31,7 @@ useSeoMeta({
       <img src="/images/logoipsum-215.svg" alt="Brand 6" width="132" height="40" />
     </div> -->
 
-    <!-- <section class="container my-16">
+    <section class="container my-16">
       <div class="flex items-end justify-between">
         <h2 class="text-lg font-semibold md:text-2xl">{{ $t('messages.shop.shopByCategory') }}</h2>
         <NuxtLink class="text-primary" to="/categories">{{ $t('messages.general.viewAll') }}</NuxtLink>
@@ -39,7 +39,7 @@ useSeoMeta({
       <div class="grid justify-center grid-cols-2 gap-4 mt-8 md:grid-cols-3 lg:grid-cols-6">
         <CategoryCard v-for="(category, i) in productCategories" :key="i" class="w-full" :node="category" />
       </div>
-    </section> -->
+    </section>
 
     <section class="container grid gap-4 my-24 md:grid-cols-2 lg:grid-cols-4">
       <div class="flex items-center gap-8 p-8 bg-white rounded-lg">
