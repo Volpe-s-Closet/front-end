@@ -35,7 +35,7 @@ useSeoMeta({
     <p class="text-center uppercase m-12">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl eget aliquam aliquet.</p>
 
     <section class="container my-16">
-      <div class="grid grid-cols-2">
+      <div class="grid grid-cols-3">
         <CategoryCard v-for="(category, i) in productCategories" :key="i" class="w-full aspect-square rounded-none" :node="category" />
       </div>
     </section>
