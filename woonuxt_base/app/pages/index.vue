@@ -31,13 +31,12 @@ useSeoMeta({
       <img src="/images/logoipsum-215.svg" alt="Brand 6" width="132" height="40" />
     </div> -->
 
+    <!-- All uppercase centered -->
+    <p class="text-center uppercase m-12">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl eget aliquam aliquet.</p>
+
     <section class="container my-16">
-      <div class="flex items-end justify-between">
-        <h2 class="text-lg font-semibold md:text-2xl">{{ $t('messages.shop.shopByCategory') }}</h2>
-        <NuxtLink class="text-primary" to="/categories">{{ $t('messages.general.viewAll') }}</NuxtLink>
-      </div>
-      <div class="grid justify-center grid-cols-2 gap-4 mt-8 md:grid-cols-3 lg:grid-cols-6">
-        <CategoryCard v-for="(category, i) in productCategories" :key="i" class="w-full" :node="category" />
+      <div class="grid grid-cols-2">
+        <CategoryCard v-for="(category, i) in productCategories" :key="i" class="w-full aspect-square rounded-none" :node="category" />
       </div>
     </section>
 

@@ -25,7 +25,7 @@ useHead({
 
 <template>
   <NuxtLoadingIndicator />
-  <div class="flex flex-col min-h-screen">
+  <div class="flex flex-col min-h-screen max-w-site mx-auto bg-gray-100">
     <AppHeader />
 
     <Transition name="slide-from-right">
@@ -49,7 +49,7 @@ useHead({
 <style lang="postcss">
 html,
 body {
-  @apply bg-gray-100 text-gray-900;
+  @apply bg-white text-gray-900;
   scroll-behavior: smooth;
 }
 
