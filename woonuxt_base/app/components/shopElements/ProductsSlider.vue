@@ -1,12 +1,38 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
   products: { type: Array, default: null },
 });
 
 const currentIndex = ref(0);
-const itemsPerView = ref(4);
+const itemsPerView = ref(2);
+
+const updateItemsPerView = () => {
+  const width = window.innerWidth;
+  if (width >= 1280) {
+    itemsPerView.value = 5; // xl screens
+  } else if (width >= 1024) {
+    itemsPerView.value = 4; // lg screens
+  } else if (width >= 768) {
+    itemsPerView.value = 3; // md screens
+  } else {
+    itemsPerView.value = 2; // sm and mobile screens
+  }
+  // Reset currentIndex if it exceeds the new maxIndex
+  if (currentIndex.value > maxIndex.value) {
+    currentIndex.value = maxIndex.value;
+  }
+};
+
+onMounted(() => {
+  updateItemsPerView();
+  window.addEventListener('resize', updateItemsPerView);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateItemsPerView);
+});
 
 const maxIndex = computed(() => {
   if (!props.products) return 0;
