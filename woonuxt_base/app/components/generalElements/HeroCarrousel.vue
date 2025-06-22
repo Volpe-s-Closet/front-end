@@ -76,9 +76,13 @@ const carouselContainer = ref(null);
 const currentIndex = ref(0);
 const autoplayInterval = ref(null);
 const dragStartX = ref(0);
+const dragStartY = ref(0);
 const dragCurrentX = ref(0);
+const dragCurrentY = ref(0);
 const isDragging = ref(false);
 const dragThreshold = 50;
+const swipeDirectionThreshold = 30;
+const isHorizontalSwipe = ref(false);
 
 const slides = ref([
   {
@@ -154,21 +158,50 @@ const getEventX = (event) => {
   return event.type.includes('touch') ? event.touches[0].clientX : event.clientX;
 };
 
+const getEventY = (event) => {
+  return event.type.includes('touch') ? event.touches[0].clientY : event.clientY;
+};
+
 const startDrag = (event) => {
   isDragging.value = true;
   dragStartX.value = getEventX(event);
+  dragStartY.value = getEventY(event);
   dragCurrentX.value = dragStartX.value;
+  dragCurrentY.value = dragStartY.value;
+  isHorizontalSwipe.value = false;
   stopAutoplay();
 
-  // Prevent default to avoid text selection
-  event.preventDefault();
+  // Only prevent default for mouse events to avoid text selection
+  // For touch events, we'll determine direction first
+  if (!event.type.includes('touch')) {
+    event.preventDefault();
+  }
 };
 
 const onDrag = (event) => {
   if (!isDragging.value) return;
 
   dragCurrentX.value = getEventX(event);
-  event.preventDefault();
+  dragCurrentY.value = getEventY(event);
+
+  // Determine swipe direction on first significant movement
+  if (!isHorizontalSwipe.value && event.type.includes('touch')) {
+    const deltaX = Math.abs(dragCurrentX.value - dragStartX.value);
+    const deltaY = Math.abs(dragCurrentY.value - dragStartY.value);
+
+    // If movement is significant enough to determine direction
+    if (deltaX > swipeDirectionThreshold || deltaY > swipeDirectionThreshold) {
+      isHorizontalSwipe.value = deltaX > deltaY;
+
+      // Only prevent default if it's a horizontal swipe
+      if (isHorizontalSwipe.value) {
+        event.preventDefault();
+      }
+    }
+  } else if (!event.type.includes('touch') || isHorizontalSwipe.value) {
+    // Prevent default for mouse events or confirmed horizontal touch swipes
+    event.preventDefault();
+  }
 };
 
 const endDrag = () => {
@@ -176,7 +209,8 @@ const endDrag = () => {
 
   const dragDistance = dragCurrentX.value - dragStartX.value;
 
-  if (Math.abs(dragDistance) > dragThreshold) {
+  // Only change slides if it was a horizontal swipe with sufficient distance
+  if (isHorizontalSwipe.value && Math.abs(dragDistance) > dragThreshold) {
     if (dragDistance > 0) {
       previousSlide();
     } else {
@@ -186,7 +220,10 @@ const endDrag = () => {
 
   isDragging.value = false;
   dragStartX.value = 0;
+  dragStartY.value = 0;
   dragCurrentX.value = 0;
+  dragCurrentY.value = 0;
+  isHorizontalSwipe.value = false;
   resetAutoplay();
 };
 
