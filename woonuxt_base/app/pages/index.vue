@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ProductsSlider } from '#components';
 import { ProductsOrderByEnum } from '#woo';
 const { siteName, description, shortDescription, siteImage } = useAppConfig();
 
@@ -7,6 +8,91 @@ const productCategories = data.value?.productCategories?.nodes || [];
 
 const { data: productData } = await useAsyncGql('getProducts', { first: 5, orderby: ProductsOrderByEnum.POPULARITY });
 const popularProducts = productData.value.products?.nodes || [];
+
+// Mock blog posts data
+const blogPosts = [
+  {
+    id: '1',
+    databaseId: 1,
+    title: 'The Future of E-commerce: Trends to Watch',
+    slug: 'future-of-ecommerce-trends',
+    excerpt:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
+    date: new Date().toISOString(),
+    featuredImage: {
+      node: {
+        sourceUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        altText: 'E-commerce trends',
+      },
+    },
+    author: {
+      node: {
+        name: 'John Doe',
+        slug: 'john-doe',
+      },
+    },
+    categories: {
+      nodes: [
+        { name: 'Business', slug: 'business' },
+        { name: 'Technology', slug: 'technology' },
+      ],
+    },
+  },
+  {
+    id: '2',
+    databaseId: 2,
+    title: 'Building Customer Trust in Online Shopping',
+    slug: 'building-customer-trust-online',
+    excerpt:
+      'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.',
+    date: new Date(Date.now() - 86400000).toISOString(),
+    featuredImage: {
+      node: {
+        sourceUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        altText: 'Customer trust',
+      },
+    },
+    author: {
+      node: {
+        name: 'Jane Smith',
+        slug: 'jane-smith',
+      },
+    },
+    categories: {
+      nodes: [
+        { name: 'Customer Service', slug: 'customer-service' },
+        { name: 'Tips', slug: 'tips' },
+      ],
+    },
+  },
+  {
+    id: '3',
+    databaseId: 3,
+    title: 'Sustainable Fashion: The New Consumer Demand',
+    slug: 'sustainable-fashion-consumer-demand',
+    excerpt:
+      'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.',
+    date: new Date(Date.now() - 172800000).toISOString(),
+    featuredImage: {
+      node: {
+        sourceUrl: 'https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        altText: 'Sustainable fashion',
+      },
+    },
+    author: {
+      node: {
+        name: 'Mike Johnson',
+        slug: 'mike-johnson',
+      },
+    },
+    categories: {
+      nodes: [
+        { name: 'Fashion', slug: 'fashion' },
+        { name: 'Sustainability', slug: 'sustainability' },
+      ],
+    },
+  },
+];
 
 useSeoMeta({
   title: `Home`,
@@ -22,61 +108,29 @@ useSeoMeta({
   <main>
     <HeroCarrousel />
 
-    <!-- <div class="container flex flex-wrap items-center justify-center my-16 text-center gap-x-8 gap-y-4 brand lg:justify-between">
-      <img src="/images/logoipsum-211.svg" alt="Brand 1" width="132" height="35" />
-      <img src="/images/logoipsum-221.svg" alt="Brand 2" width="119" height="30" />
-      <img src="/images/logoipsum-225.svg" alt="Brand 3" width="49" height="48" />
-      <img src="/images/logoipsum-280.svg" alt="Brand 4" width="78" height="30" />
-      <img src="/images/logoipsum-284.svg" alt="Brand 5" width="70" height="44" />
-      <img src="/images/logoipsum-215.svg" alt="Brand 6" width="132" height="40" />
-    </div> -->
+    <!-- Product slider -->
+    <section class="container my-16" v-if="popularProducts">
+      <ProductsSlider :products="popularProducts" />
+    </section>
 
-    <!-- All uppercase centered -->
-    <p class="text-center uppercase m-12">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl eget aliquam aliquet.</p>
+    <!-- Random text -->
+    <p class="text-center uppercase m-16">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl eget aliquam aliquet.</p>
 
-    <section class="container my-16">
-      <div class="grid grid-cols-3">
+    <!-- Categories -->
+    <section class="my-16">
+      <div class="grid grid-cols-2 md:grid-cols-3">
         <CategoryCard v-for="(category, i) in productCategories" :key="i" class="w-full aspect-square rounded-none" :node="category" />
       </div>
     </section>
 
-    <section class="container grid gap-4 my-24 md:grid-cols-2 lg:grid-cols-4">
-      <div class="flex items-center gap-8 p-8 bg-white rounded-lg">
-        <img src="/icons/box.svg" width="60" height="60" alt="Free Shipping" loading="lazy" />
-        <div>
-          <h3 class="text-xl font-semibold">Free Shipping</h3>
-          <p class="text-sm">Free shipping on order over €50</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-8 p-8 bg-white rounded-lg">
-        <img src="/icons/moneyback.svg" width="60" height="60" alt="Money Back" loading="lazy" />
-        <div>
-          <h3 class="text-xl font-semibold">Peace of Mind</h3>
-          <p class="text-sm">30 days money back guarantee</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-8 p-8 bg-white rounded-lg">
-        <img src="/icons/secure.svg" width="60" height="60" alt="Secure Payment" loading="lazy" />
-        <div>
-          <h3 class="text-xl font-semibold">100% Payment Secure</h3>
-          <p class="text-sm">Your payment are safe with us.</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-8 p-8 bg-white rounded-lg">
-        <img src="/icons/support.svg" width="60" height="60" alt="Support 24/7" loading="lazy" />
-        <div>
-          <h3 class="text-xl font-semibold">Support 24/7</h3>
-          <p class="text-sm">24/7 Online support</p>
-        </div>
-      </div>
+    <!-- Newsletter preview-->
+    <section class="my-16">
+      <Newsletter />
     </section>
 
-    <section class="container my-16" v-if="popularProducts">
-      <div class="flex items-end justify-between">
-        <h2 class="text-lg font-semibold md:text-2xl">{{ $t('messages.shop.popularProducts') }}</h2>
-        <NuxtLink class="text-primary" to="/products">{{ $t('messages.general.viewAll') }}</NuxtLink>
-      </div>
-      <ProductRow :products="popularProducts" class="grid-cols-2 md:grid-cols-4 lg:grid-cols-5 mt-8" />
+    <!-- Blog -->
+    <section class="my-16">
+      <BlogGrid :posts="blogPosts" :columns="3" />
     </section>
   </main>
 </template>
