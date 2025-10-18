@@ -1,46 +1,48 @@
 export const useProductImage = () => {
   const config = useRuntimeConfig()
   
-  const getPlaceholderImage = () => {
-    // Use WooCommerce's default placeholder image
-    const baseUrl = config.public.woocommerceUrl || config.public.wordpressUrl
-    return `${baseUrl}/wp-content/plugins/woocommerce/assets/images/placeholder.png`
-  }
-
   const getProductImage = (product) => {
-    // Try to get the first image from the product
+    // Return the first image if available
     if (product.images && product.images.length > 0) {
       return product.images[0].src
     }
     
-    // Fallback to WooCommerce placeholder
-    return getPlaceholderImage()
+    // Use WooCommerce placeholder image
+    const baseUrl = config.public.woocommerceUrl || 'https://your-wordpress-site.com'
+    return `${baseUrl}/wp-content/plugins/woocommerce/assets/images/placeholder.png`
   }
 
-  const getCartItemImage = (item) => {
-    // Try to get image from cart item
-    if (item.image) {
-      return item.image
+  const getCartItemImage = (cartItem) => {
+    // Cart items have an image property set when added to cart
+    if (cartItem.image) {
+      return cartItem.image
     }
     
-    // Try to get from product if available
-    if (item.product && item.product.images && item.product.images.length > 0) {
-      return item.product.images[0].src
+    // Fallback: check the stored product data
+    if (cartItem.product && cartItem.product.images && cartItem.product.images.length > 0) {
+      return cartItem.product.images[0].src
     }
     
-    // Fallback to WooCommerce placeholder
-    return getPlaceholderImage()
+    // If it's a variation, check the variation image
+    if (cartItem.variation && cartItem.variation.image) {
+      return cartItem.variation.image
+    }
+    
+    // Fallback to WooCommerce placeholder image
+    const baseUrl = config.public.woocommerceUrl || 'https://your-wordpress-site.com'
+    return `${baseUrl}/wp-content/plugins/woocommerce/assets/images/placeholder.png`
   }
 
   const handleImageError = (event) => {
-    // Set WooCommerce placeholder on error
-    event.target.src = getPlaceholderImage()
+    // Set WooCommerce placeholder when the main image fails to load
+    const config = useRuntimeConfig()
+    const baseUrl = config.public.woocommerceUrl || 'https://your-wordpress-site.com'
+    event.target.src = `${baseUrl}/wp-content/plugins/woocommerce/assets/images/placeholder.png`
   }
 
   return {
     getProductImage,
     getCartItemImage,
-    getPlaceholderImage,
     handleImageError
   }
 }
