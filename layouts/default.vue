@@ -32,13 +32,14 @@
                 v-model="searchQuery"
               >
               <Icon name="heroicons:magnifying-glass" class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-              <button 
+              <BaseButton 
                 v-if="searchQuery"
                 @click="clearSearch"
+                variant="ghost"
+                size="xs"
+                icon="heroicons:x-mark"
                 class="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
-              >
-                <Icon name="heroicons:x-mark" class="h-4 w-4" />
-              </button>
+              />
             </div>
           </div>
 
@@ -47,9 +48,7 @@
             <!-- Account -->
             <ClientOnly>
               <div class="relative" v-if="isAuthenticated">
-                <button @click="toggleAccountMenu" class="flex items-center text-gray-700 hover:text-gray-900">
-                  <Icon name="heroicons:user-circle" class="h-6 w-6" />
-                </button>
+                <BaseButton @click="toggleAccountMenu" variant="ghost" size="sm" icon="heroicons:user-circle" />
                 <div v-if="showAccountMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                   <NuxtLink to="/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     My Account
@@ -57,9 +56,7 @@
                   <NuxtLink to="/account/orders" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Orders
                   </NuxtLink>
-                  <button @click="logout" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Logout
-                  </button>
+                  <BaseButton @click="logout" variant="ghost" size="sm" text="Logout" full-width class="text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" />
                 </div>
               </div>
               <NuxtLink v-else to="/login" class="text-gray-700 hover:text-gray-900">
@@ -73,17 +70,15 @@
             </ClientOnly>
 
             <!-- Cart -->
-            <button @click="toggleCart" class="relative text-gray-700 hover:text-gray-900">
+            <BaseButton @click="toggleCart" variant="ghost" size="sm" class="relative text-gray-700 hover:text-gray-900">
               <Icon name="heroicons:shopping-bag" class="h-6 w-6" />
               <span v-if="cartItemCount > 0" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 {{ cartItemCount }}
               </span>
-            </button>
+            </BaseButton>
 
             <!-- Mobile menu button -->
-            <button @click="toggleMobileMenu" class="md:hidden text-gray-700 hover:text-gray-900">
-              <Icon name="heroicons:bars-3" class="h-6 w-6" />
-            </button>
+            <BaseButton @click="toggleMobileMenu" variant="ghost" size="sm" icon="heroicons:bars-3" class="md:hidden text-gray-700 hover:text-gray-900" />
           </div>
         </div>
 

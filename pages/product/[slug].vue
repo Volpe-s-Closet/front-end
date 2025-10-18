@@ -7,9 +7,7 @@
     <div v-else-if="error" class="text-center py-16">
       <h1 class="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h1>
       <p class="text-gray-600 mb-8">The product you're looking for doesn't exist.</p>
-      <NuxtLink to="/" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-        Back to Home
-      </NuxtLink>
+      <BaseButton to="/" text="Back to Home" size="lg" />
     </div>
 
     <div v-else-if="product">
@@ -110,14 +108,18 @@
               />
             </div>
             
-            <button 
+            <BaseButton 
+              action="add"
+              :product="product"
+              :quantity="quantity"
+              :variation="selectedAttributes"
               @click="addToCart"
               :disabled="!isInStock || (hasVariations && !selectedVariation)"
-              class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-            >
-              {{ !isInStock ? getStockStatusText : 
-                 (hasVariations && !selectedVariation) ? 'Select Options' : 'Add to Cart' }}
-            </button>
+              full-width
+              size="lg"
+              :text="!isInStock ? getStockStatusText : 
+                     (hasVariations && !selectedVariation) ? 'Select Options' : 'Add to Cart'"
+            />
           </div>
 
           <!-- Product Meta -->
@@ -154,20 +156,26 @@
       <!-- Product Tabs -->
       <div class="border-b border-gray-200 mb-8">
         <nav class="-mb-px flex space-x-8">
-          <button 
+          <BaseButton 
             @click="activeTab = 'description'"
-            :class="activeTab === 'description' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
-            class="py-2 px-1 border-b-2 font-medium text-sm"
-          >
-            Description
-          </button>
-          <button 
+            variant="ghost"
+            size="sm"
+            text="Description"
+            :class="[
+              'py-2 px-1 border-b-2 font-medium text-sm',
+              activeTab === 'description' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            ]"
+          />
+          <BaseButton 
             @click="activeTab = 'reviews'"
-            :class="activeTab === 'reviews' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
-            class="py-2 px-1 border-b-2 font-medium text-sm"
-          >
-            Reviews ({{ reviews?.length || 0 }})
-          </button>
+            variant="ghost"
+            size="sm"
+            :text="`Reviews (${reviews?.length || 0})`"
+            :class="[
+              'py-2 px-1 border-b-2 font-medium text-sm',
+              activeTab === 'reviews' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            ]"
+          />
         </nav>
       </div>
 

@@ -106,37 +106,35 @@
 
           <!-- Order Actions -->
           <div class="border-t pt-4 mt-4 flex flex-col sm:flex-row gap-3">
-            <NuxtLink 
+            <BaseButton 
               :to="`/account/orders/${order.id}`"
-              class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium text-center transition-colors duration-200"
-            >
-              View Details
-            </NuxtLink>
+              text="View Details"
+              size="sm"
+            />
             
-            <button 
+            <BaseButton 
               v-if="order.status === 'completed'"
               @click="reorderItems(order)"
-              class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-            >
-              Reorder
-            </button>
+              text="Reorder"
+              variant="secondary"
+              size="sm"
+            />
             
-            <button 
+            <BaseButton 
               v-if="['pending', 'processing'].includes(order.status)"
               @click="cancelOrder(order.id)"
-              class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-            >
-              Cancel Order
-            </button>
+              text="Cancel Order"
+              variant="danger"
+              size="sm"
+            />
 
-            <a 
+            <BaseButton 
               v-if="order.status === 'completed'"
               :href="`/invoice/${order.id}`"
-              target="_blank"
-              class="border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-md text-sm font-medium text-center transition-colors duration-200"
-            >
-              Download Invoice
-            </a>
+              text="Download Invoice"
+              variant="outline"
+              size="sm"
+            />
           </div>
         </div>
       </div>
@@ -154,38 +152,32 @@
         <span v-else>When you place orders, they'll appear here.</span>
       </p>
       <div class="space-x-4">
-        <button 
+        <BaseButton 
           v-if="hasFilters"
           @click="clearFilters"
-          class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
-        >
-          Clear Filters
-        </button>
-        <NuxtLink 
+          text="Clear Filters"
+          variant="secondary"
+          size="lg"
+        />
+        <BaseButton 
           to="/search" 
-          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
-        >
-          Start Shopping
-        </NuxtLink>
+          text="Start Shopping"
+          size="lg"
+        />
       </div>
     </div>
 
     <!-- Pagination -->
     <div v-if="filteredOrders.length > 0 && totalPages > 1" class="mt-8 flex justify-center">
       <nav class="flex space-x-2">
-        <button 
+        <BaseButton 
           v-for="page in totalPages" 
           :key="page"
           @click="currentPage = page"
-          :class="[
-            'px-3 py-2 text-sm font-medium rounded-md',
-            page === currentPage 
-              ? 'bg-blue-600 text-white' 
-              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
-          ]"
-        >
-          {{ page }}
-        </button>
+          :variant="page === currentPage ? 'primary' : 'outline'"
+          size="sm"
+          :text="page.toString()"
+        />
       </nav>
     </div>
   </div>

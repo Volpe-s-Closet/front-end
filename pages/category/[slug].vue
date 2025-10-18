@@ -117,25 +117,22 @@
           <Icon name="heroicons:magnifying-glass" class="h-16 w-16 text-gray-300 mx-auto mb-4" />
           <h3 class="text-lg font-medium text-gray-900 mb-2">No products found</h3>
           <p class="text-gray-600 mb-4">No products match your current filters in this category.</p>
-          <button 
+          <BaseButton 
             @click="clearAllFilters"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200"
-          >
-            Clear All Filters
-          </button>
+            text="Clear All Filters"
+          />
         </div>
 
         <!-- Load More Button -->
         <div v-if="products.length > 0 && products.length < totalProducts" class="text-center mt-8">
-          <button 
+          <BaseButton 
             @click="loadMore"
+            :loading="loadingMore"
             :disabled="loadingMore"
-            class="bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
-          >
-            <Icon v-if="loadingMore" name="heroicons:arrow-path" class="h-5 w-5 animate-spin inline mr-2" />
-            <span v-if="loadingMore">Loading...</span>
-            <span v-else>Load More Products</span>
-          </button>
+            text="Load More Products"
+            variant="secondary"
+            size="lg"
+          />
         </div>
       </div>
     </div>
