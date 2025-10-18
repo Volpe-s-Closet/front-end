@@ -5,10 +5,10 @@ NODE_VERSION = "22.20.0"
 nixPkgs = ["nodejs_22", "npm"]
 
 [phases.install]
-cmds = ["npm install"]
+cmds = ["npm ci"]
 
 [phases.build]
 cmds = ["npm run generate"]
 
 [start]
-cmd = "node .output/public"
+cmd = "npx serve .output/public"
