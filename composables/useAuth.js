@@ -4,6 +4,25 @@ export const useAuth = () => {
   const isAuthenticated = computed(() => !!token.value)
   const isInitialized = useState('auth.initialized', () => false)
 
+  // Watch for changes and sync to localStorage
+  if (process.client) {
+    watch(token, (newToken) => {
+      if (newToken) {
+        localStorage.setItem('auth_token', newToken)
+      } else {
+        localStorage.removeItem('auth_token')
+      }
+    })
+
+    watch(user, (newUser) => {
+      if (newUser) {
+        localStorage.setItem('user_data', JSON.stringify(newUser))
+      } else {
+        localStorage.removeItem('user_data')
+      }
+    })
+  }
+
   // Initialize auth from localStorage
   const initAuth = () => {
     if (process.client && !isInitialized.value) {
@@ -33,6 +52,8 @@ export const useAuth = () => {
 
   // Save auth data
   const saveAuth = (authToken, userData) => {
+    console.log('saveAuth called with:', { token: !!authToken, userData })
+    
     token.value = authToken
     user.value = userData
     
@@ -40,6 +61,12 @@ export const useAuth = () => {
       try {
         localStorage.setItem('auth_token', authToken)
         localStorage.setItem('user_data', JSON.stringify(userData))
+        console.log('Auth data saved to localStorage')
+        
+        // Verify it was saved
+        const savedToken = localStorage.getItem('auth_token')
+        const savedUser = localStorage.getItem('user_data')
+        console.log('Verification - Token saved:', !!savedToken, 'User saved:', !!savedUser)
       } catch (error) {
         console.error('Error saving auth data:', error)
       }
@@ -48,6 +75,8 @@ export const useAuth = () => {
 
   // Clear auth data
   const clearAuth = () => {
+    console.log('clearAuth called')
+    
     token.value = null
     user.value = null
     
@@ -55,6 +84,7 @@ export const useAuth = () => {
       try {
         localStorage.removeItem('auth_token')
         localStorage.removeItem('user_data')
+        console.log('Auth data cleared from localStorage')
       } catch (error) {
         console.error('Error clearing auth data:', error)
       }
@@ -73,13 +103,31 @@ export const useAuth = () => {
         }
       })
 
+      console.log('JWT Login response:', response)
+
       if (response.token) {
-        saveAuth(response.token, response.user_data)
-        return { success: true, user: response.user_data }
+        // Handle different response structures
+        let userData = response.user_data || response.data || response.user || null
+        
+        // If no user data in response, create basic user object
+        if (!userData) {
+          userData = {
+            id: response.user_id || null,
+            email: email,
+            username: email,
+            display_name: response.user_display_name || email
+          }
+        }
+
+        console.log('Saving auth data - Token:', !!response.token, 'User:', userData)
+        saveAuth(response.token, userData)
+        return { success: true, user: userData }
+      } else {
+        return { success: false, error: 'No token received from server' }
       }
     } catch (error) {
       console.error('Login error:', error)
-      return { success: false, error: error.message }
+      return { success: false, error: error.message || 'Login failed' }
     }
   }
 
@@ -177,6 +225,32 @@ export const useAuth = () => {
     }
   }
 
+  // Change password
+  const changePassword = async (currentPassword, newPassword) => {
+    if (!token.value || !user.value) return { success: false, error: 'Not authenticated' }
+
+    try {
+      const config = useRuntimeConfig()
+      
+      const response = await $fetch(`${config.public.wordpressUrl}/wp-json/wp/v2/users/${user.value.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token.value}`
+        },
+        body: {
+          current_password: currentPassword,
+          password: newPassword
+        }
+      })
+
+      return { success: true, data: response }
+    } catch (error) {
+      console.error('Error changing password:', error)
+      return { success: false, error: error.data?.message || error.message || 'Failed to change password' }
+    }
+  }
+
 
 
   return {
@@ -190,6 +264,7 @@ export const useAuth = () => {
     validateToken,
     getUserProfile,
     updateUserProfile,
+    changePassword,
     initAuth
   }
 }

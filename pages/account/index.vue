@@ -24,6 +24,15 @@
             </li>
             <li>
               <NuxtLink 
+                to="/account/password" 
+                class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
+              >
+                <Icon name="heroicons:lock-closed" class="h-5 w-5 mr-3" />
+                Password
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink 
                 to="/account/orders" 
                 class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
               >
@@ -105,6 +114,24 @@
               >
             </div>
 
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+              <input
+                v-model="profileData.phone"
+                type="tel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
+              <input
+                v-model="profileData.date_of_birth"
+                type="date"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+            </div>
+
             <div class="flex space-x-4">
               <button
                 type="submit"
@@ -138,6 +165,14 @@
             <div>
               <label class="block text-sm font-medium text-gray-700">Email</label>
               <p class="mt-1 text-gray-900">{{ user?.email || 'Not provided' }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Phone Number</label>
+              <p class="mt-1 text-gray-900">{{ user?.phone || 'Not provided' }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Date of Birth</label>
+              <p class="mt-1 text-gray-900">{{ user?.date_of_birth ? formatDate(user.date_of_birth) : 'Not provided' }}</p>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Member Since</label>
@@ -248,7 +283,9 @@ const recentOrders = ref([])
 const profileData = ref({
   first_name: '',
   last_name: '',
-  email: ''
+  email: '',
+  phone: '',
+  date_of_birth: ''
 })
 
 // Computed
@@ -313,7 +350,9 @@ watch(user, (newUser) => {
     profileData.value = {
       first_name: newUser.first_name || '',
       last_name: newUser.last_name || '',
-      email: newUser.email || ''
+      email: newUser.email || '',
+      phone: newUser.phone || '',
+      date_of_birth: newUser.date_of_birth || ''
     }
   }
 }, { immediate: true })

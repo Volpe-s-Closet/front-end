@@ -129,6 +129,13 @@ export const useWooCommerce = () => {
         })
     }
 
+    const createCustomer = async (customerData) => {
+        return await apiCall('customers', {
+            method: 'POST',
+            body: customerData
+        })
+    }
+
     return {
         // Products
         getProducts,
@@ -157,6 +164,7 @@ export const useWooCommerce = () => {
 
         // Customers
         getCustomer,
-        updateCustomer
+        updateCustomer,
+        createCustomer
     }
 }

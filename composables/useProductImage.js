@@ -1,54 +1,56 @@
 export const useProductImage = () => {
-  const config = useRuntimeConfig()
-  
-  // WooCommerce default placeholder image
   const getPlaceholderImage = () => {
-    const baseUrl = config.public.woocommerceUrl || config.public.wordpressUrl
-    return `${baseUrl}/wp-content/plugins/woocommerce/assets/images/placeholder.png`
+    return 'https://via.placeholder.com/300x300?text=No+Image'
   }
-  
-  // Get product image with fallback
-  const getProductImage = (product, imageIndex = 0) => {
-    if (product?.images && product.images[imageIndex]?.src) {
-      return product.images[imageIndex].src
-    }
-    return getPlaceholderImage()
-  }
-  
-  // Get cart item image with fallback
-  const getCartItemImage = (item) => {
-    // First, try the item's direct image
-    if (item?.image && item.image !== '/placeholder-product.jpg' && item.image !== '/placeholder-product.svg' && item.image !== '') {
-      return item.image
-    }
-    
-    // If the item has a variation with an image
-    if (item?.product?.image?.src) {
-      return item.product.image.src
-    }
-    
-    // Try the main product's images
-    if (item?.product?.images?.[0]?.src) {
-      return item.product.images[0].src
-    }
-    
-    // Try the stored product reference
-    if (item?.product?.product?.images?.[0]?.src) {
-      return item.product.product.images[0].src
-    }
-    
-    return getPlaceholderImage()
-  }
-  
-  // Handle image error by setting placeholder
+
   const handleImageError = (event) => {
     event.target.src = getPlaceholderImage()
   }
-  
+
+  const getOptimizedImageUrl = (imageUrl, width = 300, height = 300) => {
+    if (!imageUrl) return getPlaceholderImage()
+    
+    // If it's already a placeholder, return as is
+    if (imageUrl.includes('placeholder')) return imageUrl
+    
+    // For WordPress images, you could add size parameters
+    // This is a basic implementation - adjust based on your image optimization setup
+    return imageUrl
+  }
+
+  const getCartItemImage = (item) => {
+    // Try to get image from various possible sources
+    if (item.image) {
+      return typeof item.image === 'string' ? item.image : item.image.src
+    }
+    
+    if (item.images && item.images.length > 0) {
+      return typeof item.images[0] === 'string' ? item.images[0] : item.images[0].src
+    }
+    
+    // Fallback to placeholder
+    return getPlaceholderImage()
+  }
+
+  const getProductImage = (product) => {
+    // Try to get image from various possible sources for WooCommerce products
+    if (product.images && product.images.length > 0) {
+      return product.images[0].src || product.images[0]
+    }
+    
+    if (product.image) {
+      return typeof product.image === 'string' ? product.image : product.image.src
+    }
+    
+    // Fallback to placeholder
+    return getPlaceholderImage()
+  }
+
   return {
     getPlaceholderImage,
-    getProductImage,
+    handleImageError,
+    getOptimizedImageUrl,
     getCartItemImage,
-    handleImageError
+    getProductImage
   }
 }
