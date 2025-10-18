@@ -1,12 +1,16 @@
 <template>
   <div class="space-y-4">
     <!-- Main Image Display -->
-    <div class="relative aspect-square bg-gray-100 rounded-lg overflow-hidden group shadow-lg">
+    <div 
+      class="relative aspect-square bg-gray-100 rounded-lg overflow-hidden group shadow-lg"
+      @mousemove="handleMouseMove"
+      @mouseleave="handleMouseLeave"
+    >
       <img 
         :src="currentImage" 
         :alt="product.name"
-        class="w-full h-full object-cover cursor-zoom-in transition-transform duration-300 group-hover:scale-105"
-        @click="openLightbox"
+        class="w-full h-full object-cover transition-transform duration-300"
+        :style="imageTransformStyle"
         @load="onImageLoad"
         @error="onImageError"
       />
@@ -14,13 +18,6 @@
       <!-- Loading spinner -->
       <div v-if="imageLoading" class="absolute inset-0 flex items-center justify-center bg-gray-100">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-      
-      <!-- Zoom Icon -->
-      <div class="absolute top-4 right-4 bg-black bg-opacity-50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
-        </svg>
       </div>
 
       <!-- Navigation arrows for main image -->
@@ -62,77 +59,7 @@
       </div>
     </div>
 
-    <!-- Lightbox Modal -->
-    <div 
-      v-if="showLightbox" 
-      class="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4"
-      @click="closeLightbox"
-    >
-      <div class="relative max-w-4xl max-h-full">
-        <!-- Close Button -->
-        <button 
-          @click="closeLightbox"
-          class="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-colors"
-        >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
 
-        <!-- Main Lightbox Image -->
-        <div class="relative">
-          <img 
-            :src="currentImage" 
-            :alt="product.name"
-            class="max-w-full max-h-[80vh] object-contain mx-auto"
-            @click.stop
-          />
-          
-          <!-- Lightbox Navigation -->
-          <button 
-            v-if="allImages.length > 1"
-            @click.stop="previousImage"
-            class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-colors"
-          >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-            </svg>
-          </button>
-          
-          <button 
-            v-if="allImages.length > 1"
-            @click.stop="nextImage"
-            class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-colors"
-          >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </button>
-        </div>
-
-        <!-- Lightbox Thumbnails -->
-        <div v-if="allImages.length > 1" class="flex justify-center mt-4 space-x-2 overflow-x-auto pb-2">
-          <div 
-            v-for="(image, index) in allImages" 
-            :key="index"
-            @click.stop="selectImage(index)"
-            class="flex-shrink-0 w-16 h-16 bg-gray-100 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200"
-            :class="currentImageIndex === index ? 'border-white' : 'border-transparent opacity-60 hover:opacity-100'"
-          >
-            <img 
-              :src="image.src" 
-              :alt="product.name"
-              class="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-
-        <!-- Image Counter -->
-        <div class="text-center mt-2 text-white text-sm">
-          {{ currentImageIndex + 1 }} / {{ allImages.length }}
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -150,38 +77,102 @@ const props = defineProps({
 
 // Reactive data
 const currentImageIndex = ref(0)
-const showLightbox = ref(false)
 const imageLoading = ref(false)
+const mousePosition = ref({ x: 50, y: 50 })
+const isHovering = ref(false)
+
+// Reactive data for fetched variations
+const fetchedVariations = ref([])
+const isLoadingVariations = ref(false)
 
 // Computed properties
 const allImages = computed(() => {
   const productImages = props.product.images || []
+  // Prioritize fetched variations if they have image data, otherwise use props variations
+  const variations = (fetchedVariations.value.length > 0 && fetchedVariations.value.some(v => v.image)) 
+    ? fetchedVariations.value 
+    : (props.product.variations || [])
+  const allCollectedImages = []
+  const seenImageSrcs = new Set()
   
-  // If there's a selected variation with a specific image, prioritize it
-  if (props.selectedVariation?.image?.src) {
-    const variationImage = props.selectedVariation.image
-    
-    // Check if variation image is already in product images
-    const existingImageIndex = productImages.findIndex(img => img.src === variationImage.src)
-    
-    if (existingImageIndex !== -1) {
-      // If variation image exists in product images, move it to the front
-      const reorderedImages = [...productImages]
-      const [existingImage] = reorderedImages.splice(existingImageIndex, 1)
-      return [existingImage, ...reorderedImages]
-    } else {
-      // Add variation image at the beginning if it's not in product images
-      return [variationImage, ...productImages]
+  console.log('=== ProductImageGallery Debug ===')
+  console.log('Product:', props.product.name)
+  console.log('Product type:', props.product.type)
+  console.log('Product images count:', productImages.length)
+  console.log('Product variations (from props):', props.product.variations?.length || 0)
+  console.log('Fetched variations:', fetchedVariations.value.length)
+  console.log('Selected variation:', props.selectedVariation?.id || 'none')
+  console.log('Is loading variations:', isLoadingVariations.value)
+  
+  // First, add all product images
+  productImages.forEach((img, index) => {
+    if (img.src && !seenImageSrcs.has(img.src)) {
+      allCollectedImages.push(img)
+      seenImageSrcs.add(img.src)
+      console.log(`Added product image ${index + 1}:`, img.src)
     }
+  })
+  
+  // Then add all variation images (avoiding duplicates)
+  if (variations.length > 0) {
+    console.log('Processing variations:', variations.length)
+    variations.forEach((variation, index) => {
+      // Handle both data structures: { image: { src: "url" } } and { image: "url" }
+      const imageUrl = variation.image?.src || variation.image
+      
+      console.log(`Variation ${index + 1} (ID: ${variation.id}):`, {
+        hasImage: !!imageUrl,
+        imageSrc: imageUrl,
+        rawImage: variation.image,
+        alreadySeen: imageUrl ? seenImageSrcs.has(imageUrl) : false
+      })
+      
+      if (imageUrl && !seenImageSrcs.has(imageUrl)) {
+        // Create consistent image object structure
+        const imageObj = typeof variation.image === 'string' 
+          ? { src: variation.image, alt: props.product.name }
+          : variation.image
+          
+        allCollectedImages.push(imageObj)
+        seenImageSrcs.add(imageUrl)
+        console.log(`Added variation image ${index + 1}:`, imageUrl)
+      }
+    })
+  } else {
+    console.log('No variations to process')
   }
   
-  return productImages
+  // If we have a selected variation with an image that's not already included, add it
+  if (props.selectedVariation?.image?.src && !seenImageSrcs.has(props.selectedVariation.image.src)) {
+    allCollectedImages.push(props.selectedVariation.image)
+    seenImageSrcs.add(props.selectedVariation.image.src)
+    console.log('Added selected variation image:', props.selectedVariation.image.src)
+  }
+  
+  console.log('Total collected images:', allCollectedImages.length)
+  console.log('=== End Debug ===')
+  
+  return allCollectedImages.length > 0 ? allCollectedImages : productImages
 })
 
 const { getPlaceholderImage, handleImageError } = useProductImage()
 
 const currentImage = computed(() => {
   return allImages.value[currentImageIndex.value]?.src || getPlaceholderImage()
+})
+
+const imageTransformStyle = computed(() => {
+  if (!isHovering.value) {
+    return {
+      transform: 'scale(1)',
+      transformOrigin: 'center center'
+    }
+  }
+  
+  return {
+    transform: 'scale(1.2)',
+    transformOrigin: `${mousePosition.value.x}% ${mousePosition.value.y}%`
+  }
 })
 
 // Methods
@@ -201,12 +192,6 @@ const nextImage = () => {
     : 0
 }
 
-const openLightbox = () => {
-  showLightbox.value = true
-  // Prevent body scroll when lightbox is open
-  document.body.style.overflow = 'hidden'
-}
-
 const onImageLoad = () => {
   imageLoading.value = false
 }
@@ -217,48 +202,89 @@ const onImageError = (event) => {
   imageLoading.value = false
 }
 
-const closeLightbox = () => {
-  showLightbox.value = false
-  // Restore body scroll
-  document.body.style.overflow = ''
+const handleMouseMove = (event) => {
+  const rect = event.currentTarget.getBoundingClientRect()
+  const x = ((event.clientX - rect.left) / rect.width) * 100
+  const y = ((event.clientY - rect.top) / rect.height) * 100
+  
+  mousePosition.value = { x, y }
+  isHovering.value = true
 }
 
-// Keyboard navigation
-const handleKeydown = (event) => {
-  if (!showLightbox.value) return
+const handleMouseLeave = () => {
+  isHovering.value = false
+}
+
+// Methods for fetching variations
+const fetchVariations = async () => {
+  if (!props.product.id || isLoadingVariations.value) return
   
-  switch (event.key) {
-    case 'Escape':
-      closeLightbox()
-      break
-    case 'ArrowLeft':
-      previousImage()
-      break
-    case 'ArrowRight':
-      nextImage()
-      break
+  try {
+    isLoadingVariations.value = true
+    const { getProductVariations } = useWooCommerce()
+    const variations = await getProductVariations(props.product.id)
+    
+    console.log(`Fetched ${variations?.length || 0} variations for product ${props.product.name}`)
+    if (variations?.length > 0) {
+      console.log('Variation images:', variations.map(v => ({ id: v.id, image: v.image?.src })))
+    }
+    
+    fetchedVariations.value = variations || []
+  } catch (error) {
+    console.error('Error fetching variations:', error)
+    fetchedVariations.value = []
+  } finally {
+    isLoadingVariations.value = false
   }
 }
+
+// Check if we need to fetch variations - be more aggressive
+const shouldFetchVariations = computed(() => {
+  return (
+    props.product.id &&
+    (props.product.type === 'variable' || 
+     (props.product.attributes && props.product.attributes.some(attr => attr.variation))) &&
+    fetchedVariations.value.length === 0 &&
+    !isLoadingVariations.value
+  )
+})
 
 // Watch for variation changes
 watch(() => props.selectedVariation, (newVariation, oldVariation) => {
+  // Only switch to variation image if it exists in our gallery and user wants to see it
   if (newVariation?.image?.src) {
-    // Always switch to the first image when variation changes (variation image will be at index 0)
-    currentImageIndex.value = 0
-  } else if (!newVariation && oldVariation?.image?.src) {
-    // If variation is cleared, reset to first product image
-    currentImageIndex.value = 0
+    const variationImageIndex = allImages.value.findIndex(img => img.src === newVariation.image.src)
+    if (variationImageIndex !== -1) {
+      // Only switch if we're currently showing the first image or if this is a new variation selection
+      if (currentImageIndex.value === 0 || (oldVariation && oldVariation.image?.src !== newVariation.image.src)) {
+        currentImageIndex.value = variationImageIndex
+      }
+    }
   }
 }, { immediate: false })
 
+// Watch for product changes and fetch variations if needed
+watch(() => props.product, (newProduct, oldProduct) => {
+  // Reset fetched variations when product changes
+  if (newProduct && newProduct.id !== oldProduct?.id) {
+    fetchedVariations.value = []
+    currentImageIndex.value = 0
+  }
+  
+  // Always fetch variations for variable products
+  if (newProduct && shouldFetchVariations.value) {
+    fetchVariations()
+  }
+}, { immediate: true })
+
 // Lifecycle
 onMounted(() => {
-  document.addEventListener('keydown', handleKeydown)
+  // Always try to fetch variations on mount for variable products
+  if (props.product.id && (props.product.type === 'variable' || 
+      (props.product.attributes && props.product.attributes.some(attr => attr.variation)))) {
+    fetchVariations()
+  }
 })
 
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleKeydown)
-  // Ensure body scroll is restored
-  document.body.style.overflow = ''
-})
+
 </script>
