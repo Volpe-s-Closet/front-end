@@ -49,8 +49,8 @@
                 <h3 class="text-lg font-medium text-gray-900 mb-1">{{ item.name }}</h3>
                 
                 <!-- Variation details -->
-                <div v-if="item.variation" class="text-sm text-gray-600 mb-2">
-                  <span v-for="(value, key) in item.variation" :key="key" class="mr-3">
+                <div v-if="item.variation && item.variation.attributes" class="text-sm text-gray-600 mb-2">
+                  <span v-for="(value, key) in item.variation.attributes" :key="key" class="mr-3">
                     {{ key }}: {{ value }}
                   </span>
                 </div>
