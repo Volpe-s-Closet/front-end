@@ -134,18 +134,18 @@
       </div>
     </footer>
 
-    <!-- Cart Sidebar -->
-    <CartSidebar />
+    <!-- Cart Sidebar - temporarily disabled -->
+    <!-- <CartSidebar /> -->
   </div>
 </template>
 
 <script setup>
-const { isAuthenticated, logout } = useAuth()
-const { cartItemCount, toggleCart } = useCart()
-
+// Temporarily simplified - no auth or cart functionality
 const searchQuery = ref('')
 const showMobileMenu = ref(false)
 const showAccountMenu = ref(false)
+const isAuthenticated = ref(false)
+const cartItemCount = ref(0)
 
 const handleSearch = () => {
   if (searchQuery.value.trim()) {
@@ -161,12 +161,11 @@ const toggleAccountMenu = () => {
   showAccountMenu.value = !showAccountMenu.value
 }
 
-// Close menus when clicking outside
-onMounted(() => {
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.relative')) {
-      showAccountMenu.value = false
-    }
-  })
-})
+const toggleCart = () => {
+  console.log('Cart toggle clicked')
+}
+
+const logout = () => {
+  console.log('Logout clicked')
+}
 </script>

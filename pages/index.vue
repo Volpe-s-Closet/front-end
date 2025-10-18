@@ -143,8 +143,6 @@
 </template>
 
 <script setup>
-const { getProducts, getCategories } = useWooCommerce()
-
 // SEO
 useHead({
   title: 'Home - Your Store',
@@ -153,64 +151,18 @@ useHead({
   ]
 })
 
-// Data
+// Data - temporarily using mock data
 const featuredProducts = ref([])
 const latestProducts = ref([])
-const categories = ref([])
+const categories = ref([
+  { id: 1, name: 'Electronics', slug: 'electronics', count: 25 },
+  { id: 2, name: 'Clothing', slug: 'clothing', count: 50 },
+  { id: 3, name: 'Books', slug: 'books', count: 30 },
+  { id: 4, name: 'Home & Garden', slug: 'home-garden', count: 40 }
+])
 
 // Loading states
-const featuredLoading = ref(true)
-const latestLoading = ref(true)
-const categoriesLoading = ref(true)
-
-// Fetch data
-const fetchFeaturedProducts = async () => {
-  try {
-    featuredProducts.value = await getProducts({ 
-      featured: true, 
-      per_page: 8,
-      status: 'publish'
-    })
-  } catch (error) {
-    console.error('Error fetching featured products:', error)
-  } finally {
-    featuredLoading.value = false
-  }
-}
-
-const fetchLatestProducts = async () => {
-  try {
-    latestProducts.value = await getProducts({ 
-      orderby: 'date', 
-      order: 'desc', 
-      per_page: 8,
-      status: 'publish'
-    })
-  } catch (error) {
-    console.error('Error fetching latest products:', error)
-  } finally {
-    latestLoading.value = false
-  }
-}
-
-const fetchCategories = async () => {
-  try {
-    categories.value = await getCategories({ 
-      per_page: 20,
-      hide_empty: true,
-      parent: 0 // Only top-level categories
-    })
-  } catch (error) {
-    console.error('Error fetching categories:', error)
-  } finally {
-    categoriesLoading.value = false
-  }
-}
-
-// Initialize data on mount
-onMounted(() => {
-  fetchFeaturedProducts()
-  fetchLatestProducts()
-  fetchCategories()
-})
+const featuredLoading = ref(false)
+const latestLoading = ref(false)
+const categoriesLoading = ref(false)
 </script>
