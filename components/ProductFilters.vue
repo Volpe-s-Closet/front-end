@@ -1,6 +1,49 @@
 <template>
-  <div class="bg-white p-6 rounded-lg shadow-sm">
-    <h3 class="text-lg font-semibold mb-4">Filters</h3>
+  <div>
+    <!-- Mobile Filter Toggle Button -->
+    <button
+      @click="toggleMobileFilters"
+      class="lg:hidden w-full bg-white border border-gray-300 rounded-lg px-4 py-3 mb-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors duration-200"
+    >
+      <span class="font-medium text-gray-900">Filters</span>
+      <Icon 
+        :name="showMobileFilters ? 'heroicons:x-mark' : 'heroicons:funnel'" 
+        class="h-5 w-5 text-gray-500" 
+      />
+    </button>
+
+    <!-- Overlay for mobile -->
+    <div 
+      v-if="showMobileFilters"
+      @click="closeMobileFilters"
+      class="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+    ></div>
+
+    <!-- Filters Panel -->
+    <div 
+      :class="[
+        'bg-white rounded-lg shadow-sm transition-transform duration-300 ease-in-out',
+        'lg:transform-none lg:relative lg:z-auto',
+        showMobileFilters 
+          ? 'fixed top-0 right-0 h-full w-80 max-w-[80vw] z-50 transform translate-x-0 overflow-y-auto' 
+          : 'lg:block hidden lg:transform-none fixed top-0 right-0 h-full w-80 max-w-[80vw] z-50 transform translate-x-full overflow-y-auto'
+      ]"
+    >
+      <!-- Mobile Header -->
+      <div class="lg:hidden flex items-center justify-between p-4 border-b border-gray-200">
+        <h3 class="text-lg font-semibold">Filters</h3>
+        <button
+          @click="closeMobileFilters"
+          class="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
+        >
+          <Icon name="heroicons:x-mark" class="h-5 w-5 text-gray-500" />
+        </button>
+      </div>
+
+      <!-- Filter Content -->
+      <div class="p-6">
+        <!-- Desktop Header -->
+        <h3 class="hidden lg:block text-lg font-semibold mb-4">Filters</h3>
     
     <!-- Price Range -->
     <div class="mb-6">
@@ -118,13 +161,23 @@
       </label>
     </div>
 
-    <!-- Clear Filters -->
-    <button
-      @click="clearFilters"
-      class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-md text-sm font-medium transition-colors duration-200"
-    >
-      Clear All Filters
-    </button>
+        <!-- Clear Filters -->
+        <button
+          @click="clearFilters"
+          class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-md text-sm font-medium transition-colors duration-200"
+        >
+          Clear All Filters
+        </button>
+
+        <!-- Mobile Apply Button -->
+        <button
+          @click="applyFiltersAndClose"
+          class="lg:hidden w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-md font-medium transition-colors duration-200 mt-4"
+        >
+          Apply Filters
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -151,6 +204,9 @@ const filters = ref({
   onSale: false,
   featured: false
 })
+
+// Mobile filters state
+const showMobileFilters = ref(false)
 
 // Initialize attribute filters
 watch(() => props.attributes, (newAttributes) => {
@@ -184,8 +240,48 @@ const clearFilters = () => {
   updateFilters()
 }
 
-// Expose filters for parent component
+// Mobile filter methods
+const toggleMobileFilters = () => {
+  showMobileFilters.value = !showMobileFilters.value
+  // Prevent body scroll when mobile filters are open
+  if (showMobileFilters.value) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = ''
+  }
+}
+
+const closeMobileFilters = () => {
+  showMobileFilters.value = false
+  document.body.style.overflow = ''
+}
+
+const applyFiltersAndClose = () => {
+  updateFilters()
+  closeMobileFilters()
+}
+
+// Close mobile filters when clicking outside or pressing escape
+onMounted(() => {
+  const handleEscape = (e) => {
+    if (e.key === 'Escape') {
+      closeMobileFilters()
+    }
+  }
+  
+  document.addEventListener('keydown', handleEscape)
+  
+  onUnmounted(() => {
+    document.removeEventListener('keydown', handleEscape)
+    // Clean up body overflow style
+    document.body.style.overflow = ''
+  })
+})
+
+// Expose filters and methods for parent component
 defineExpose({
-  filters
+  filters,
+  clearFilters,
+  closeMobileFilters
 })
 </script>
