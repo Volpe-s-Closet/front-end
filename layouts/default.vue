@@ -13,9 +13,6 @@
 
           <!-- Navigation -->
           <nav class="hidden md:flex space-x-8">
-            <NuxtLink to="/" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-              Home
-            </NuxtLink>
             <NuxtLink to="/categories" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">
               Categories
             </NuxtLink>
@@ -93,9 +90,6 @@
         <!-- Mobile Navigation -->
         <div v-if="showMobileMenu" class="md:hidden border-t border-gray-200 pt-4 pb-3">
           <div class="space-y-1">
-            <NuxtLink to="/" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900">
-              Home
-            </NuxtLink>
             <NuxtLink to="/categories" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900">
               Categories
             </NuxtLink>
@@ -137,13 +131,19 @@
           <div>
             <h4 class="text-sm font-semibold mb-4 uppercase tracking-wider">Support</h4>
             <ul class="space-y-2">
-              <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+              <li><NuxtLink to="/contact" class="text-gray-400 hover:text-white">Contact Us</NuxtLink></li>
+              <li><NuxtLink to="/faq" class="text-gray-400 hover:text-white">FAQ</NuxtLink></li>
             </ul>
           </div>
         </div>
-        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2025 Store. All rights reserved.</p>
+        <div class="border-t border-gray-800 mt-8 pt-8">
+          <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p class="text-gray-400">&copy; 2025 Store. All rights reserved.</p>
+            <div class="flex space-x-6">
+              <NuxtLink to="/privacy" class="text-gray-400 hover:text-white text-sm">Privacy Policy</NuxtLink>
+              <NuxtLink to="/terms" class="text-gray-400 hover:text-white text-sm">Terms & Conditions</NuxtLink>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
