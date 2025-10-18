@@ -287,6 +287,7 @@ const props = defineProps({
 
 const { addToCart } = useCart()
 const { getProductImage, handleImageError } = useProductImage()
+const { formatPrice } = useCurrency()
 const isAdding = ref(false)
 const isVariationModalOpen = ref(false)
 const showImageGallery = ref(false)
@@ -310,31 +311,7 @@ const getMinPrice = (product) => {
   return product.regular_price || product.price || '0.00'
 }
 
-// Format price with proper currency symbol
-const formatPrice = (price) => {
-  if (!price) return ''
-  
-  const numericPrice = parseFloat(price)
-  if (isNaN(numericPrice)) return price
-  
-  // Check if we have currency info from WooCommerce price_html of other products
-  // This is a fallback approach - WooCommerce should provide price_html for proper formatting
-  
-  // Simple currency detection from runtime config or default to USD
-  const config = useRuntimeConfig()
-  const currency = config.public.currency || 'USD'
-  const locale = config.public.locale || 'en-US'
-  
-  try {
-    return new Intl.NumberFormat(locale, {
-      style: 'currency',
-      currency: currency
-    }).format(numericPrice)
-  } catch (error) {
-    // Fallback to simple format if Intl fails
-    return `${numericPrice.toFixed(2)}`
-  }
-}
+
 
 // Check if product is in cart - simplified for now to avoid cart access issues
 const isInCart = computed(() => {

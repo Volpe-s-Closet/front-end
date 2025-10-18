@@ -36,10 +36,10 @@
               <h4 class="font-medium text-gray-900">{{ product.name }}</h4>
               <div class="mt-1">
                 <span class="text-lg font-bold text-gray-900">
-                  ${{ selectedVariationPrice || product.price || product.regular_price }}
+                  {{ formatPrice(selectedVariationPrice || product.price || product.regular_price) }}
                 </span>
                 <span v-if="product.on_sale && !selectedVariation" class="text-sm text-gray-500 line-through ml-2">
-                  ${{ product.regular_price }}
+                  {{ formatPrice(product.regular_price) }}
                 </span>
               </div>
             </div>
@@ -151,7 +151,7 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'added-to-cart'])
 
-const { addToCart, openCart } = useCart()
+const { addToCart, openCart, formatPrice } = useCart()
 const { getProductImage, handleImageError } = useProductImage()
 const { getProductVariations } = useWooCommerce()
 

@@ -64,7 +64,7 @@
               <p class="text-gray-600">Placed on {{ formatDate(order.date_created) }}</p>
             </div>
             <div class="text-right mt-2 sm:mt-0">
-              <p class="text-lg font-semibold">${{ order.total }}</p>
+              <p class="text-lg font-semibold">{{ formatPrice(order.total) }}</p>
               <span :class="[
                 'inline-flex px-3 py-1 text-sm font-semibold rounded-full',
                 getOrderStatusClass(order.status)
@@ -92,7 +92,7 @@
                 <div class="flex-1 min-w-0">
                   <p class="font-medium text-sm truncate">{{ item.name }}</p>
                   <p class="text-gray-600 text-sm">Qty: {{ item.quantity }}</p>
-                  <p class="text-gray-900 text-sm">${{ item.total }}</p>
+                  <p class="text-gray-900 text-sm">{{ formatPrice(item.total) }}</p>
                 </div>
               </div>
             </div>
@@ -186,6 +186,7 @@ const { user } = useAuth()
 const { getOrders } = useWooCommerce()
 const { getPlaceholderImage, handleImageError } = useProductImage()
 const { addToCart } = useCart()
+const { formatPrice } = useCurrency()
 
 // SEO
 useHead({

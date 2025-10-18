@@ -2,6 +2,9 @@ export const useCart = () => {
   // Use Nuxt's useState for global state management
   const cartItems = useState('cart.items', () => [])
   const isCartOpen = useState('cart.isOpen', () => false)
+  
+  // Get currency formatting
+  const { formatPrice } = useCurrency()
 
   // Initialize cart from localStorage
   const initCart = () => {
@@ -144,6 +147,7 @@ export const useCart = () => {
     toggleCart,
     openCart,
     closeCart,
-    initCart
+    initCart,
+    formatPrice
   }
 }

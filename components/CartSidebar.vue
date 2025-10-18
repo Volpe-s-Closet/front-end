@@ -61,7 +61,7 @@
                 </span>
               </div>
               
-              <p class="text-gray-600 text-sm">${{ item.price.toFixed(2) }}</p>
+              <p class="text-gray-600 text-sm">{{ formatPrice(item.price) }}</p>
               
               <div class="flex items-center mt-2">
                 <BaseButton
@@ -96,7 +96,7 @@
       <div v-if="cartItems.length > 0" class="border-t p-4 space-y-4">
         <div class="flex justify-between items-center">
           <span class="font-semibold">Total:</span>
-          <span class="font-bold text-lg">${{ cartTotal.toFixed(2) }}</span>
+          <span class="font-bold text-lg">{{ formatPrice(cartTotal) }}</span>
         </div>
         
         <div class="space-y-2">
@@ -127,7 +127,8 @@ const {
   cartTotal, 
   closeCart, 
   updateQuantity, 
-  removeFromCart 
+  removeFromCart,
+  formatPrice 
 } = useCart()
 
 const { getCartItemImage, handleImageError } = useProductImage()

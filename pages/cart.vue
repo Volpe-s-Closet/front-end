@@ -56,7 +56,7 @@
 
                 <div class="flex items-center justify-between">
                   <div class="text-lg font-semibold text-gray-900">
-                    ${{ item.price.toFixed(2) }}
+                    {{ formatPrice(item.price) }}
                   </div>
                   
                   <!-- Quantity Controls -->
@@ -84,7 +84,7 @@
                 <!-- Item Total -->
                 <div class="mt-2 text-right">
                   <span class="text-sm text-gray-600">Subtotal: </span>
-                  <span class="font-semibold">${{ (item.price * item.quantity).toFixed(2) }}</span>
+                  <span class="font-semibold">{{ formatPrice(item.price * item.quantity) }}</span>
                 </div>
               </div>
 
@@ -122,7 +122,7 @@
           <div class="space-y-3 mb-6">
             <div class="flex justify-between">
               <span class="text-gray-600">Subtotal</span>
-              <span class="font-medium">${{ cartSubtotal.toFixed(2) }}</span>
+              <span class="font-medium">{{ formatPrice(cartSubtotal) }}</span>
             </div>
             
             <div class="flex justify-between">
@@ -138,7 +138,7 @@
             <div class="border-t pt-3">
               <div class="flex justify-between">
                 <span class="text-lg font-semibold">Total</span>
-                <span class="text-lg font-bold">${{ cartTotal.toFixed(2) }}</span>
+                <span class="text-lg font-bold">{{ formatPrice(cartTotal) }}</span>
               </div>
             </div>
           </div>
@@ -185,7 +185,7 @@
               >
               <div class="flex-1">
                 <h4 class="font-medium text-sm">{{ product.name }}</h4>
-                <p class="text-gray-600 text-sm">${{ product.price }}</p>
+                <p class="text-gray-600 text-sm">{{ formatPrice(product.price) }}</p>
                 <button 
                   @click="addToCart(product, 1)"
                   class="text-blue-600 hover:text-blue-800 text-xs font-medium mt-1"
@@ -210,7 +210,8 @@ const {
   updateQuantity, 
   removeFromCart, 
   clearCart,
-  addToCart 
+  addToCart,
+  formatPrice 
 } = useCart()
 
 const { getCartItemImage, getProductImage, handleImageError } = useProductImage()

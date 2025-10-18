@@ -132,7 +132,7 @@
                   <p class="text-sm text-gray-600">{{ formatDate(order.date_created) }}</p>
                 </div>
                 <div class="text-right">
-                  <p class="font-medium">${{ order.total }}</p>
+                  <p class="font-medium">{{ formatPrice(order.total) }}</p>
                   <span :class="[
                     'inline-flex px-2 py-1 text-xs font-semibold rounded-full',
                     getOrderStatusClass(order.status)
@@ -165,7 +165,7 @@
           </div>
           <div class="bg-white rounded-lg shadow-sm p-6 text-center">
             <Icon name="heroicons:currency-dollar" class="h-8 w-8 text-green-600 mx-auto mb-2" />
-            <p class="text-2xl font-bold text-gray-900">${{ totalSpent.toFixed(2) }}</p>
+            <p class="text-2xl font-bold text-gray-900">{{ formatPrice(totalSpent) }}</p>
             <p class="text-sm text-gray-600">Total Spent</p>
           </div>
           <div class="bg-white rounded-lg shadow-sm p-6 text-center">
@@ -184,6 +184,7 @@ definePageMeta({
 
 const { user, updateUserProfile, getUserProfile } = useAuth()
 const { getOrders } = useWooCommerce()
+const { formatPrice } = useCurrency()
 
 // SEO
 useHead({

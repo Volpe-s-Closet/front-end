@@ -50,11 +50,11 @@
 
             <div class="flex items-center space-x-4">
               <span class="text-2xl font-bold text-blue-600">
-                ${{ selectedVariation?.price || product.price }}
+                {{ formatPrice(selectedVariation?.price || product.price) }}
               </span>
               <span v-if="(selectedVariation?.regular_price || product.regular_price) && (selectedVariation?.regular_price || product.regular_price) !== (selectedVariation?.price || product.price)" 
                     class="text-lg text-gray-500 line-through">
-                ${{ selectedVariation?.regular_price || product.regular_price }}
+                {{ formatPrice(selectedVariation?.regular_price || product.regular_price) }}
               </span>
               <span v-if="(selectedVariation?.sale_price || product.sale_price)" class="bg-red-100 text-red-800 px-2 py-1 rounded text-sm font-medium">
                 Sale!
@@ -240,6 +240,7 @@ const {
   getProducts 
 } = useWooCommerce()
 const { addToCart: addItemToCart, openCart } = useCart()
+const { formatPrice } = useCurrency()
 
 // Reactive data
 const quantity = ref(1)

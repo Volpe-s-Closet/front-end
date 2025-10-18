@@ -39,7 +39,7 @@
             </span>
           </div>
           <div class="text-right">
-            <p class="text-2xl font-bold">${{ order.total }}</p>
+            <p class="text-2xl font-bold">{{ formatPrice(order.total) }}</p>
             <p class="text-gray-600">Total</p>
           </div>
         </div>
@@ -62,10 +62,10 @@
             <div class="flex-1">
               <h3 class="font-medium">{{ item.name }}</h3>
               <p class="text-gray-600">Quantity: {{ item.quantity }}</p>
-              <p class="text-gray-600">Price: ${{ item.price }}</p>
+              <p class="text-gray-600">Price: {{ formatPrice(item.price) }}</p>
             </div>
             <div class="text-right">
-              <p class="font-semibold">${{ item.total }}</p>
+              <p class="font-semibold">{{ formatPrice(item.total) }}</p>
             </div>
           </div>
         </div>
@@ -82,6 +82,7 @@ definePageMeta({
 const route = useRoute()
 const { getOrder } = useWooCommerce()
 const { getPlaceholderImage } = useProductImage()
+const { formatPrice } = useCurrency()
 
 // Data
 const order = ref(null)

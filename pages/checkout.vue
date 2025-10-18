@@ -346,7 +346,7 @@
                 <p class="text-gray-600 text-sm">Qty: {{ item.quantity }}</p>
               </div>
               <div class="text-right">
-                <p class="font-medium">${{ (item.price * item.quantity).toFixed(2) }}</p>
+                <p class="font-medium">{{ formatPrice(item.price * item.quantity) }}</p>
               </div>
             </div>
           </div>
@@ -355,20 +355,20 @@
           <div class="border-t pt-4 space-y-2">
             <div class="flex justify-between">
               <span>Subtotal</span>
-              <span>${{ cartSubtotal.toFixed(2) }}</span>
+              <span>{{ formatPrice(cartSubtotal) }}</span>
             </div>
             <div class="flex justify-between">
               <span>Shipping</span>
-              <span>${{ shippingCost.toFixed(2) }}</span>
+              <span>{{ formatPrice(shippingCost) }}</span>
             </div>
             <div class="flex justify-between">
               <span>Tax</span>
-              <span>${{ taxAmount.toFixed(2) }}</span>
+              <span>{{ formatPrice(taxAmount) }}</span>
             </div>
             <div class="border-t pt-2">
               <div class="flex justify-between text-lg font-semibold">
                 <span>Total</span>
-                <span>${{ orderTotal.toFixed(2) }}</span>
+                <span>{{ formatPrice(orderTotal) }}</span>
               </div>
             </div>
           </div>
@@ -379,7 +379,7 @@
 </template>
 
 <script setup>
-const { cartItems, cartSubtotal, clearCart } = useCart()
+const { cartItems, cartSubtotal, clearCart, formatPrice } = useCart()
 const { createOrder } = useWooCommerce()
 const { getCartItemImage, handleImageError } = useProductImage()
 
