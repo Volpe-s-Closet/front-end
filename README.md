@@ -1,4 +1,6 @@
-# Nuxt Minimal Starter
+# Nuxt Static Site
+
+A static-only Nuxt application configured for client-side rendering and static deployment.
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
@@ -7,17 +9,7 @@ Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduct
 Make sure to install dependencies:
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
 ## Development Server
@@ -25,51 +17,43 @@ bun install
 Start the development server on `http://localhost:3000`:
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+## Production Build
 
-Build the application for production:
+Build the static application for production:
 
 ```bash
-# npm
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+This generates static files in the `.output/public` directory that can be deployed to any static hosting service.
+
+Locally preview the production build:
 
 ```bash
-# npm
 npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Deployment
+
+This app is configured as a static site (SSR disabled) and can be deployed to any static hosting provider:
+
+### Manual Deployment Steps:
+
+1. Build with `npm run build` to generate static files
+2. The build can be found at `.output/public`
+3. Configure your hosting provider to serve `index.html` for all routes (SPA fallback)
+
+## NPM Packages
+
+This project uses the following NPM packages:
+
+- [@nuxt/fonts](https://fonts.nuxt.com/) - Font optimization and loading for Nuxt
+- [@nuxt/icon](https://icon.nuxt.com/) - Icon component and utilities for Nuxt
+- [@nuxt/scripts](https://scripts.nuxt.com/) - Third-party script management for Nuxt
+- [@nuxt/test-utils](https://nuxt.com/docs/getting-started/testing) - Testing utilities for Nuxt applications
+- [@nuxtjs/tailwindcss](https://tailwindcss.nuxtjs.org/) - Tailwind CSS integration for Nuxt
+
+Check out the [Nuxt static deployment documentation](https://nuxt.com/docs/getting-started/deployment#static-hosting) for more information.
