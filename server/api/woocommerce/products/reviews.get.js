@@ -3,9 +3,9 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   
   const { woocommerceKey, woocommerceSecret } = config
-  const { woocommerceUrl } = config.public
+  const { siteUrl } = config.public
   
-  if (!woocommerceKey || !woocommerceSecret || !woocommerceUrl) {
+  if (!woocommerceKey || !woocommerceSecret || !siteUrl) {
     throw createError({
       statusCode: 500,
       statusMessage: 'WooCommerce API credentials not configured'
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
   
   try {
     const queryString = new URLSearchParams(query).toString()
-    const response = await $fetch(`${woocommerceUrl}/wp-json/wc/v3/products/reviews${queryString ? '?' + queryString : ''}`, {
+    const response = await $fetch(`${siteUrl}/wp-json/wc/v3/products/reviews${queryString ? '?' + queryString : ''}`, {
       headers: {
         'Authorization': `Basic ${credentials}`,
         'Content-Type': 'application/json'

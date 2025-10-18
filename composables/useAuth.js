@@ -95,7 +95,7 @@ export const useAuth = () => {
   const login = async (email, password) => {
     try {
       const config = useRuntimeConfig()
-      const response = await $fetch(`${config.public.wordpressUrl}/wp-json/jwt-auth/v1/token`, {
+      const response = await $fetch(`${config.public.siteUrl}/wp-json/jwt-auth/v1/token`, {
         method: 'POST',
         body: {
           username: email,
@@ -142,7 +142,7 @@ export const useAuth = () => {
     try {
       const config = useRuntimeConfig()
       // Use custom WordPress registration endpoint
-      const response = await $fetch(`${config.public.wordpressUrl}/wp-json/wp/v2/users/register`, {
+      const response = await $fetch(`${config.public.siteUrl}/wp-json/wp/v2/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -177,7 +177,7 @@ export const useAuth = () => {
 
     try {
       const config = useRuntimeConfig()
-      const response = await $fetch(`${config.public.wordpressUrl}/wp-json/jwt-auth/v1/token/validate`, {
+      const response = await $fetch(`${config.public.siteUrl}/wp-json/jwt-auth/v1/token/validate`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token.value}`
@@ -232,7 +232,7 @@ export const useAuth = () => {
     try {
       const config = useRuntimeConfig()
       
-      const response = await $fetch(`${config.public.wordpressUrl}/wp-json/wp/v2/users/${user.value.id}`, {
+      const response = await $fetch(`${config.public.siteUrl}/wp-json/wp/v2/users/${user.value.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -19,8 +19,7 @@ export default defineNuxtConfig({
     // Public keys (exposed to client-side)
     // These will automatically map to NUXT_PUBLIC_* environment variables
     public: {
-      woocommerceUrl: '', // NUXT_PUBLIC_WOOCOMMERCE_URL
-      wordpressUrl: '' // NUXT_PUBLIC_WORDPRESS_URL
+      siteUrl: '' // NUXT_PUBLIC_SITE_URL (WordPress/WooCommerce base URL)
     }
   },
 

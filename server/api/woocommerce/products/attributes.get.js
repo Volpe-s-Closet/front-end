@@ -2,9 +2,9 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   
   const { woocommerceKey, woocommerceSecret } = config
-  const { woocommerceUrl } = config.public
+  const { siteUrl } = config.public
   
-  if (!woocommerceKey || !woocommerceSecret || !woocommerceUrl) {
+  if (!woocommerceKey || !woocommerceSecret || !siteUrl) {
     throw createError({
       statusCode: 500,
       statusMessage: 'WooCommerce API credentials not configured'
@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
   const credentials = Buffer.from(`${woocommerceKey}:${woocommerceSecret}`).toString('base64')
   
   try {
-    const response = await $fetch(`${woocommerceUrl}/wp-json/wc/v3/products/attributes`, {
+    const response = await $fetch(`${siteUrl}/wp-json/wc/v3/products/attributes`, {
       headers: {
         'Authorization': `Basic ${credentials}`,
         'Content-Type': 'application/json'

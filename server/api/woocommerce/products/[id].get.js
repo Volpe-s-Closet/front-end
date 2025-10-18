@@ -3,9 +3,9 @@ export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
   
   const { woocommerceKey, woocommerceSecret } = config
-  const { woocommerceUrl } = config.public
+  const { siteUrl } = config.public
   
-  if (!woocommerceKey || !woocommerceSecret || !woocommerceUrl) {
+  if (!woocommerceKey || !woocommerceSecret || !siteUrl) {
     throw createError({
       statusCode: 500,
       statusMessage: 'WooCommerce API credentials not configured'
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   try {
     // If id is numeric, fetch by ID, otherwise fetch by slug
     if (/^\d+$/.test(id)) {
-      const response = await $fetch(`${woocommerceUrl}/wp-json/wc/v3/products/${id}`, {
+      const response = await $fetch(`${siteUrl}/wp-json/wc/v3/products/${id}`, {
         headers: {
           'Authorization': `Basic ${credentials}`,
           'Content-Type': 'application/json'
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       return response
     } else {
       // Fetch by slug
-      const response = await $fetch(`${woocommerceUrl}/wp-json/wc/v3/products?slug=${id}`, {
+      const response = await $fetch(`${siteUrl}/wp-json/wc/v3/products?slug=${id}`, {
         headers: {
           'Authorization': `Basic ${credentials}`,
           'Content-Type': 'application/json'
