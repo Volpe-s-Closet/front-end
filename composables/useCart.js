@@ -30,12 +30,28 @@ export const useCart = () => {
     if (existingItem) {
       existingItem.quantity += quantity
     } else {
+      // Determine the best image to use
+      let itemImage = ''
+      
+      // If it's a variation with an image, use that
+      if (product.image?.src) {
+        itemImage = product.image.src
+      }
+      // Otherwise, try the product's images array
+      else if (product.images?.[0]?.src) {
+        itemImage = product.images[0].src
+      }
+      // If product has a parent product stored, use its image
+      else if (product.product?.images?.[0]?.src) {
+        itemImage = product.product.images[0].src
+      }
+
       const newItem = {
         id: product.id,
         name: product.name,
         price: parseFloat(product.price || product.regular_price || 0),
         quantity,
-        image: product.images?.[0]?.src || '',
+        image: itemImage,
         variation,
         product
       }

@@ -17,12 +17,26 @@ export const useProductImage = () => {
   
   // Get cart item image with fallback
   const getCartItemImage = (item) => {
-    if (item?.image && item.image !== '/placeholder-product.jpg' && item.image !== '/placeholder-product.svg') {
+    // First, try the item's direct image
+    if (item?.image && item.image !== '/placeholder-product.jpg' && item.image !== '/placeholder-product.svg' && item.image !== '') {
       return item.image
     }
+    
+    // If the item has a variation with an image
+    if (item?.product?.image?.src) {
+      return item.product.image.src
+    }
+    
+    // Try the main product's images
     if (item?.product?.images?.[0]?.src) {
       return item.product.images[0].src
     }
+    
+    // Try the stored product reference
+    if (item?.product?.product?.images?.[0]?.src) {
+      return item.product.product.images[0].src
+    }
+    
     return getPlaceholderImage()
   }
   

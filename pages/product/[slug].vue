@@ -349,8 +349,21 @@ const updateSelectedVariation = () => {
 const addToCart = () => {
   if (!product.value) return
   
-  const productToAdd = selectedVariation.value || product.value
-  const variation = selectedVariation.value ? selectedAttributes.value : null
+  let productToAdd = product.value
+  let variation = null
+  
+  // If a variation is selected, create a combined product object
+  if (selectedVariation.value) {
+    productToAdd = {
+      ...selectedVariation.value,
+      // Keep the main product's name and images as fallback
+      name: product.value.name,
+      images: selectedVariation.value.image ? [selectedVariation.value.image] : product.value.images,
+      // Store reference to main product
+      product: product.value
+    }
+    variation = selectedAttributes.value
+  }
   
   addItemToCart(productToAdd, quantity.value, variation)
   
