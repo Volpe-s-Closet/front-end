@@ -61,7 +61,18 @@
           View Details
         </NuxtLink>
         
+        <!-- Show "Choose Options" for variable products, "Add to Cart" for simple products -->
         <button
+          v-if="hasVariations"
+          @click="openVariationModal"
+          :disabled="!product.purchasable"
+          class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+        >
+          Choose Options
+        </button>
+        
+        <button
+          v-else
           @click="handleAddToCart"
           :disabled="!product.purchasable || product.stock_status !== 'instock'"
           class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
@@ -75,6 +86,14 @@
         <span class="text-red-600 text-sm font-medium">Out of Stock</span>
       </div>
     </div>
+
+    <!-- Variation Modal -->
+    <ProductVariationModal
+      :product="product"
+      :is-open="isVariationModalOpen"
+      @close="closeVariationModal"
+      @added-to-cart="handleVariationAddedToCart"
+    />
   </div>
 </template>
 
@@ -89,6 +108,14 @@ const props = defineProps({
 const { addToCart, openCart } = useCart()
 const { getProductImage, handleImageError } = useProductImage()
 const isAdding = ref(false)
+const isVariationModalOpen = ref(false)
+
+// Check if product has variations
+const hasVariations = computed(() => {
+  return props.product.type === 'variable' || 
+         (props.product.variations && props.product.variations.length > 0) ||
+         (props.product.attributes && props.product.attributes.some(attr => attr.variation))
+})
 
 const handleAddToCart = async () => {
   if (!props.product.purchasable || props.product.stock_status !== 'instock') return
@@ -103,6 +130,19 @@ const handleAddToCart = async () => {
   } finally {
     isAdding.value = false
   }
+}
+
+const openVariationModal = () => {
+  isVariationModalOpen.value = true
+}
+
+const closeVariationModal = () => {
+  isVariationModalOpen.value = false
+}
+
+const handleVariationAddedToCart = (data) => {
+  // Modal handles the cart addition, we just need to close it
+  closeVariationModal()
 }
 </script>
 

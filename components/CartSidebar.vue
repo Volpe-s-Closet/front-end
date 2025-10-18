@@ -47,6 +47,14 @@
             
             <div class="flex-1">
               <h4 class="font-medium text-sm">{{ item.name }}</h4>
+              
+              <!-- Show variation attributes if they exist -->
+              <div v-if="item.variation && item.variation.attributes" class="text-xs text-gray-500 mt-1">
+                <span v-for="(value, key) in item.variation.attributes" :key="key" class="mr-2">
+                  {{ key }}: {{ value }}
+                </span>
+              </div>
+              
               <p class="text-gray-600 text-sm">${{ item.price.toFixed(2) }}</p>
               
               <div class="flex items-center mt-2">
