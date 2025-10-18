@@ -1,12 +1,13 @@
 <template>
   <!-- Grid View -->
-  <div v-if="viewMode === 'grid'" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+  <div v-if="viewMode === 'grid'" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative">
     <div class="relative">
       <img
         :src="getProductImage(product)"
         :alt="product.name"
-        class="w-full h-64 object-cover"
+        class="w-full h-64 object-cover cursor-pointer hover:opacity-90 transition-opacity"
         @error="handleImageError"
+        @click="openImageGallery"
       >
       <div v-if="product.on_sale" class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs font-semibold rounded">
         Sale
@@ -14,10 +15,35 @@
       <div v-if="product.featured" class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 text-xs font-semibold rounded">
         Featured
       </div>
+      <!-- Zoom icon overlay -->
+      <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black bg-opacity-20 pointer-events-none">
+        <div class="bg-white bg-opacity-90 rounded-full p-2">
+          <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+          </svg>
+        </div>
+      </div>
     </div>
+
+    <!-- Floating Cart Button -->
+    <button
+      v-if="product.purchasable && product.stock_status === 'instock'"
+      @click="hasVariations ? openVariationModal() : handleAddToCart()"
+      :disabled="isAdding"
+      class="absolute top-4 right-4 z-10 bg-white hover:bg-gray-50 text-gray-700 hover:text-blue-600 p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200"
+      :class="{ 'opacity-50 cursor-not-allowed': isAdding }"
+    >
+      <svg v-if="!isAdding" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h8m-8 0a2 2 0 100 4 2 2 0 000-4zm8 0a2 2 0 100 4 2 2 0 000-4z"></path>
+      </svg>
+      <svg v-else class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+    </button>
     
-    <div class="p-4">
-      <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+    <NuxtLink :to="`/product/${product.slug}`" class="block p-4 hover:bg-gray-50 transition-colors cursor-pointer">
+      <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-blue-600 transition-colors">
         {{ product.name }}
       </h3>
       
@@ -65,39 +91,10 @@
       <p v-else-if="product.description" class="text-gray-600 text-sm mb-4 line-clamp-2" v-html="product.description"></p>
       <p v-else class="text-gray-500 text-sm mb-4 italic">No description available</p>
 
-      <div class="flex items-center justify-between">
-        <NuxtLink 
-          :to="`/product/${product.slug}`"
-          class="text-blue-600 hover:text-blue-800 text-sm font-medium"
-        >
-          View Details
-        </NuxtLink>
-        
-        <!-- Show "Choose Options" for variable products, "Add to Cart" for simple products -->
-        <BaseButton
-          v-if="hasVariations"
-          @click="openVariationModal"
-          :disabled="!product.purchasable"
-          text="Choose Options"
-          size="sm"
-        />
-        
-        <BaseButton
-          v-else
-          action="add"
-          :product="product"
-          :quantity="1"
-          :loading="isAdding"
-          :disabled="!product.purchasable || product.stock_status !== 'instock'"
-          size="sm"
-          @click="handleAddToCart"
-        />
-      </div>
-
       <div v-if="product.stock_status !== 'instock'" class="mt-2">
         <span class="text-red-600 text-sm font-medium">Out of Stock</span>
       </div>
-    </div>
+    </NuxtLink>
 
     <!-- Variation Modal -->
     <ProductVariationModal
@@ -109,15 +106,16 @@
   </div>
 
   <!-- List View -->
-  <div v-else class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+  <div v-else class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative">
     <div class="flex flex-col sm:flex-row">
       <!-- Image -->
       <div class="relative sm:w-48 sm:flex-shrink-0">
         <img
           :src="getProductImage(product)"
           :alt="product.name"
-          class="w-full h-48 sm:h-full object-cover"
+          class="w-full h-48 sm:h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
           @error="handleImageError"
+          @click="openImageGallery"
         >
         <div v-if="product.on_sale" class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs font-semibold rounded">
           Sale
@@ -125,13 +123,38 @@
         <div v-if="product.featured" class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 text-xs font-semibold rounded">
           Featured
         </div>
+        <!-- Zoom icon overlay -->
+        <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black bg-opacity-20 pointer-events-none">
+          <div class="bg-white bg-opacity-90 rounded-full p-2">
+            <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+            </svg>
+          </div>
+        </div>
       </div>
+
+    <!-- Floating Cart Button -->
+    <button
+      v-if="product.purchasable && product.stock_status === 'instock'"
+      @click="hasVariations ? openVariationModal() : handleAddToCart()"
+      :disabled="isAdding"
+      class="absolute top-4 right-4 z-10 bg-white hover:bg-gray-50 text-gray-700 hover:text-blue-600 p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200"
+      :class="{ 'opacity-50 cursor-not-allowed': isAdding }"
+    >
+      <svg v-if="!isAdding" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h8m-8 0a2 2 0 100 4 2 2 0 000-4zm8 0a2 2 0 100 4 2 2 0 000-4z"></path>
+      </svg>
+      <svg v-else class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+    </button>
       
       <!-- Content -->
-      <div class="flex-1 p-6">
+      <NuxtLink :to="`/product/${product.slug}`" class="flex-1 p-6 block hover:bg-gray-50 transition-colors cursor-pointer">
         <div class="flex flex-col sm:flex-row sm:justify-between h-full">
           <div class="flex-1">
-            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+            <h3 class="text-xl font-semibold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
               {{ product.name }}
             </h3>
             
@@ -183,36 +206,8 @@
               <span class="text-red-600 font-medium">Out of Stock</span>
             </div>
           </div>
-
-          <!-- Actions -->
-          <div class="flex flex-col sm:flex-row sm:items-end gap-3 mt-4 sm:mt-0 sm:ml-6">
-            <NuxtLink 
-              :to="`/product/${product.slug}`"
-              class="text-blue-600 hover:text-blue-800 font-medium text-center sm:text-left"
-            >
-              View Details
-            </NuxtLink>
-            
-            <!-- Show "Choose Options" for variable products, "Add to Cart" for simple products -->
-            <BaseButton
-              v-if="hasVariations"
-              @click="openVariationModal"
-              :disabled="!product.purchasable"
-              text="Choose Options"
-            />
-            
-            <BaseButton
-              v-else
-              action="add"
-              :product="product"
-              :quantity="1"
-              :loading="isAdding"
-              :disabled="!product.purchasable || product.stock_status !== 'instock'"
-              @click="handleAddToCart"
-            />
-          </div>
         </div>
-      </div>
+      </NuxtLink>
     </div>
 
     <!-- Variation Modal -->
@@ -222,6 +217,33 @@
       @close="closeVariationModal"
       @added-to-cart="handleVariationAddedToCart"
     />
+  </div>
+
+  <!-- Image Gallery Modal -->
+  <div 
+    v-if="showImageGallery" 
+    class="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4"
+    @click="closeImageGallery"
+  >
+    <div class="relative max-w-4xl max-h-full w-full">
+      <!-- Close Button -->
+      <button 
+        @click="closeImageGallery"
+        class="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-colors"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
+      <!-- Gallery Component -->
+      <div @click.stop>
+        <ProductImageGallery 
+          :product="product" 
+          :selected-variation="null"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -241,6 +263,7 @@ const { addToCart, openCart } = useCart()
 const { getProductImage, handleImageError } = useProductImage()
 const isAdding = ref(false)
 const isVariationModalOpen = ref(false)
+const showImageGallery = ref(false)
 
 // Check if product has variations
 const hasVariations = computed(() => {
@@ -313,6 +336,38 @@ const handleVariationAddedToCart = (data) => {
   // Modal handles the cart addition, we just need to close it
   closeVariationModal()
 }
+
+const openImageGallery = () => {
+  showImageGallery.value = true
+  // Prevent body scroll when gallery is open
+  document.body.style.overflow = 'hidden'
+}
+
+const closeImageGallery = () => {
+  showImageGallery.value = false
+  // Restore body scroll
+  document.body.style.overflow = ''
+}
+
+// Keyboard navigation for image gallery
+const handleKeydown = (event) => {
+  if (!showImageGallery.value) return
+  
+  if (event.key === 'Escape') {
+    closeImageGallery()
+  }
+}
+
+// Lifecycle
+onMounted(() => {
+  document.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeydown)
+  // Ensure body scroll is restored
+  document.body.style.overflow = ''
+})
 </script>
 
 <style scoped>
