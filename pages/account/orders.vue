@@ -90,9 +90,10 @@
                 class="flex items-center space-x-3"
               >
                 <img 
-                  :src="item.image?.src || '/placeholder-product.jpg'" 
+                  :src="item.image?.src || getPlaceholderImage()" 
                   :alt="item.name"
                   class="w-12 h-12 object-cover rounded"
+                  @error="handleImageError"
                 >
                 <div class="flex-1 min-w-0">
                   <p class="font-medium text-sm truncate">{{ item.name }}</p>
@@ -193,6 +194,7 @@
 <script setup>
 const { user } = useAuth()
 const { getOrders } = useWooCommerce()
+const { getPlaceholderImage, handleImageError } = useProductImage()
 const { addToCart } = useCart()
 
 // SEO

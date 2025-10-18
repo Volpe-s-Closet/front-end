@@ -151,18 +151,81 @@ useHead({
   ]
 })
 
-// Data - temporarily using mock data
+const { getProducts, getCategories } = useWooCommerce()
+
+// Data
 const featuredProducts = ref([])
 const latestProducts = ref([])
-const categories = ref([
-  { id: 1, name: 'Electronics', slug: 'electronics', count: 25 },
-  { id: 2, name: 'Clothing', slug: 'clothing', count: 50 },
-  { id: 3, name: 'Books', slug: 'books', count: 30 },
-  { id: 4, name: 'Home & Garden', slug: 'home-garden', count: 40 }
-])
+const categories = ref([])
 
 // Loading states
-const featuredLoading = ref(false)
-const latestLoading = ref(false)
-const categoriesLoading = ref(false)
+const featuredLoading = ref(true)
+const latestLoading = ref(true)
+const categoriesLoading = ref(true)
+
+// Fetch data
+const fetchFeaturedProducts = async () => {
+  try {
+    featuredLoading.value = true
+    const products = await getProducts({ 
+      featured: true, 
+      per_page: 8,
+      status: 'publish'
+    })
+    featuredProducts.value = products
+  } catch (error) {
+    console.error('Error fetching featured products:', error)
+    featuredProducts.value = []
+  } finally {
+    featuredLoading.value = false
+  }
+}
+
+const fetchLatestProducts = async () => {
+  try {
+    latestLoading.value = true
+    const products = await getProducts({ 
+      orderby: 'date', 
+      order: 'desc',
+      per_page: 8,
+      status: 'publish'
+    })
+    latestProducts.value = products
+  } catch (error) {
+    console.error('Error fetching latest products:', error)
+    latestProducts.value = []
+  } finally {
+    latestLoading.value = false
+  }
+}
+
+const fetchCategories = async () => {
+  try {
+    categoriesLoading.value = true
+    const cats = await getCategories({ 
+      per_page: 8,
+      hide_empty: true,
+      parent: 0 // Only top-level categories
+    })
+    categories.value = cats
+  } catch (error) {
+    console.error('Error fetching categories:', error)
+    // Fallback to mock data
+    categories.value = [
+      { id: 1, name: 'Electronics', slug: 'electronics', count: 25 },
+      { id: 2, name: 'Clothing', slug: 'clothing', count: 50 },
+      { id: 3, name: 'Books', slug: 'books', count: 30 },
+      { id: 4, name: 'Home & Garden', slug: 'home-garden', count: 40 }
+    ]
+  } finally {
+    categoriesLoading.value = false
+  }
+}
+
+// Initialize data on mount
+onMounted(() => {
+  fetchFeaturedProducts()
+  fetchLatestProducts()
+  fetchCategories()
+})
 </script>

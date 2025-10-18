@@ -1,7 +1,7 @@
 export const useCart = () => {
-  // Cart state stored in localStorage for static site
-  const cartItems = ref([])
-  const isCartOpen = ref(false)
+  // Use Nuxt's useState for global state management
+  const cartItems = useState('cart.items', () => [])
+  const isCartOpen = useState('cart.isOpen', () => false)
 
   // Initialize cart from localStorage
   const initCart = () => {
@@ -30,15 +30,16 @@ export const useCart = () => {
     if (existingItem) {
       existingItem.quantity += quantity
     } else {
-      cartItems.value.push({
+      const newItem = {
         id: product.id,
         name: product.name,
-        price: parseFloat(product.price),
+        price: parseFloat(product.price || product.regular_price || 0),
         quantity,
-        image: product.images[0]?.src || '',
+        image: product.images?.[0]?.src || '',
         variation,
         product
-      })
+      }
+      cartItems.value.push(newItem)
     }
     
     saveCart()
@@ -106,14 +107,17 @@ export const useCart = () => {
     isCartOpen.value = false
   }
 
-  // Initialize cart on composable creation
-  onMounted(() => {
-    initCart()
-  })
+  // Initialize cart on client side
+  if (process.client) {
+    // Only initialize if cart is empty (to avoid re-initializing on every call)
+    if (cartItems.value.length === 0) {
+      initCart()
+    }
+  }
 
   return {
-    cartItems: readonly(cartItems),
-    isCartOpen: readonly(isCartOpen),
+    cartItems,
+    isCartOpen,
     cartTotal,
     cartItemCount,
     cartSubtotal,
@@ -123,6 +127,7 @@ export const useCart = () => {
     clearCart,
     toggleCart,
     openCart,
-    closeCart
+    closeCart,
+    initCart
   }
 }

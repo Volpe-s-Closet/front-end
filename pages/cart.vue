@@ -37,9 +37,10 @@
               <!-- Product Image -->
               <div class="flex-shrink-0">
                 <img 
-                  :src="item.image || '/placeholder-product.jpg'" 
+                  :src="getCartItemImage(item)" 
                   :alt="item.name"
                   class="w-20 h-20 object-cover rounded-lg"
+                  @error="handleImageError"
                 >
               </div>
 
@@ -174,9 +175,10 @@
               class="flex items-center space-x-3"
             >
               <img 
-                :src="product.images[0]?.src || '/placeholder-product.jpg'" 
+                :src="getProductImage(product)" 
                 :alt="product.name"
                 class="w-16 h-16 object-cover rounded"
+                @error="handleImageError"
               >
               <div class="flex-1">
                 <h4 class="font-medium text-sm">{{ product.name }}</h4>
@@ -207,6 +209,8 @@ const {
   clearCart,
   addToCart 
 } = useCart()
+
+const { getCartItemImage, getProductImage, handleImageError } = useProductImage()
 
 const { getProducts } = useWooCommerce()
 

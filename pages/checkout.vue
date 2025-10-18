@@ -336,9 +336,10 @@
               class="flex items-center space-x-3"
             >
               <img 
-                :src="item.image || '/placeholder-product.jpg'" 
+                :src="getCartItemImage(item)" 
                 :alt="item.name"
                 class="w-16 h-16 object-cover rounded"
+                @error="handleImageError"
               >
               <div class="flex-1">
                 <h4 class="font-medium">{{ item.name }}</h4>
@@ -380,6 +381,7 @@
 <script setup>
 const { cartItems, cartSubtotal, clearCart } = useCart()
 const { createOrder } = useWooCommerce()
+const { getCartItemImage, handleImageError } = useProductImage()
 
 // SEO
 useHead({

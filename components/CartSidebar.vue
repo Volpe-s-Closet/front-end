@@ -39,9 +39,10 @@
             class="flex items-center space-x-3 p-3 border rounded-lg"
           >
             <img 
-              :src="item.image || '/placeholder-product.jpg'" 
+              :src="getCartItemImage(item)" 
               :alt="item.name"
               class="w-16 h-16 object-cover rounded"
+              @error="handleImageError"
             >
             
             <div class="flex-1">
@@ -111,4 +112,6 @@ const {
   updateQuantity, 
   removeFromCart 
 } = useCart()
+
+const { getCartItemImage, handleImageError } = useProductImage()
 </script>

@@ -2,9 +2,10 @@
   <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
     <div class="relative">
       <img
-        :src="product.images[0]?.src || '/placeholder-product.jpg'"
+        :src="getProductImage(product)"
         :alt="product.name"
         class="w-full h-64 object-cover"
+        @error="handleImageError"
       >
       <div v-if="product.on_sale" class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs font-semibold rounded">
         Sale
@@ -85,7 +86,8 @@ const props = defineProps({
   }
 })
 
-const { addToCart } = useCart()
+const { addToCart, openCart } = useCart()
+const { getProductImage, handleImageError } = useProductImage()
 const isAdding = ref(false)
 
 const handleAddToCart = async () => {
@@ -94,7 +96,8 @@ const handleAddToCart = async () => {
   isAdding.value = true
   try {
     addToCart(props.product, 1)
-    // Show success message (you can add a toast notification here)
+    // Show cart sidebar after adding
+    openCart()
   } catch (error) {
     console.error('Error adding to cart:', error)
   } finally {

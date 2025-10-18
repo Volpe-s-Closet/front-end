@@ -134,18 +134,23 @@
       </div>
     </footer>
 
-    <!-- Cart Sidebar - temporarily disabled -->
-    <!-- <CartSidebar /> -->
+    <!-- Cart Sidebar -->
+    <CartSidebar />
   </div>
 </template>
 
 <script setup>
-// Temporarily simplified - no auth or cart functionality
+const { cartItemCount, toggleCart, initCart } = useCart()
+const { isAuthenticated, logout } = useAuth()
+
 const searchQuery = ref('')
 const showMobileMenu = ref(false)
 const showAccountMenu = ref(false)
-const isAuthenticated = ref(false)
-const cartItemCount = ref(0)
+
+// Initialize cart on layout mount
+onMounted(() => {
+  initCart()
+})
 
 const handleSearch = () => {
   if (searchQuery.value.trim()) {
@@ -161,11 +166,5 @@ const toggleAccountMenu = () => {
   showAccountMenu.value = !showAccountMenu.value
 }
 
-const toggleCart = () => {
-  console.log('Cart toggle clicked')
-}
-
-const logout = () => {
-  console.log('Logout clicked')
-}
+// toggleCart and logout are now from composables
 </script>
