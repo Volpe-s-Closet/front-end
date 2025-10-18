@@ -272,12 +272,12 @@ const categories = ref([])
 const attributes = ref([])
 const totalProducts = ref(0)
 const currentPage = ref(1)
-const perPage = ref(12)
 const totalPages = ref(0)
 
-// View settings
-const viewMode = ref('grid') // 'grid' or 'list'
-const gridSize = ref(2) // Default to 2 columns for better mobile experience
+// View settings - will be initialized from localStorage in onMounted
+const viewMode = ref('grid')
+const gridSize = ref(2)
+const perPage = ref(12)
 
 // Search and filters
 const searchQuery = ref(route.query.q || '')
@@ -422,8 +422,42 @@ const visiblePages = computed(() => {
   return pages
 })
 
+// localStorage functions
+const savePreferences = () => {
+  if (process.client) {
+    try {
+      const preferences = {
+        viewMode: viewMode.value,
+        gridSize: gridSize.value,
+        sortBy: sortBy.value,
+        perPage: perPage.value
+      }
+      localStorage.setItem('search-preferences', JSON.stringify(preferences))
+    } catch (error) {
+      console.warn('Failed to save search preferences:', error)
+    }
+  }
+}
+
+const loadPreferences = () => {
+  if (process.client) {
+    try {
+      const stored = localStorage.getItem('search-preferences')
+      if (stored) {
+        const preferences = JSON.parse(stored)
+        viewMode.value = preferences.viewMode || 'grid'
+        gridSize.value = preferences.gridSize || 2
+        sortBy.value = preferences.sortBy || 'menu_order'
+        perPage.value = preferences.perPage || 12
+      }
+    } catch (error) {
+      console.warn('Failed to load search preferences:', error)
+    }
+  }
+}
+
 // Watchers
-// Ensure grid size is valid for current screen size
+// Ensure grid size is valid for current screen size and save to localStorage
 watch(gridSize, (newSize) => {
   // On mobile (when we only show 1-2 column options), ensure grid size is valid
   if (process.client) {
@@ -432,6 +466,22 @@ watch(gridSize, (newSize) => {
       gridSize.value = 2
     }
   }
+  savePreferences()
+})
+
+// Watch view mode changes and save to localStorage
+watch(viewMode, () => {
+  savePreferences()
+})
+
+// Watch sort changes and save to localStorage
+watch(sortBy, () => {
+  savePreferences()
+})
+
+// Watch per page changes and save to localStorage
+watch(perPage, () => {
+  savePreferences()
 })
 
 // Methods
@@ -607,14 +657,15 @@ const handleResize = () => {
 
 // Initialize
 onMounted(() => {
+  // Load preferences from localStorage first
+  loadPreferences()
+  
   // Initial screen size detection and grid size validation
   isMobile.value = window.innerWidth < 1024
   handleResize()
   
   // Add resize listener
   window.addEventListener('resize', handleResize)
-  
-
   
   fetchProducts()
   fetchCategories()
