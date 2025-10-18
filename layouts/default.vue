@@ -20,7 +20,7 @@
               Categories
             </NuxtLink>
             <NuxtLink to="/search" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-              Search
+              All Products
             </NuxtLink>
           </nav>
 
@@ -35,6 +35,13 @@
                 v-model="searchQuery"
               >
               <Icon name="heroicons:magnifying-glass" class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+              <button 
+                v-if="searchQuery"
+                @click="clearSearch"
+                class="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+              >
+                <Icon name="heroicons:x-mark" class="h-4 w-4" />
+              </button>
             </div>
           </div>
 
@@ -93,7 +100,7 @@
               Categories
             </NuxtLink>
             <NuxtLink to="/search" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900">
-              Search
+              All Products
             </NuxtLink>
           </div>
         </div>
@@ -117,7 +124,7 @@
             <h4 class="text-sm font-semibold mb-4 uppercase tracking-wider">Shop</h4>
             <ul class="space-y-2">
               <li><NuxtLink to="/categories" class="text-gray-400 hover:text-white">Categories</NuxtLink></li>
-              <li><NuxtLink to="/search" class="text-gray-400 hover:text-white">Search</NuxtLink></li>
+              <li><NuxtLink to="/search" class="text-gray-400 hover:text-white">All Products</NuxtLink></li>
             </ul>
           </div>
           <div>
@@ -154,6 +161,9 @@ const searchQuery = ref('')
 const showMobileMenu = ref(false)
 const showAccountMenu = ref(false)
 
+// Debounced search
+let searchTimeout = null
+
 // Initialize cart on layout mount
 onMounted(() => {
   initCart()
@@ -164,6 +174,27 @@ const handleSearch = () => {
     navigateTo(`/search?q=${encodeURIComponent(searchQuery.value)}`)
   }
 }
+
+const clearSearch = () => {
+  searchQuery.value = ''
+  // The watch function will handle navigation to /search
+}
+
+// Watch for search query changes and debounce
+watch(searchQuery, (newValue) => {
+  if (searchTimeout) {
+    clearTimeout(searchTimeout)
+  }
+  
+  searchTimeout = setTimeout(() => {
+    if (newValue.trim()) {
+      navigateTo(`/search?q=${encodeURIComponent(newValue)}`)
+    } else {
+      // Navigate to all products when search is cleared
+      navigateTo('/search')
+    }
+  }, 300)
+})
 
 const toggleMobileMenu = () => {
   showMobileMenu.value = !showMobileMenu.value

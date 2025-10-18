@@ -6,22 +6,20 @@
     <div class="mb-6">
       <h4 class="font-medium mb-3">Price Range</h4>
       <div class="space-y-2">
-        <div class="flex space-x-2">
-          <input
-            v-model="filters.minPrice"
-            type="number"
-            placeholder="Min"
-            class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
-            @input="updateFilters"
-          >
-          <input
-            v-model="filters.maxPrice"
-            type="number"
-            placeholder="Max"
-            class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
-            @input="updateFilters"
-          >
-        </div>
+        <input
+          v-model="filters.minPrice"
+          type="number"
+          placeholder="Min Price"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+          @input="updateFilters"
+        >
+        <input
+          v-model="filters.maxPrice"
+          type="number"
+          placeholder="Max Price"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+          @input="updateFilters"
+        >
       </div>
     </div>
 

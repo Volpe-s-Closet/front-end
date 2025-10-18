@@ -1,32 +1,11 @@
 <template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Search Header -->
+    <!-- Page Header -->
     <div class="mb-8">
       <h1 class="text-3xl font-bold text-gray-900 mb-4">
         <span v-if="searchQuery">Search Results for "{{ searchQuery }}"</span>
         <span v-else>All Products</span>
       </h1>
-      
-      <!-- Search Bar -->
-      <div class="max-w-md">
-        <div class="relative">
-          <input
-            v-model="searchInput"
-            type="text"
-            placeholder="Search products..."
-            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            @keyup.enter="performSearch"
-          >
-          <Icon name="heroicons:magnifying-glass" class="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-          <button 
-            v-if="searchInput"
-            @click="clearSearch"
-            class="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
-          >
-            <Icon name="heroicons:x-mark" class="h-5 w-5" />
-          </button>
-        </div>
-      </div>
     </div>
 
     <div class="flex flex-col lg:flex-row gap-8">
@@ -125,9 +104,9 @@ const { getProducts, getCategories, getProductAttributes, getAttributeTerms } = 
 
 // SEO
 useHead({
-  title: 'Search Products - Your Store',
+  title: 'All Products - Your Store',
   meta: [
-    { name: 'description', content: 'Search and discover products in our online store.' }
+    { name: 'description', content: 'Browse all products in our online store.' }
   ]
 })
 
@@ -141,7 +120,6 @@ const perPage = 12
 
 // Search and filters
 const searchQuery = ref(route.query.q || '')
-const searchInput = ref(searchQuery.value)
 const sortBy = ref('menu_order')
 const activeFilters = ref({})
 
@@ -266,18 +244,7 @@ const fetchAttributes = async () => {
   }
 }
 
-const performSearch = () => {
-  searchQuery.value = searchInput.value
-  updateURL()
-  fetchProducts()
-}
 
-const clearSearch = () => {
-  searchInput.value = ''
-  searchQuery.value = ''
-  updateURL()
-  fetchProducts()
-}
 
 const handleFiltersChanged = (filters) => {
   activeFilters.value = filters
@@ -293,7 +260,6 @@ const loadMore = () => {
 }
 
 const clearAllFilters = () => {
-  searchInput.value = ''
   searchQuery.value = ''
   if (filtersRef.value) {
     filtersRef.value.clearFilters()
@@ -317,7 +283,6 @@ const updateURL = () => {
 // Watch for route changes
 watch(() => route.query.q, (newQuery) => {
   searchQuery.value = newQuery || ''
-  searchInput.value = searchQuery.value
   fetchProducts()
 })
 
