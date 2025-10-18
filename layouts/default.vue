@@ -52,17 +52,17 @@
           <div class="flex items-center space-x-4">
             <!-- Account -->
             <ClientOnly>
-              <div class="relative" v-if="isAuthenticated">
-                <BaseButton @click="toggleAccountMenu" variant="ghost" size="lg" icon="heroicons:user-circle" />
-                <div v-if="showAccountMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                  <NuxtLink to="/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    My Account
-                  </NuxtLink>
-                  <NuxtLink to="/account/orders" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Orders
-                  </NuxtLink>
-                  <BaseButton @click="logout" variant="ghost" size="sm" text="Logout" full-width class="text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" />
-                </div>
+              <div v-if="isAuthenticated">
+                <DropDown
+                  :items="accountMenuItems"
+                  @item-click="handleAccountAction"
+                  trigger-icon="heroicons:user-circle"
+                  trigger-label="Account"
+                  button-class="!bg-transparent hover:!bg-gray-100 !px-2 !py-2"
+                  position="right"
+                  size="sm"
+                  hide-label
+                />
               </div>
               <NuxtLink v-else to="/login" class="text-gray-700 hover:text-gray-900">
                 <ClientOnly>
@@ -167,7 +167,26 @@ const { isAuthenticated, logout } = useAuth()
 
 const searchQuery = ref('')
 const showMobileMenu = ref(false)
-const showAccountMenu = ref(false)
+
+// Account dropdown menu items
+const accountMenuItems = [
+  {
+    label: 'Profile',
+    icon: 'heroicons:user-circle',
+    action: () => navigateTo('/account')
+  },
+  {
+    label: 'Orders',
+    icon: 'heroicons:shopping-bag',
+    action: () => navigateTo('/account/orders')
+  },
+  {
+    label: 'Logout',
+    icon: 'heroicons:arrow-right-on-rectangle',
+    danger: true,
+    action: () => logout()
+  }
+]
 
 // Debounced search
 let searchTimeout = null
@@ -205,8 +224,9 @@ const toggleMobileMenu = () => {
   showMobileMenu.value = !showMobileMenu.value
 }
 
-const toggleAccountMenu = () => {
-  showAccountMenu.value = !showAccountMenu.value
+const handleAccountAction = (item) => {
+  // Actions are already defined in the menu items
+  // This handler is just for additional logic if needed
 }
 
 // toggleCart and logout are now from composables

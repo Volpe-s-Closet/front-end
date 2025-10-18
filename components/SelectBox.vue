@@ -12,15 +12,15 @@
       ]"
     >
       <Icon 
-        v-if="triggerIcon" 
-        :name="triggerIcon" 
-        class="h-6 w-6 text-gray-600" 
+        v-if="selectedOption.icon" 
+        :name="selectedOption.icon" 
+        class="h-4 w-4 text-gray-600" 
       />
       <span 
         v-if="!hideLabel"
         :class="size === 'xs' ? 'hidden xs:inline' : ''"
       >
-        {{ triggerLabel }}
+        {{ selectedOption.label }}
       </span>
       <span 
         v-if="size === 'xs' && hideLabel"
@@ -42,33 +42,31 @@
       ]"
     >
       <div class="py-1">
-        <template v-for="(item, index) in items" :key="item.key || item.label || index">
-          <button
-            @click="handleItemClick(item)"
-            :disabled="item.disabled"
+        <button
+          v-for="option in options"
+          :key="option.value"
+          @click="selectOption(option)"
+          :class="[
+            'flex items-center w-full px-3 py-2 text-sm text-left transition-colors',
+            modelValue === option.value ? 'bg-blue-50 text-blue-700' : 'text-gray-700',
+            option.danger ? 'text-red-600 hover:bg-red-50' : 'hover:bg-gray-50'
+          ]"
+        >
+          <Icon 
+            v-if="option.icon" 
+            :name="option.icon" 
             :class="[
-              'flex items-center w-full px-3 py-2 text-sm text-left transition-colors',
-              item.disabled ? 'opacity-50 cursor-not-allowed' : '',
-              item.danger ? 'text-red-600 hover:bg-red-50' : 'text-gray-700 hover:bg-gray-50'
+              'h-4 w-4 mr-3',
+              option.danger ? 'text-red-500' : 'text-gray-500'
             ]"
-          >
-            <Icon 
-              v-if="item.icon" 
-              :name="item.icon" 
-              :class="[
-                'h-4 w-4 mr-3',
-                item.danger ? 'text-red-500' : 'text-gray-500'
-              ]"
-            />
-            {{ item.label }}
-          </button>
-          
-          <!-- Divider after item (if specified and not last item) -->
-          <div 
-            v-if="item.divider && index < items.length - 1"
-            class="border-t border-gray-200 my-1"
-          ></div>
-        </template>
+          />
+          {{ option.label }}
+          <Icon 
+            v-if="modelValue === option.value" 
+            name="heroicons:check" 
+            class="h-4 w-4 ml-auto text-blue-600" 
+          />
+        </button>
       </div>
     </div>
   </div>
@@ -76,29 +74,24 @@
 
 <script setup>
 const props = defineProps({
-  // Array of menu items
-  // Each item should have: { label, icon?, action?, danger?, disabled?, divider? }
-  items: {
+  // Current selected value
+  modelValue: {
+    type: [String, Number],
+    required: true
+  },
+  
+  // Array of options
+  // Each option should have: { value, label, icon? }
+  options: {
     type: Array,
     required: true,
-    validator: (items) => {
-      return items.every(item => 
-        typeof item === 'object' && 
-        item.label !== undefined
+    validator: (options) => {
+      return options.every(option => 
+        typeof option === 'object' && 
+        option.value !== undefined &&
+        option.label !== undefined
       )
     }
-  },
-  
-  // Trigger button label
-  triggerLabel: {
-    type: String,
-    default: 'Menu'
-  },
-  
-  // Trigger button icon
-  triggerIcon: {
-    type: String,
-    default: null
   },
   
   // Size variant
@@ -118,10 +111,10 @@ const props = defineProps({
   // Placeholder text for mobile when hideLabel is true
   placeholder: {
     type: String,
-    default: 'Menu'
+    default: 'Select'
   },
   
-  // Hide the trigger label on mobile
+  // Hide the selected label on mobile
   hideLabel: {
     type: Boolean,
     default: false
@@ -146,11 +139,16 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['item-click'])
+const emit = defineEmits(['update:modelValue', 'change'])
 
 // Reactive state
 const isOpen = ref(false)
 const dropdownRef = ref(null)
+
+// Computed
+const selectedOption = computed(() => {
+  return props.options.find(option => option.value === props.modelValue) || props.options[0] || {}
+})
 
 // Methods
 const toggleDropdown = () => {
@@ -159,16 +157,9 @@ const toggleDropdown = () => {
   }
 }
 
-const handleItemClick = (item) => {
-  if (item.disabled) return
-  
-  emit('item-click', item)
-  
-  // Execute item action if provided
-  if (item.action && typeof item.action === 'function') {
-    item.action()
-  }
-  
+const selectOption = (option) => {
+  emit('update:modelValue', option.value)
+  emit('change', option)
   isOpen.value = false
 }
 

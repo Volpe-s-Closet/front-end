@@ -47,7 +47,7 @@
             
             <!-- Sort -->
             <div class="flex justify-center">
-              <DropDown
+              <SelectBox
                 v-model="sortBy"
                 :options="sortOptions"
                 size="xs"
@@ -84,7 +84,7 @@
               <!-- Right: Sort -->
               <div class="flex items-center space-x-3">
                 <span class="text-sm font-medium text-gray-700">Sort by:</span>
-                <DropDown
+                <SelectBox
                   v-model="sortBy"
                   :options="sortOptions"
                   size="sm"
