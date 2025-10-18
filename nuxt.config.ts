@@ -11,6 +11,19 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss'
   ],
 
+  runtimeConfig: {
+    // Private keys (only available on server-side)
+    
+    // Public keys (exposed to client-side)
+    // These will automatically map to NUXT_PUBLIC_* environment variables
+    public: {
+      woocommerceUrl: '', // NUXT_PUBLIC_WOOCOMMERCE_URL
+      woocommerceKey: '', // NUXT_PUBLIC_WOOCOMMERCE_KEY  
+      woocommerceSecret: '', // NUXT_PUBLIC_WOOCOMMERCE_SECRET
+      wordpressUrl: '' // NUXT_PUBLIC_WORDPRESS_URL
+    }
+  },
+
   nitro: {
     prerender: {
       routes: ['/']

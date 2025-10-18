@@ -1,59 +1,199 @@
-# Nuxt Static Site
+# Nuxt 3 WooCommerce Ecommerce Frontend
 
-A static-only Nuxt application configured for client-side rendering and static deployment.
+A modern, responsive ecommerce frontend built with Nuxt 3, Tailwind CSS, and integrated with WordPress/WooCommerce via REST API. This is a static site generator (SSG) optimized for performance and SEO.
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Features
 
-## Setup
+### 🛍️ Ecommerce Functionality
+- **Product Catalog**: Browse products with advanced filtering and search
+- **Categories**: Hierarchical category navigation
+- **Shopping Cart**: Add/remove items, quantity management
+- **Checkout Process**: Multi-step checkout with billing/shipping
+- **User Accounts**: Registration, login, profile management
+- **Order History**: View past orders and track status
+- **Responsive Design**: Mobile-first, fully responsive layout
 
-Make sure to install dependencies:
+### 🔧 Technical Features
+- **Nuxt 3**: Latest Vue.js framework with SSR/SSG
+- **Tailwind CSS**: Utility-first CSS framework
+- **TypeScript Support**: Type-safe development
+- **WooCommerce Integration**: Full REST API integration
+- **JWT Authentication**: Secure user authentication
+- **Static Site Generation**: Optimized for performance
+- **SEO Optimized**: Meta tags, structured data
+
+## Project Structure
+
+```
+├── components/           # Reusable Vue components
+│   ├── ProductCard.vue
+│   ├── CartSidebar.vue
+│   └── ProductFilters.vue
+├── composables/          # Vue composables
+│   ├── useWooCommerce.js # WooCommerce API integration
+│   ├── useCart.js        # Shopping cart management
+│   └── useAuth.js        # Authentication
+├── layouts/              # Page layouts
+│   ├── default.vue       # Main layout
+│   └── checkout.vue      # Checkout layout
+├── pages/                # Application pages
+│   ├── index.vue         # Homepage
+│   ├── search.vue        # Product search
+│   ├── categories.vue    # Category listing
+│   ├── cart.vue          # Shopping cart
+│   ├── checkout.vue      # Checkout process
+│   ├── login.vue         # User login
+│   ├── category/         # Category pages
+│   └── account/          # User account pages
+├── types/                # TypeScript definitions
+└── public/               # Static assets
+```
+
+## Setup Instructions
+
+### 1. Clone and Install
 
 ```bash
+git clone <repository-url>
+cd front-end
 npm install
 ```
 
-## Development Server
+### 2. Environment Configuration
 
-Start the development server on `http://localhost:3000`:
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Update `.env` with your WordPress/WooCommerce details:
+
+```env
+# Nuxt 4.x uses NUXT_PUBLIC_ prefix for public runtime config
+NUXT_PUBLIC_WOOCOMMERCE_URL=https://your-wordpress-site.com
+NUXT_PUBLIC_WOOCOMMERCE_KEY=ck_your_consumer_key_here
+NUXT_PUBLIC_WOOCOMMERCE_SECRET=cs_your_consumer_secret_here
+NUXT_PUBLIC_WORDPRESS_URL=https://your-wordpress-site.com
+```
+
+### 3. WordPress/WooCommerce Setup
+
+Follow the detailed instructions in `WORDPRESS_SETUP.md` to:
+- Configure WooCommerce REST API
+- Set up JWT authentication
+- Enable CORS if needed
+- Configure products, categories, and settings
+
+### 4. Development
+
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-## Static Generation
+Visit `http://localhost:3000` to see your site.
 
-Generate the static application for production:
+### 5. Production Build
+
+Generate static site:
 
 ```bash
 npm run generate
 ```
 
-This generates static files in the `dist` directory that can be deployed to any static hosting service.
+The generated files will be in the `dist/` directory, ready for deployment to any static hosting service.
 
-Locally preview the generated site:
+## Key Pages
 
-```bash
-npm run preview
-```
+### Homepage (`/`)
+- Hero section with call-to-action
+- Featured products showcase
+- Category preview grid
+- Latest products section
+
+### Product Search (`/search`)
+- Advanced product filtering (price, category, attributes)
+- Sort options (price, popularity, rating, date)
+- Responsive product grid
+- Load more pagination
+
+### Categories (`/categories`)
+- All categories overview
+- Category hierarchy display
+- Search within categories
+- Popular categories section
+
+### Shopping Cart (`/cart`)
+- Item management (add/remove/update quantities)
+- Order summary with totals
+- Recommended products
+- Secure checkout link
+
+### Checkout (`/checkout`)
+- Multi-step process (Information → Payment → Review)
+- Billing and shipping address forms
+- Payment method selection
+- Order review and confirmation
+
+### User Account (`/account`)
+- Profile management
+- Order history and tracking
+- Address book
+- Payment methods (placeholder)
+
+## WooCommerce Integration
+
+### API Endpoints Used
+- `GET /wp-json/wc/v3/products` - Product listings
+- `GET /wp-json/wc/v3/products/categories` - Categories
+- `GET /wp-json/wc/v3/products/attributes` - Product attributes
+- `GET /wp-json/wc/v3/orders` - Order management
+- `GET /wp-json/wc/v3/customers` - Customer data
+
+### Authentication
+- JWT tokens for user authentication
+- WooCommerce API keys for product data
+- Secure token storage in localStorage
+
+### Cart Management
+- Client-side cart storage (localStorage)
+- Persistent across sessions
+- Real-time updates and calculations
 
 ## Deployment
 
-This app is configured as a static site (SSR disabled) and can be deployed to any static hosting provider:
+### Static Hosting (Recommended)
+- Netlify
+- Vercel
+- GitHub Pages
+- AWS S3 + CloudFront
 
-### Manual Deployment Steps:
+### Build Command
+```bash
+npm run generate
+```
 
-1. Generate static files with `npm run generate`
-2. Upload the entire contents of the `dist` directory to your hosting provider
-3. Configure your hosting provider to serve `index.html` for all routes (SPA fallback)
+### Environment Variables
+Set the same environment variables in your hosting platform as in your local `.env` file.
 
-## NPM Packages
+## WordPress/WooCommerce Configuration
 
-This project uses the following NPM packages:
+See `WORDPRESS_SETUP.md` for detailed setup instructions including:
+- WooCommerce REST API configuration
+- JWT authentication setup
+- CORS configuration
+- Security considerations
 
-- [@nuxt/fonts](https://fonts.nuxt.com/) - Font optimization and loading for Nuxt
-- [@nuxt/icon](https://icon.nuxt.com/) - Icon component and utilities for Nuxt
-- [@nuxt/scripts](https://scripts.nuxt.com/) - Third-party script management for Nuxt
-- [@nuxt/test-utils](https://nuxt.com/docs/getting-started/testing) - Testing utilities for Nuxt applications
-- [@nuxtjs/tailwindcss](https://tailwindcss.nuxtjs.org/) - Tailwind CSS integration for Nuxt
+## Browser Support
 
-Check out the [Nuxt static deployment documentation](https://nuxt.com/docs/getting-started/deployment#static-hosting) for more information.
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+- Mobile browsers (iOS Safari, Chrome Mobile)
+
+## License
+
+This project is licensed under the MIT License.
