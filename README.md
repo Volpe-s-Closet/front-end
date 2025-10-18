@@ -20,17 +20,17 @@ Start the development server on `http://localhost:3000`:
 npm run dev
 ```
 
-## Production Build
+## Static Generation
 
-Build the static application for production:
+Generate the static application for production:
 
 ```bash
-npm run build
+npm run generate
 ```
 
-This generates static files in the `.output/public` directory that can be deployed to any static hosting service.
+This generates static files in the `dist` directory that can be deployed to any static hosting service.
 
-Locally preview the production build:
+Locally preview the generated site:
 
 ```bash
 npm run preview
@@ -42,8 +42,8 @@ This app is configured as a static site (SSR disabled) and can be deployed to an
 
 ### Manual Deployment Steps:
 
-1. Build with `npm run build` to generate static files
-2. The build can be found at `.output/public`
+1. Generate static files with `npm run generate`
+2. Upload the entire contents of the `dist` directory to your hosting provider
 3. Configure your hosting provider to serve `index.html` for all routes (SPA fallback)
 
 ## NPM Packages
