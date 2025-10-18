@@ -53,7 +53,7 @@
             <!-- Account -->
             <ClientOnly>
               <div class="relative" v-if="isAuthenticated">
-                <BaseButton @click="toggleAccountMenu" variant="ghost" size="sm" icon="heroicons:user-circle" />
+                <BaseButton @click="toggleAccountMenu" variant="ghost" size="lg" icon="heroicons:user-circle" />
                 <div v-if="showAccountMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                   <NuxtLink to="/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     My Account
@@ -80,17 +80,15 @@
             </ClientOnly>
 
             <!-- Cart -->
-            <BaseButton @click="toggleCart" variant="ghost" size="sm" class="relative text-gray-700 hover:text-gray-900">
-              <ClientOnly>
-                <Icon name="heroicons:shopping-bag" class="h-6 w-6" />
-                <span v-if="cartItemCount > 0" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {{ cartItemCount }}
-                </span>
-                <template #fallback>
-                  <div class="h-6 w-6 bg-gray-200 rounded"></div>
-                </template>
-              </ClientOnly>
-            </BaseButton>
+            <BaseButton 
+              @click="toggleCart" 
+              variant="ghost" 
+              size="lg" 
+              icon="heroicons:shopping-bag" 
+              :badge="cartItemCount > 0 ? cartItemCount : null"
+              badge-color="red"
+              class="text-gray-700 hover:text-gray-900"
+            />
 
             <!-- Mobile menu button -->
             <BaseButton @click="toggleMobileMenu" variant="ghost" size="sm" icon="heroicons:bars-3" class="md:hidden text-gray-700 hover:text-gray-900" />

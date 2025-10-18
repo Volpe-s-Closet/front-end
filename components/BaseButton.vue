@@ -7,26 +7,36 @@
     :class="buttonClasses"
     @click="handleClick"
   >
-    <ClientOnly>
-      <Icon 
-        v-if="loading" 
-        name="heroicons:arrow-path" 
-        :class="iconClasses"
-      />
-      <Icon 
-        v-else-if="computedIcon" 
-        :name="computedIcon" 
-        :class="iconClasses"
-      />
-      <template #fallback>
-        <span v-if="loading || computedIcon" :class="iconClasses">
-          <!-- Fallback for SSR -->
-        </span>
-      </template>
-    </ClientOnly>
-    <span v-if="slots.default || computedText">
-      <slot>{{ computedText }}</slot>
-    </span>
+    <div class="relative inline-flex items-center">
+      <ClientOnly>
+        <Icon 
+          v-if="loading" 
+          name="heroicons:arrow-path" 
+          :class="iconClasses"
+        />
+        <Icon 
+          v-else-if="computedIcon" 
+          :name="computedIcon" 
+          :class="iconClasses"
+        />
+        <template #fallback>
+          <span v-if="loading || computedIcon" :class="iconClasses">
+            <!-- Fallback for SSR -->
+          </span>
+        </template>
+      </ClientOnly>
+      <span v-if="slots.default || computedText">
+        <slot>{{ computedText }}</slot>
+      </span>
+      
+      <!-- Badge -->
+      <span 
+        v-if="badge && (computedIcon || loading)" 
+        :class="badgeClasses"
+      >
+        {{ badge }}
+      </span>
+    </div>
   </component>
 </template>
 
@@ -40,6 +50,17 @@ const props = defineProps({
   icon: {
     type: String,
     default: ''
+  },
+  
+  // Badge
+  badge: {
+    type: [String, Number],
+    default: null
+  },
+  badgeColor: {
+    type: String,
+    default: 'red',
+    validator: (value) => ['red', 'blue', 'green', 'yellow', 'gray'].includes(value)
   },
   
   // Behavior
@@ -389,6 +410,19 @@ const iconClasses = computed(() => {
   const spacingClasses = (computedText.value || slots.default) ? 'mr-2' : ''
   
   return `${baseIconClasses} ${sizeIconClasses[props.size]} ${spacingClasses}`.trim()
+})
+
+// Badge classes
+const badgeClasses = computed(() => {
+  const colorClasses = {
+    red: 'bg-red-500 text-white',
+    blue: 'bg-blue-500 text-white',
+    green: 'bg-green-500 text-white',
+    yellow: 'bg-yellow-500 text-black',
+    gray: 'bg-gray-500 text-white'
+  }
+  
+  return `absolute -top-2 -right-2 ${colorClasses[props.badgeColor]} text-xs rounded-full h-5 w-5 flex items-center justify-center`
 })
 
 // Combine all classes
