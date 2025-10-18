@@ -32,8 +32,8 @@
       :disabled="isAdding"
       class="absolute top-4 right-4 z-10 p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border"
       :class="{
-        'bg-green-500 border-green-500 text-white': isInCart || justAdded,
-        'bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-blue-600': !isInCart && !justAdded,
+        'bg-green-500 border-green-500 text-white': justAdded,
+        'bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-blue-600': !justAdded,
         'opacity-50 cursor-not-allowed': isAdding,
         'animate-pulse': justAdded
       }"
@@ -44,8 +44,8 @@
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
       </svg>
       
-      <!-- Checkmark when in cart or just added -->
-      <svg v-else-if="isInCart || justAdded" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <!-- Checkmark when just added -->
+      <svg v-else-if="justAdded" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
       </svg>
       
@@ -153,8 +153,8 @@
       :disabled="isAdding"
       class="absolute top-4 right-4 z-10 p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border"
       :class="{
-        'bg-green-500 border-green-500 text-white': isInCart || justAdded,
-        'bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-blue-600': !isInCart && !justAdded,
+        'bg-green-500 border-green-500 text-white': justAdded,
+        'bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-blue-600': !justAdded,
         'opacity-50 cursor-not-allowed': isAdding,
         'animate-pulse': justAdded
       }"
@@ -165,8 +165,8 @@
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
       </svg>
       
-      <!-- Checkmark when in cart or just added -->
-      <svg v-else-if="isInCart || justAdded" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <!-- Checkmark when just added -->
+      <svg v-else-if="justAdded" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
       </svg>
       
@@ -313,12 +313,7 @@ const getMinPrice = (product) => {
 
 
 
-// Check if product is in cart - simplified for now to avoid cart access issues
-const isInCart = computed(() => {
-  // For now, we'll just use the justAdded state
-  // This can be enhanced later when cart state is properly available
-  return false
-})
+
 
 const handleAddToCart = async () => {
   if (!props.product.purchasable || props.product.stock_status !== 'instock') return
