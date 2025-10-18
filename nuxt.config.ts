@@ -17,5 +17,5 @@ export default defineNuxtConfig({
     }
   },
 
-  ssr: true // This is needed for proper pre-render withoyt losing SEO benefits
+  ssr: true // This is needed for proper pre-render without losing SEO benefits
 })
