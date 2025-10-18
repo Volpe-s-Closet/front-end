@@ -1,13 +1,7 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Header -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">Order History</h1>
-      <p class="text-gray-600 mt-2">Track and manage your orders</p>
-    </div>
-
-    <!-- Filters -->
-    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+  <NuxtLayout name="account">
+        <!-- Filters -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
       <div class="flex flex-col sm:flex-row gap-4">
         <div class="flex-1">
           <label class="block text-sm font-medium text-gray-700 mb-2">Search Orders</label>
@@ -167,20 +161,20 @@
       </div>
     </div>
 
-    <!-- Pagination -->
-    <div v-if="filteredOrders.length > 0 && totalPages > 1" class="mt-8 flex justify-center">
-      <nav class="flex space-x-2">
-        <BaseButton 
-          v-for="page in totalPages" 
-          :key="page"
-          @click="currentPage = page"
-          :variant="page === currentPage ? 'primary' : 'outline'"
-          size="sm"
-          :text="page.toString()"
-        />
-      </nav>
-    </div>
-  </div>
+        <!-- Pagination -->
+        <div v-if="filteredOrders.length > 0 && totalPages > 1" class="mt-8 flex justify-center">
+          <nav class="flex space-x-2">
+            <BaseButton 
+              v-for="page in totalPages" 
+              :key="page"
+              @click="currentPage = page"
+              :variant="page === currentPage ? 'primary' : 'outline'"
+              size="sm"
+              :text="page.toString()"
+            />
+          </nav>
+        </div>
+  </NuxtLayout>
 </template>
 
 <script setup>

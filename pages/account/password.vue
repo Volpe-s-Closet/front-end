@@ -1,79 +1,5 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Header -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">Change Password</h1>
-      <p class="text-gray-600 mt-2">Update your account password</p>
-    </div>
-
-    <!-- Account Navigation -->
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-      <!-- Sidebar Navigation -->
-      <div class="lg:col-span-1">
-        <nav class="bg-white rounded-lg shadow-sm p-6">
-          <ul class="space-y-2">
-            <li>
-              <NuxtLink 
-                to="/account" 
-                class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
-              >
-                <Icon name="heroicons:user" class="h-5 w-5 mr-3" />
-                Profile
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink 
-                to="/account/password" 
-                class="flex items-center px-3 py-2 text-sm font-medium rounded-md"
-                :class="$route.path === '/account/password' ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'"
-              >
-                <Icon name="heroicons:lock-closed" class="h-5 w-5 mr-3" />
-                Password
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink 
-                to="/account/orders" 
-                class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
-              >
-                <Icon name="heroicons:shopping-bag" class="h-5 w-5 mr-3" />
-                Orders
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink 
-                to="/account/addresses" 
-                class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
-              >
-                <Icon name="heroicons:map-pin" class="h-5 w-5 mr-3" />
-                Addresses
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink 
-                to="/account/payment-methods" 
-                class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
-              >
-                <Icon name="heroicons:credit-card" class="h-5 w-5 mr-3" />
-                Payment Methods
-              </NuxtLink>
-            </li>
-            <li>
-              <BaseButton 
-                @click="logout"
-                variant="danger"
-                size="sm"
-                icon="heroicons:arrow-right-on-rectangle"
-                text="Logout"
-                full-width
-              />
-            </li>
-          </ul>
-        </nav>
-      </div>
-
-      <!-- Main Content -->
-      <div class="lg:col-span-3">
+  <NuxtLayout name="account">
         <div class="bg-white rounded-lg shadow-sm p-6">
           <h2 class="text-xl font-semibold mb-6">Change Password</h2>
 
@@ -175,9 +101,7 @@
             </ul>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+  </NuxtLayout>
 </template>
 
 <script setup>
@@ -185,7 +109,7 @@ definePageMeta({
   middleware: 'auth'
 })
 
-const { user, logout, changePassword: authChangePassword } = useAuth()
+const { user, changePassword: authChangePassword } = useAuth()
 
 // SEO
 useHead({
