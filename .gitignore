@@ -17,13 +17,9 @@ logs
 .DS_Store
 .fleet
 .idea
+.kiro
 
 # Local env files
 .env
 .env.*
 !.env.example
-
-# Local Netlify folder
-.netlify
-
-*.pem

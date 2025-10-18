@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Volpe\'s Closet</string>
-    <string name="title_activity_main">Volpe\'s Closet</string>
-    <string name="package_name">volpescloset.missvolpe.com</string>
-    <string name="custom_url_scheme">volpescloset.missvolpe.com</string>
-</resources>
