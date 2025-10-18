@@ -290,9 +290,6 @@ const handleAddToCart = async () => {
       variation
     })
     
-    // Show cart sidebar
-    openCart()
-    
     // Close modal
     closeModal()
   } catch (error) {

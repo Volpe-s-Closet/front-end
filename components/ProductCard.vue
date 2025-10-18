@@ -371,8 +371,15 @@ const closeVariationModal = () => {
 }
 
 const handleVariationAddedToCart = (data) => {
-  // Modal handles the cart addition, we just need to close it
+  // Modal handles the cart addition, we just need to close it and show animation
   closeVariationModal()
+  
+  // Show success animation like regular add to cart
+  justAdded.value = true
+  // Reset the animation after 2 seconds
+  setTimeout(() => {
+    justAdded.value = false
+  }, 2000)
 }
 
 const openImageGallery = () => {
