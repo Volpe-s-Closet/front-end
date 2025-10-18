@@ -95,37 +95,25 @@ const allImages = computed(() => {
   const allCollectedImages = []
   const seenImageSrcs = new Set()
   
-  console.log('=== ProductImageGallery Debug ===')
-  console.log('Product:', props.product.name)
-  console.log('Product type:', props.product.type)
-  console.log('Product images count:', productImages.length)
-  console.log('Product variations (from props):', props.product.variations?.length || 0)
-  console.log('Fetched variations:', fetchedVariations.value.length)
-  console.log('Selected variation:', props.selectedVariation?.id || 'none')
-  console.log('Is loading variations:', isLoadingVariations.value)
+
   
   // First, add all product images
   productImages.forEach((img, index) => {
     if (img.src && !seenImageSrcs.has(img.src)) {
       allCollectedImages.push(img)
       seenImageSrcs.add(img.src)
-      console.log(`Added product image ${index + 1}:`, img.src)
+
     }
   })
   
   // Then add all variation images (avoiding duplicates)
   if (variations.length > 0) {
-    console.log('Processing variations:', variations.length)
+
     variations.forEach((variation, index) => {
       // Handle both data structures: { image: { src: "url" } } and { image: "url" }
       const imageUrl = variation.image?.src || variation.image
       
-      console.log(`Variation ${index + 1} (ID: ${variation.id}):`, {
-        hasImage: !!imageUrl,
-        imageSrc: imageUrl,
-        rawImage: variation.image,
-        alreadySeen: imageUrl ? seenImageSrcs.has(imageUrl) : false
-      })
+
       
       if (imageUrl && !seenImageSrcs.has(imageUrl)) {
         // Create consistent image object structure
@@ -135,22 +123,21 @@ const allImages = computed(() => {
           
         allCollectedImages.push(imageObj)
         seenImageSrcs.add(imageUrl)
-        console.log(`Added variation image ${index + 1}:`, imageUrl)
+
       }
     })
   } else {
-    console.log('No variations to process')
+
   }
   
   // If we have a selected variation with an image that's not already included, add it
   if (props.selectedVariation?.image?.src && !seenImageSrcs.has(props.selectedVariation.image.src)) {
     allCollectedImages.push(props.selectedVariation.image)
     seenImageSrcs.add(props.selectedVariation.image.src)
-    console.log('Added selected variation image:', props.selectedVariation.image.src)
+
   }
   
-  console.log('Total collected images:', allCollectedImages.length)
-  console.log('=== End Debug ===')
+
   
   return allCollectedImages.length > 0 ? allCollectedImages : productImages
 })
@@ -224,10 +211,7 @@ const fetchVariations = async () => {
     const { getProductVariations } = useWooCommerce()
     const variations = await getProductVariations(props.product.id)
     
-    console.log(`Fetched ${variations?.length || 0} variations for product ${props.product.name}`)
-    if (variations?.length > 0) {
-      console.log('Variation images:', variations.map(v => ({ id: v.id, image: v.image?.src })))
-    }
+
     
     fetchedVariations.value = variations || []
   } catch (error) {
