@@ -59,13 +59,14 @@
               </NuxtLink>
             </li>
             <li>
-              <button 
+              <BaseButton 
                 @click="logout"
-                class="flex items-center w-full px-3 py-2 text-sm font-medium rounded-md text-red-700 hover:bg-red-50"
-              >
-                <Icon name="heroicons:arrow-right-on-rectangle" class="h-5 w-5 mr-3" />
-                Logout
-              </button>
+                variant="danger"
+                size="sm"
+                icon="heroicons:arrow-right-on-rectangle"
+                text="Logout"
+                full-width
+              />
             </li>
           </ul>
         </nav>
@@ -148,20 +149,17 @@
             </div>
 
             <div class="flex space-x-4">
-              <button
-                type="submit"
+              <BaseButton
+                action="save"
+                :loading="updating"
                 :disabled="updating || !isFormValid"
-                class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200"
-              >
-                <Icon v-if="updating" name="heroicons:arrow-path" class="h-4 w-4 animate-spin inline mr-2" />
-                {{ updating ? 'Updating...' : 'Change Password' }}
-              </button>
-              <NuxtLink
+                text="Change Password"
+              />
+              <BaseButton
                 to="/account"
-                class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded-md font-medium transition-colors duration-200"
-              >
-                Cancel
-              </NuxtLink>
+                variant="secondary"
+                text="Cancel"
+              />
             </div>
           </form>
 

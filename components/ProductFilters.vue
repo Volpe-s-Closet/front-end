@@ -1,16 +1,18 @@
 <template>
   <div>
     <!-- Mobile Filter Toggle Button -->
-    <button
+    <BaseButton
       @click="toggleMobileFilters"
-      class="lg:hidden w-full bg-white border border-gray-300 rounded-lg px-4 py-3 mb-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors duration-200"
+      variant="outline"
+      full-width
+      class="lg:hidden mb-4 justify-between"
     >
       <span class="font-medium text-gray-900">Filters</span>
       <Icon 
         :name="showMobileFilters ? 'heroicons:x-mark' : 'heroicons:funnel'" 
         class="h-5 w-5 text-gray-500" 
       />
-    </button>
+    </BaseButton>
 
     <!-- Overlay for mobile -->
     <div 
@@ -32,12 +34,13 @@
       <!-- Mobile Header -->
       <div class="lg:hidden flex items-center justify-between p-4 border-b border-gray-200">
         <h3 class="text-lg font-semibold">Filters</h3>
-        <button
+        <BaseButton
           @click="closeMobileFilters"
-          class="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
-        >
-          <Icon name="heroicons:x-mark" class="h-5 w-5 text-gray-500" />
-        </button>
+          variant="ghost"
+          size="sm"
+          icon="heroicons:x-mark"
+          rounded="full"
+        />
       </div>
 
       <!-- Filter Content -->
@@ -162,20 +165,22 @@
     </div>
 
         <!-- Clear Filters -->
-        <button
+        <BaseButton
           @click="clearFilters"
-          class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-md text-sm font-medium transition-colors duration-200"
-        >
-          Clear All Filters
-        </button>
+          variant="secondary"
+          size="sm"
+          text="Clear All Filters"
+          full-width
+        />
 
         <!-- Mobile Apply Button -->
-        <button
+        <BaseButton
           @click="applyFiltersAndClose"
-          class="lg:hidden w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-md font-medium transition-colors duration-200 mt-4"
-        >
-          Apply Filters
-        </button>
+          text="Apply Filters"
+          full-width
+          size="lg"
+          class="lg:hidden mt-4"
+        />
       </div>
     </div>
   </div>

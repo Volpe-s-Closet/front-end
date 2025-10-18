@@ -14,12 +14,12 @@
           <h3 class="text-lg font-semibold text-gray-900">
             Choose Options for {{ product.name }}
           </h3>
-          <button
+          <BaseButton
             @click="closeModal"
-            class="text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            <Icon name="heroicons:x-mark" class="h-6 w-6" />
-          </button>
+            variant="ghost"
+            size="sm"
+            icon="heroicons:x-mark"
+          />
         </div>
 
         <!-- Content -->
@@ -85,20 +85,24 @@
               Quantity
             </label>
             <div class="flex items-center space-x-3">
-              <button
+              <BaseButton
                 @click="decreaseQuantity"
                 :disabled="quantity <= 1"
-                class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <Icon name="heroicons:minus" class="h-4 w-4" />
-              </button>
+                variant="outline"
+                size="xs"
+                icon="heroicons:minus"
+                rounded="full"
+                class="w-8 h-8"
+              />
               <span class="text-lg font-medium min-w-[2rem] text-center">{{ quantity }}</span>
-              <button
+              <BaseButton
                 @click="increaseQuantity"
-                class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50"
-              >
-                <Icon name="heroicons:plus" class="h-4 w-4" />
-              </button>
+                variant="outline"
+                size="xs"
+                icon="heroicons:plus"
+                rounded="full"
+                class="w-8 h-8"
+              />
             </div>
           </div>
 
@@ -117,20 +121,16 @@
 
         <!-- Footer -->
         <div class="flex items-center justify-between p-6 border-t bg-gray-50">
-          <button
+          <BaseButton
+            action="cancel"
             @click="closeModal"
-            class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
+          />
+          <BaseButton
             @click="handleAddToCart"
             :disabled="!canAddToCart || isAdding"
-            class="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-md font-medium transition-colors flex items-center space-x-2"
-          >
-            <Icon v-if="isAdding" name="heroicons:arrow-path" class="h-4 w-4 animate-spin" />
-            <span>Add to Cart</span>
-          </button>
+            :loading="isAdding"
+            text="Add to Cart"
+          />
         </div>
       </div>
     </div>

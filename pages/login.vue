@@ -74,15 +74,12 @@
         </div>
 
         <div>
-          <button
-            type="submit"
-            :disabled="loading"
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400"
-          >
-            <Icon v-if="loading" name="heroicons:arrow-path" class="h-5 w-5 animate-spin mr-2" />
-            <span v-if="loading">Signing in...</span>
-            <span v-else>Sign in</span>
-          </button>
+          <BaseButton
+            action="submit"
+            :loading="loading"
+            text="Sign in"
+            full-width
+          />
         </div>
 
         <div class="text-center">

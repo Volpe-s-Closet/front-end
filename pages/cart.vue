@@ -11,12 +11,11 @@
       <Icon name="heroicons:shopping-bag" class="h-24 w-24 text-gray-300 mx-auto mb-6" />
       <h2 class="text-2xl font-semibold text-gray-900 mb-4">Your cart is empty</h2>
       <p class="text-gray-600 mb-8">Looks like you haven't added any items to your cart yet.</p>
-      <NuxtLink 
+      <BaseButton 
         to="/search" 
-        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
-      >
-        Start Shopping
-      </NuxtLink>
+        text="Start Shopping"
+        size="lg"
+      />
     </div>
 
     <!-- Cart Content -->
@@ -62,21 +61,23 @@
                   
                   <!-- Quantity Controls -->
                   <div class="flex items-center space-x-3">
-                    <button 
-                      @click="updateQuantity(item.id, item.quantity - 1, item.variation)"
-                      class="text-gray-400 hover:text-gray-600 p-1"
-                    >
-                      <Icon name="heroicons:minus" class="h-5 w-5" />
-                    </button>
+                    <BaseButton
+                      action="decrease"
+                      :product="item"
+                      :quantity="item.quantity"
+                      :variation="item.variation"
+                      size="sm"
+                    />
                     
                     <span class="text-lg font-medium min-w-[2rem] text-center">{{ item.quantity }}</span>
                     
-                    <button 
-                      @click="updateQuantity(item.id, item.quantity + 1, item.variation)"
-                      class="text-gray-400 hover:text-gray-600 p-1"
-                    >
-                      <Icon name="heroicons:plus" class="h-5 w-5" />
-                    </button>
+                    <BaseButton
+                      action="increase"
+                      :product="item"
+                      :quantity="item.quantity"
+                      :variation="item.variation"
+                      size="sm"
+                    />
                   </div>
                 </div>
 
@@ -89,13 +90,13 @@
 
               <!-- Remove Button -->
               <div class="flex-shrink-0">
-                <button 
-                  @click="removeFromCart(item.id, item.variation)"
-                  class="text-red-400 hover:text-red-600 p-2"
+                <BaseButton
+                  action="remove"
+                  :product="item"
+                  :variation="item.variation"
+                  size="sm"
                   title="Remove item"
-                >
-                  <Icon name="heroicons:trash" class="h-5 w-5" />
-                </button>
+                />
               </div>
             </div>
           </div>
@@ -143,12 +144,13 @@
           </div>
 
           <!-- Checkout Button -->
-          <NuxtLink 
+          <BaseButton 
             to="/checkout" 
-            class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-3 px-4 rounded-lg font-medium transition-colors duration-200 mb-4"
-          >
-            Proceed to Checkout
-          </NuxtLink>
+            text="Proceed to Checkout"
+            full-width
+            size="lg"
+            class="mb-4"
+          />
 
           <!-- Security Badge -->
           <div class="text-center text-sm text-gray-600">
@@ -157,12 +159,13 @@
           </div>
 
           <!-- Clear Cart -->
-          <button 
+          <BaseButton
+            action="clear"
             @click="confirmClearCart"
-            class="w-full mt-4 text-red-600 hover:text-red-800 text-sm font-medium"
-          >
-            Clear Cart
-          </button>
+            full-width
+            size="sm"
+            class="mt-4"
+          />
         </div>
 
         <!-- Recommended Products -->

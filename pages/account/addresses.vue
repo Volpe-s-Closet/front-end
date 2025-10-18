@@ -59,13 +59,14 @@
               </NuxtLink>
             </li>
             <li>
-              <button 
+              <BaseButton 
                 @click="logout"
-                class="flex items-center w-full px-3 py-2 text-sm font-medium rounded-md text-red-700 hover:bg-red-50"
-              >
-                <Icon name="heroicons:arrow-right-on-rectangle" class="h-5 w-5 mr-3" />
-                Logout
-              </button>
+                variant="danger"
+                size="sm"
+                icon="heroicons:arrow-right-on-rectangle"
+                text="Logout"
+                full-width
+              />
             </li>
           </ul>
         </nav>
@@ -97,12 +98,12 @@
                 <Icon name="heroicons:credit-card" class="h-5 w-5 mr-2 text-blue-600" />
                 Billing Address
               </h2>
-              <button 
+              <BaseButton 
                 @click="editAddress('billing')"
-                class="text-blue-600 hover:text-blue-800 font-medium text-sm"
-              >
-                {{ addresses.billing && hasAddressData(addresses.billing) ? 'Edit' : 'Add' }}
-              </button>
+                variant="link"
+                size="sm"
+                :text="addresses.billing && hasAddressData(addresses.billing) ? 'Edit' : 'Add'"
+              />
             </div>
 
             <div v-if="addresses.billing && hasAddressData(addresses.billing)" class="space-y-2">
@@ -128,12 +129,12 @@
                 <Icon name="heroicons:truck" class="h-5 w-5 mr-2 text-green-600" />
                 Shipping Address
               </h2>
-              <button 
+              <BaseButton 
                 @click="editAddress('shipping')"
-                class="text-blue-600 hover:text-blue-800 font-medium text-sm"
-              >
-                {{ addresses.shipping && hasAddressData(addresses.shipping) ? 'Edit' : 'Add' }}
-              </button>
+                variant="link"
+                size="sm"
+                :text="addresses.shipping && hasAddressData(addresses.shipping) ? 'Edit' : 'Add'"
+              />
             </div>
 
             <div v-if="addresses.shipping && hasAddressData(addresses.shipping)" class="space-y-2">
@@ -172,12 +173,12 @@
                 <h3 class="text-lg font-semibold">
                   {{ editingAddress === 'billing' ? 'Edit Billing Address' : 'Edit Shipping Address' }}
                 </h3>
-                <button 
+                <BaseButton 
                   @click="closeAddressForm"
-                  class="text-gray-400 hover:text-gray-600"
-                >
-                  <Icon name="heroicons:x-mark" class="h-6 w-6" />
-                </button>
+                  variant="ghost"
+                  size="sm"
+                  icon="heroicons:x-mark"
+                />
               </div>
 
               <form @submit.prevent="saveAddress" class="space-y-4">
@@ -284,21 +285,16 @@
                 </div>
 
                 <div class="flex space-x-4 pt-4">
-                  <button
-                    type="submit"
+                  <BaseButton
+                    action="save"
+                    :loading="saving"
                     :disabled="saving"
-                    class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200"
-                  >
-                    <Icon v-if="saving" name="heroicons:arrow-path" class="h-4 w-4 animate-spin inline mr-2" />
-                    {{ saving ? 'Saving...' : 'Save Address' }}
-                  </button>
-                  <button
-                    type="button"
+                    text="Save Address"
+                  />
+                  <BaseButton
+                    action="cancel"
                     @click="closeAddressForm"
-                    class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded-md font-medium transition-colors duration-200"
-                  >
-                    Cancel
-                  </button>
+                  />
                 </div>
               </form>
             </div>

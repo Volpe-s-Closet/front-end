@@ -17,9 +17,12 @@
       <!-- Header -->
       <div class="flex items-center justify-between p-4 border-b">
         <h2 class="text-lg font-semibold">Shopping Cart</h2>
-        <button @click="closeCart" class="text-gray-400 hover:text-gray-600">
-          <Icon name="heroicons:x-mark" class="h-6 w-6" />
-        </button>
+        <BaseButton 
+          @click="closeCart" 
+          variant="ghost" 
+          size="sm"
+          icon="heroicons:x-mark"
+        />
       </div>
 
       <!-- Cart Items -->
@@ -27,9 +30,12 @@
         <div v-if="cartItems.length === 0" class="text-center py-8">
           <Icon name="heroicons:shopping-bag" class="h-16 w-16 text-gray-300 mx-auto mb-4" />
           <p class="text-gray-500">Your cart is empty</p>
-          <button @click="closeCart" class="mt-4 text-blue-600 hover:text-blue-800">
-            Continue Shopping
-          </button>
+          <BaseButton 
+            @click="closeCart" 
+            variant="link" 
+            text="Continue Shopping"
+            class="mt-4"
+          />
         </div>
 
         <div v-else class="space-y-4">
@@ -58,25 +64,28 @@
               <p class="text-gray-600 text-sm">${{ item.price.toFixed(2) }}</p>
               
               <div class="flex items-center mt-2">
-                <button 
-                  @click="updateQuantity(item.id, item.quantity - 1, item.variation)"
-                  class="text-gray-400 hover:text-gray-600"
-                >
-                  <Icon name="heroicons:minus" class="h-4 w-4" />
-                </button>
+                <BaseButton
+                  action="decrease"
+                  :product="item"
+                  :quantity="item.quantity"
+                  :variation="item.variation"
+                  size="xs"
+                />
                 <span class="mx-3 text-sm">{{ item.quantity }}</span>
-                <button 
-                  @click="updateQuantity(item.id, item.quantity + 1, item.variation)"
-                  class="text-gray-400 hover:text-gray-600"
-                >
-                  <Icon name="heroicons:plus" class="h-4 w-4" />
-                </button>
-                <button 
-                  @click="removeFromCart(item.id, item.variation)"
-                  class="ml-auto text-red-400 hover:text-red-600"
-                >
-                  <Icon name="heroicons:trash" class="h-4 w-4" />
-                </button>
+                <BaseButton
+                  action="increase"
+                  :product="item"
+                  :quantity="item.quantity"
+                  :variation="item.variation"
+                  size="xs"
+                />
+                <BaseButton
+                  action="remove"
+                  :product="item"
+                  :variation="item.variation"
+                  size="xs"
+                  class="ml-auto"
+                />
               </div>
             </div>
           </div>

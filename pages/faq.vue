@@ -81,9 +81,11 @@
 
     <div class="mt-12 text-center">
       <p class="text-gray-600 mb-4">Still have questions?</p>
-      <NuxtLink to="/contact" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-        Contact Us
-      </NuxtLink>
+      <BaseButton 
+        to="/contact" 
+        text="Contact Us"
+        size="lg"
+      />
     </div>
   </div>
 </template>

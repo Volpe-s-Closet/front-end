@@ -30,101 +30,32 @@
             <!-- Top Row: View Mode and Grid Size -->
             <div class="flex flex-col xs:flex-row justify-center items-center gap-3 xs:gap-4">
               <!-- View Mode Toggle -->
-              <div class="flex items-center bg-gray-100 rounded-lg p-1">
-                <button
-                  @click="viewMode = 'grid'"
-                  :class="[
-                    'flex items-center px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors',
-                    viewMode === 'grid' 
-                      ? 'bg-white text-gray-900 shadow-sm' 
-                      : 'text-gray-600 hover:text-gray-900'
-                  ]"
-                >
-                  <Icon name="heroicons:squares-2x2" class="h-4 w-4 mr-1 sm:mr-2" />
-                  <span class="hidden xs:inline">Grid</span>
-                </button>
-                <button
-                  @click="viewMode = 'list'"
-                  :class="[
-                    'flex items-center px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors',
-                    viewMode === 'list' 
-                      ? 'bg-white text-gray-900 shadow-sm' 
-                      : 'text-gray-600 hover:text-gray-900'
-                  ]"
-                >
-                  <Icon name="heroicons:list-bullet" class="h-4 w-4 mr-1 sm:mr-2" />
-                  <span class="hidden xs:inline">List</span>
-                </button>
-              </div>
+              <GroupButtons
+                v-model="viewMode"
+                :options="viewModeOptions"
+                size="xs"
+              />
 
               <!-- Grid Size Toggle (only show in grid mode) -->
-              <div v-if="viewMode === 'grid'" class="flex items-center bg-gray-100 rounded-lg p-1">
-                <button
-                  @click="gridSize = 1"
-                  :class="[
-                    'flex items-center px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors',
-                    gridSize === 1 
-                      ? 'bg-white text-gray-900 shadow-sm' 
-                      : 'text-gray-600 hover:text-gray-900'
-                  ]"
-                >
-                  <Icon name="heroicons:stop" class="h-4 w-4 mr-1 sm:mr-2" />
-                  <span class="hidden xs:inline">1</span>
-                </button>
-                <button
-                  @click="gridSize = 2"
-                  :class="[
-                    'flex items-center px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors',
-                    gridSize === 2 
-                      ? 'bg-white text-gray-900 shadow-sm' 
-                      : 'text-gray-600 hover:text-gray-900'
-                  ]"
-                >
-                  <Icon name="heroicons:squares-2x2" class="h-4 w-4 mr-1 sm:mr-2" />
-                  <span class="hidden xs:inline">2</span>
-                </button>
-              </div>
+              <GroupButtons
+                v-if="viewMode === 'grid'"
+                v-model="gridSize"
+                :options="mobileGridSizeOptions"
+                size="xs"
+              />
             </div>
             
             <!-- Sort -->
             <div class="flex justify-center">
-              <div class="relative" ref="dropdownRef">
-                <button
-                  @click="toggleDropdown"
-                  class="flex items-center space-x-2 bg-gray-100 rounded-lg px-3 py-2 text-xs sm:text-sm font-medium text-gray-900 hover:bg-gray-200 transition-colors"
-                >
-                  <Icon :name="currentSortOption.icon" class="h-4 w-4 text-gray-600" />
-                  <span class="hidden xs:inline">{{ currentSortOption.label }}</span>
-                  <span class="xs:hidden">Sort</span>
-                  <Icon name="heroicons:chevron-down" class="h-4 w-4 text-gray-600" />
-                </button>
-
-                <!-- Dropdown Menu -->
-                <div
-                  v-if="isDropdownOpen"
-                  class="absolute top-full left-0 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50"
-                >
-                  <div class="py-1">
-                    <button
-                      v-for="option in sortOptions"
-                      :key="option.value"
-                      @click="selectSortOption(option)"
-                      :class="[
-                        'flex items-center w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors',
-                        sortBy === option.value ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
-                      ]"
-                    >
-                      <Icon :name="option.icon" class="h-4 w-4 mr-3 text-gray-500" />
-                      {{ option.label }}
-                      <Icon 
-                        v-if="sortBy === option.value" 
-                        name="heroicons:check" 
-                        class="h-4 w-4 ml-auto text-blue-600" 
-                      />
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <DropDown
+                v-model="sortBy"
+                :options="sortOptions"
+                size="xs"
+                position="left"
+                placeholder="Sort"
+                hide-label
+                @change="handleSortChange"
+              />
             </div>
           </div>
 
@@ -135,113 +66,31 @@
               <!-- Left: View Mode and Grid Size -->
               <div class="flex items-center gap-4">
                 <!-- View Mode Toggle -->
-                <div class="flex items-center bg-gray-100 rounded-lg p-1">
-                  <button
-                    @click="viewMode = 'grid'"
-                    :class="[
-                      'flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors',
-                      viewMode === 'grid' 
-                        ? 'bg-white text-gray-900 shadow-sm' 
-                        : 'text-gray-600 hover:text-gray-900'
-                    ]"
-                  >
-                    <Icon name="heroicons:squares-2x2" class="h-4 w-4 mr-2" />
-                    Grid
-                  </button>
-                  <button
-                    @click="viewMode = 'list'"
-                    :class="[
-                      'flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors',
-                      viewMode === 'list' 
-                        ? 'bg-white text-gray-900 shadow-sm' 
-                        : 'text-gray-600 hover:text-gray-900'
-                    ]"
-                  >
-                    <Icon name="heroicons:list-bullet" class="h-4 w-4 mr-2" />
-                    List
-                  </button>
-                </div>
+                <GroupButtons
+                  v-model="viewMode"
+                  :options="viewModeOptions"
+                  size="sm"
+                />
 
                 <!-- Grid Size Toggle (only show in grid mode) -->
-                <div v-if="viewMode === 'grid'" class="flex items-center bg-gray-100 rounded-lg p-1">
-                  <button
-                    @click="gridSize = 2"
-                    :class="[
-                      'flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors',
-                      gridSize === 2 
-                        ? 'bg-white text-gray-900 shadow-sm' 
-                        : 'text-gray-600 hover:text-gray-900'
-                    ]"
-                  >
-                    <Icon name="heroicons:squares-2x2" class="h-4 w-4 mr-2" />
-                    2
-                  </button>
-                  <button
-                    @click="gridSize = 3"
-                    :class="[
-                      'flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors',
-                      gridSize === 3 
-                        ? 'bg-white text-gray-900 shadow-sm' 
-                        : 'text-gray-600 hover:text-gray-900'
-                    ]"
-                  >
-                    <Icon name="heroicons:view-columns" class="h-4 w-4 mr-2" />
-                    3
-                  </button>
-                  <button
-                    @click="gridSize = 4"
-                    :class="[
-                      'flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors',
-                      gridSize === 4 
-                        ? 'bg-white text-gray-900 shadow-sm' 
-                        : 'text-gray-600 hover:text-gray-900'
-                    ]"
-                  >
-                    <Icon name="heroicons:squares-plus" class="h-4 w-4 mr-2" />
-                    4
-                  </button>
-                </div>
+                <GroupButtons
+                  v-if="viewMode === 'grid'"
+                  v-model="gridSize"
+                  :options="desktopGridSizeOptions"
+                  size="sm"
+                />
               </div>
               
               <!-- Right: Sort -->
               <div class="flex items-center space-x-3">
                 <span class="text-sm font-medium text-gray-700">Sort by:</span>
-                <div class="relative" ref="dropdownRef">
-                  <button
-                    @click="toggleDropdown"
-                    class="flex items-center space-x-2 bg-gray-100 rounded-lg px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 transition-colors"
-                  >
-                    <Icon :name="currentSortOption.icon" class="h-4 w-4 text-gray-600" />
-                    <span>{{ currentSortOption.label }}</span>
-                    <Icon name="heroicons:chevron-down" class="h-4 w-4 text-gray-600" />
-                  </button>
-
-                  <!-- Dropdown Menu -->
-                  <div
-                    v-if="isDropdownOpen"
-                    class="absolute top-full right-0 mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50"
-                  >
-                    <div class="py-1">
-                      <button
-                        v-for="option in sortOptions"
-                        :key="option.value"
-                        @click="selectSortOption(option)"
-                        :class="[
-                          'flex items-center w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors',
-                          sortBy === option.value ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
-                        ]"
-                      >
-                        <Icon :name="option.icon" class="h-4 w-4 mr-3 text-gray-500" />
-                        {{ option.label }}
-                        <Icon 
-                          v-if="sortBy === option.value" 
-                          name="heroicons:check" 
-                          class="h-4 w-4 ml-auto text-blue-600" 
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <DropDown
+                  v-model="sortBy"
+                  :options="sortOptions"
+                  size="sm"
+                  position="right"
+                  @change="handleSortChange"
+                />
               </div>
             </div>
           </div>
@@ -286,12 +135,10 @@
             <span v-if="searchQuery">Try adjusting your search terms or filters.</span>
             <span v-else>No products match your current filters.</span>
           </p>
-          <button 
+          <BaseButton 
             @click="clearAllFilters"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200"
-          >
-            Clear All Filters
-          </button>
+            text="Clear All Filters"
+          />
         </div>
 
         <!-- Pagination and Controls -->
@@ -330,55 +177,54 @@
             <div v-if="totalPages > 1">
               <!-- Mobile Pagination -->
               <div class="flex flex-1 justify-between items-center sm:hidden">
-                <button
+                <BaseButton
                   @click="goToPage(currentPage - 1)"
                   :disabled="currentPage <= 1"
-                  class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Icon name="heroicons:chevron-left" class="h-4 w-4 mr-1" />
-                  Prev
-                </button>
+                  variant="outline"
+                  size="sm"
+                  icon="heroicons:chevron-left"
+                  text="Prev"
+                />
                 
                 <span class="text-sm text-gray-700">
                   Page {{ currentPage }} of {{ totalPages }}
                 </span>
                 
-                <button
+                <BaseButton
                   @click="goToPage(currentPage + 1)"
                   :disabled="currentPage >= totalPages"
-                  class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  variant="outline"
+                  size="sm"
+                  text="Next"
                 >
-                  Next
                   <Icon name="heroicons:chevron-right" class="h-4 w-4 ml-1" />
-                </button>
+                </BaseButton>
               </div>
               
               <!-- Desktop Pagination -->
               <div class="hidden sm:flex sm:justify-center">
                 <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
                   <!-- Previous button -->
-                  <button
+                  <BaseButton
                     @click="goToPage(currentPage - 1)"
                     :disabled="currentPage <= 1"
-                    class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <Icon name="heroicons:chevron-left" class="h-5 w-5" />
-                  </button>
+                    variant="outline"
+                    size="sm"
+                    icon="heroicons:chevron-left"
+                    rounded="none"
+                    class="rounded-l-md"
+                  />
 
                   <!-- Page numbers -->
                   <template v-for="page in visiblePages" :key="page">
-                    <button
+                    <BaseButton
                       v-if="page !== '...'"
                       @click="goToPage(page)"
-                      :class="[
-                        'relative inline-flex items-center px-3 lg:px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0',
-                        page === currentPage 
-                          ? 'z-10 bg-blue-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600' 
-                          : 'text-gray-900'
-                      ]"
-                    >
-                      {{ page }}
-                    </button>
+                      :variant="page === currentPage ? 'primary' : 'outline'"
+                      size="sm"
+                      :text="page.toString()"
+                      rounded="none"
+                    />
                     <span
                       v-else
                       class="relative inline-flex items-center px-3 lg:px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0"
@@ -388,13 +234,15 @@
                   </template>
 
                   <!-- Next button -->
-                  <button
+                  <BaseButton
                     @click="goToPage(currentPage + 1)"
                     :disabled="currentPage >= totalPages"
-                    class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <Icon name="heroicons:chevron-right" class="h-5 w-5" />
-                  </button>
+                    variant="outline"
+                    size="sm"
+                    icon="heroicons:chevron-right"
+                    rounded="none"
+                    class="rounded-r-md"
+                  />
                 </nav>
               </div>
             </div>
@@ -446,32 +294,28 @@ const sortOptions = [
   { value: 'price-desc', label: 'Price: High to Low', icon: 'heroicons:arrow-down' }
 ]
 
-// Custom dropdown state
-const isDropdownOpen = ref(false)
-const dropdownRef = ref(null)
+// View mode options
+const viewModeOptions = [
+  { value: 'grid', label: 'Grid', icon: 'heroicons:squares-2x2' },
+  { value: 'list', label: 'List', icon: 'heroicons:list-bullet' }
+]
 
-// Get current sort option
-const currentSortOption = computed(() => {
-  return sortOptions.find(option => option.value === sortBy.value) || sortOptions[0]
-})
+// Grid size options for mobile (1-2 columns)
+const mobileGridSizeOptions = [
+  { value: 1, label: '1', icon: 'heroicons:stop' },
+  { value: 2, label: '2', icon: 'heroicons:squares-2x2' }
+]
 
-// Toggle dropdown
-const toggleDropdown = () => {
-  isDropdownOpen.value = !isDropdownOpen.value
-}
+// Grid size options for desktop (2-4 columns)
+const desktopGridSizeOptions = [
+  { value: 2, label: '2', icon: 'heroicons:squares-2x2' },
+  { value: 3, label: '3', icon: 'heroicons:view-columns' },
+  { value: 4, label: '4', icon: 'heroicons:squares-plus' }
+]
 
-// Select sort option
-const selectSortOption = (option) => {
-  sortBy.value = option.value
-  isDropdownOpen.value = false
-  handleSortChange()
-}
-
-// Close dropdown when clicking outside
-const closeDropdown = (event) => {
-  if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
-    isDropdownOpen.value = false
-  }
+// Handle sort change
+const handleSortChange = () => {
+  fetchProducts()
 }
 
 // Loading states
@@ -697,10 +541,6 @@ const handleFiltersChanged = (filters) => {
   fetchProducts()
 }
 
-const handleSortChange = () => {
-  fetchProducts()
-}
-
 const handlePerPageChange = () => {
   fetchProducts()
 }
@@ -774,8 +614,7 @@ onMounted(() => {
   // Add resize listener
   window.addEventListener('resize', handleResize)
   
-  // Add click outside listener for dropdown
-  document.addEventListener('click', closeDropdown)
+
   
   fetchProducts()
   fetchCategories()
@@ -785,7 +624,7 @@ onMounted(() => {
 // Cleanup
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
-  document.removeEventListener('click', closeDropdown)
+
   if (resizeTimeout) {
     clearTimeout(resizeTimeout)
   }

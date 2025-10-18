@@ -59,13 +59,14 @@
               </NuxtLink>
             </li>
             <li>
-              <button 
+              <BaseButton 
                 @click="logout"
-                class="flex items-center w-full px-3 py-2 text-sm font-medium rounded-md text-red-700 hover:bg-red-50"
-              >
-                <Icon name="heroicons:arrow-right-on-rectangle" class="h-5 w-5 mr-3" />
-                Logout
-              </button>
+                variant="danger"
+                size="sm"
+                icon="heroicons:arrow-right-on-rectangle"
+                text="Logout"
+                full-width
+              />
             </li>
           </ul>
         </nav>
@@ -90,13 +91,11 @@
 
         <!-- Add New Payment Method Button -->
         <div class="mb-6">
-          <button 
+          <BaseButton 
             @click="showAddPaymentForm = true"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 flex items-center"
-          >
-            <Icon name="heroicons:plus" class="h-5 w-5 mr-2" />
-            Add Payment Method
-          </button>
+            icon="heroicons:plus"
+            text="Add Payment Method"
+          />
         </div>
 
         <!-- Payment Methods List -->
@@ -148,25 +147,27 @@
 
               <!-- Actions -->
               <div class="flex items-center space-x-2">
-                <button 
+                <BaseButton 
                   v-if="!method.is_default"
                   @click="setDefaultPaymentMethod(method.id)"
-                  class="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                >
-                  Set as Default
-                </button>
-                <button 
+                  variant="link"
+                  size="sm"
+                  text="Set as Default"
+                />
+                <BaseButton 
                   @click="editPaymentMethod(method)"
-                  class="text-gray-600 hover:text-gray-800 text-sm font-medium"
-                >
-                  Edit
-                </button>
-                <button 
+                  variant="link"
+                  size="sm"
+                  text="Edit"
+                  class="text-gray-600 hover:text-gray-800"
+                />
+                <BaseButton 
                   @click="deletePaymentMethod(method.id)"
-                  class="text-red-600 hover:text-red-800 text-sm font-medium"
-                >
-                  Delete
-                </button>
+                  variant="link"
+                  size="sm"
+                  text="Delete"
+                  class="text-red-600 hover:text-red-800"
+                />
               </div>
             </div>
           </div>
@@ -177,12 +178,11 @@
           <Icon name="heroicons:credit-card" class="h-24 w-24 text-gray-300 mx-auto mb-6" />
           <h2 class="text-2xl font-semibold text-gray-900 mb-4">No payment methods</h2>
           <p class="text-gray-600 mb-8">Add a payment method to make checkout faster and easier.</p>
-          <button 
+          <BaseButton 
             @click="showAddPaymentForm = true"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
-          >
-            Add Your First Payment Method
-          </button>
+            text="Add Your First Payment Method"
+            size="lg"
+          />
         </div>
 
         <!-- Payment Method Form Modal -->
@@ -193,12 +193,12 @@
                 <h3 class="text-lg font-semibold">
                   {{ showEditPaymentForm ? 'Edit Payment Method' : 'Add Payment Method' }}
                 </h3>
-                <button 
+                <BaseButton 
                   @click="closePaymentForm"
-                  class="text-gray-400 hover:text-gray-600"
-                >
-                  <Icon name="heroicons:x-mark" class="h-6 w-6" />
-                </button>
+                  variant="ghost"
+                  size="sm"
+                  icon="heroicons:x-mark"
+                />
               </div>
 
               <form @submit.prevent="savePaymentMethod" class="space-y-4">
@@ -261,21 +261,16 @@
                 </div>
 
                 <div class="flex space-x-4 pt-4">
-                  <button
-                    type="submit"
+                  <BaseButton
+                    action="save"
+                    :loading="saving"
                     :disabled="saving"
-                    class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200"
-                  >
-                    <Icon v-if="saving" name="heroicons:arrow-path" class="h-4 w-4 animate-spin inline mr-2" />
-                    {{ saving ? 'Saving...' : (showEditPaymentForm ? 'Update' : 'Add') }} Payment Method
-                  </button>
-                  <button
-                    type="button"
+                    :text="`${showEditPaymentForm ? 'Update' : 'Add'} Payment Method`"
+                  />
+                  <BaseButton
+                    action="cancel"
                     @click="closePaymentForm"
-                    class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded-md font-medium transition-colors duration-200"
-                  >
-                    Cancel
-                  </button>
+                  />
                 </div>
               </form>
 

@@ -74,24 +74,24 @@
         </NuxtLink>
         
         <!-- Show "Choose Options" for variable products, "Add to Cart" for simple products -->
-        <button
+        <BaseButton
           v-if="hasVariations"
           @click="openVariationModal"
           :disabled="!product.purchasable"
-          class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-        >
-          Choose Options
-        </button>
+          text="Choose Options"
+          size="sm"
+        />
         
-        <button
+        <BaseButton
           v-else
-          @click="handleAddToCart"
+          action="add"
+          :product="product"
+          :quantity="1"
+          :loading="isAdding"
           :disabled="!product.purchasable || product.stock_status !== 'instock'"
-          class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-        >
-          <Icon v-if="isAdding" name="heroicons:arrow-path" class="h-4 w-4 animate-spin" />
-          <span v-else>Add to Cart</span>
-        </button>
+          size="sm"
+          @click="handleAddToCart"
+        />
       </div>
 
       <div v-if="product.stock_status !== 'instock'" class="mt-2">
@@ -194,25 +194,22 @@
             </NuxtLink>
             
             <!-- Show "Choose Options" for variable products, "Add to Cart" for simple products -->
-            <button
+            <BaseButton
               v-if="hasVariations"
               @click="openVariationModal"
               :disabled="!product.purchasable"
-              class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200 whitespace-nowrap"
-            >
-              Choose Options
-            </button>
+              text="Choose Options"
+            />
             
-            <button
+            <BaseButton
               v-else
-              @click="handleAddToCart"
+              action="add"
+              :product="product"
+              :quantity="1"
+              :loading="isAdding"
               :disabled="!product.purchasable || product.stock_status !== 'instock'"
-              class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200 whitespace-nowrap"
-            >
-              <Icon v-if="isAdding" name="heroicons:arrow-path" class="h-4 w-4 animate-spin inline mr-2" />
-              <span v-if="isAdding">Adding...</span>
-              <span v-else>Add to Cart</span>
-            </button>
+              @click="handleAddToCart"
+            />
           </div>
         </div>
       </div>

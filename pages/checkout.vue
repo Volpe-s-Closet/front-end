@@ -177,12 +177,12 @@
                 <!-- For brevity, I'll skip the full implementation here -->
               </div>
 
-              <button
-                type="submit"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-md font-medium transition-colors duration-200"
-              >
-                Continue to Payment
-              </button>
+              <BaseButton
+                action="submit"
+                text="Continue to Payment"
+                full-width
+                size="lg"
+              />
             </form>
           </div>
 
@@ -255,19 +255,19 @@
               </div>
 
               <div class="flex space-x-4">
-                <button
-                  type="button"
+                <BaseButton
                   @click="currentStep = 1"
-                  class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 py-3 px-4 rounded-md font-medium transition-colors duration-200"
-                >
-                  Back
-                </button>
-                <button
-                  type="submit"
-                  class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-md font-medium transition-colors duration-200"
-                >
-                  Review Order
-                </button>
+                  variant="secondary"
+                  text="Back"
+                  full-width
+                  size="lg"
+                />
+                <BaseButton
+                  action="submit"
+                  text="Review Order"
+                  full-width
+                  size="lg"
+                />
               </div>
             </form>
           </div>
@@ -303,22 +303,22 @@
               </div>
 
               <div class="flex space-x-4">
-                <button
-                  type="button"
+                <BaseButton
                   @click="currentStep = 2"
-                  class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 py-3 px-4 rounded-md font-medium transition-colors duration-200"
-                >
-                  Back
-                </button>
-                <button
+                  variant="secondary"
+                  text="Back"
+                  full-width
+                  size="lg"
+                />
+                <BaseButton
                   @click="placeOrder"
+                  :loading="isPlacingOrder"
                   :disabled="isPlacingOrder"
-                  class="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-3 px-4 rounded-md font-medium transition-colors duration-200"
-                >
-                  <Icon v-if="isPlacingOrder" name="heroicons:arrow-path" class="h-5 w-5 animate-spin inline mr-2" />
-                  <span v-if="isPlacingOrder">Placing Order...</span>
-                  <span v-else>Place Order</span>
-                </button>
+                  variant="success"
+                  text="Place Order"
+                  full-width
+                  size="lg"
+                />
               </div>
             </div>
           </div>
