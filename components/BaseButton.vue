@@ -1,8 +1,7 @@
 <template>
   <component
     :is="tag"
-    :to="to"
-    :href="href"
+    v-bind="linkProps"
     :type="computedType"
     :disabled="computedDisabled"
     :class="buttonClasses"
@@ -136,6 +135,7 @@ const emit = defineEmits([
   // Form events
   'submit', 'reset', 'cancel', 'save', 'delete',
   // Cart events
+  'add', 'remove', 'increase', 'decrease', 'clear',
   'added', 'removed', 'updated'
 ])
 
@@ -253,6 +253,17 @@ const tag = computed(() => {
   if (props.to) return resolveComponent('NuxtLink')
   if (props.href) return 'a'
   return 'button'
+})
+
+// Link props (avoid passing both to and href to NuxtLink)
+const linkProps = computed(() => {
+  if (props.to) {
+    return { to: props.to }
+  }
+  if (props.href) {
+    return { href: props.href }
+  }
+  return {}
 })
 
 // Handle click events

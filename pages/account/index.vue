@@ -75,28 +75,58 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700">First Name</label>
-                <p class="mt-1 text-gray-900">{{ user?.first_name || 'Not provided' }}</p>
+                <ClientOnly>
+                  <p class="mt-1 text-gray-900">{{ user?.first_name || 'Not provided' }}</p>
+                  <template #fallback>
+                    <p class="mt-1 text-gray-900">Not provided</p>
+                  </template>
+                </ClientOnly>
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700">Last Name</label>
-                <p class="mt-1 text-gray-900">{{ user?.last_name || 'Not provided' }}</p>
+                <ClientOnly>
+                  <p class="mt-1 text-gray-900">{{ user?.last_name || 'Not provided' }}</p>
+                  <template #fallback>
+                    <p class="mt-1 text-gray-900">Not provided</p>
+                  </template>
+                </ClientOnly>
               </div>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Email</label>
-              <p class="mt-1 text-gray-900">{{ user?.email || 'Not provided' }}</p>
+              <ClientOnly>
+                <p class="mt-1 text-gray-900">{{ user?.email || 'Not provided' }}</p>
+                <template #fallback>
+                  <p class="mt-1 text-gray-900">Not provided</p>
+                </template>
+              </ClientOnly>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Phone Number</label>
-              <p class="mt-1 text-gray-900">{{ user?.phone || 'Not provided' }}</p>
+              <ClientOnly>
+                <p class="mt-1 text-gray-900">{{ user?.phone || 'Not provided' }}</p>
+                <template #fallback>
+                  <p class="mt-1 text-gray-900">Not provided</p>
+                </template>
+              </ClientOnly>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Date of Birth</label>
-              <p class="mt-1 text-gray-900">{{ user?.date_of_birth ? formatDate(user.date_of_birth) : 'Not provided' }}</p>
+              <ClientOnly>
+                <p class="mt-1 text-gray-900">{{ user?.date_of_birth ? formatDate(user.date_of_birth) : 'Not provided' }}</p>
+                <template #fallback>
+                  <p class="mt-1 text-gray-900">Not provided</p>
+                </template>
+              </ClientOnly>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Member Since</label>
-              <p class="mt-1 text-gray-900">{{ formatDate(user?.date_created) }}</p>
+              <ClientOnly>
+                <p class="mt-1 text-gray-900">{{ formatDate(user?.date_created) }}</p>
+                <template #fallback>
+                  <p class="mt-1 text-gray-900">N/A</p>
+                </template>
+              </ClientOnly>
             </div>
           </div>
         </div>
@@ -132,7 +162,12 @@
                   <p class="text-sm text-gray-600">{{ formatDate(order.date_created) }}</p>
                 </div>
                 <div class="text-right">
-                  <p class="font-medium">{{ formatPrice(order.total) }}</p>
+                  <ClientOnly>
+                    <p class="font-medium">{{ formatPrice(order.total) }}</p>
+                    <template #fallback>
+                      <p class="font-medium">€{{ order.total }}</p>
+                    </template>
+                  </ClientOnly>
                   <span :class="[
                     'inline-flex px-2 py-1 text-xs font-semibold rounded-full',
                     getOrderStatusClass(order.status)
@@ -165,7 +200,12 @@
           </div>
           <div class="bg-white rounded-lg shadow-sm p-6 text-center">
             <Icon name="heroicons:currency-dollar" class="h-8 w-8 text-green-600 mx-auto mb-2" />
-            <p class="text-2xl font-bold text-gray-900">{{ formatPrice(totalSpent) }}</p>
+            <ClientOnly>
+              <p class="text-2xl font-bold text-gray-900">{{ formatPrice(totalSpent) }}</p>
+              <template #fallback>
+                <p class="text-2xl font-bold text-gray-900">€0.00</p>
+              </template>
+            </ClientOnly>
             <p class="text-sm text-gray-600">Total Spent</p>
           </div>
           <div class="bg-white rounded-lg shadow-sm p-6 text-center">
@@ -234,7 +274,11 @@ const updateProfile = async () => {
 }
 
 const fetchRecentOrders = async () => {
-  if (!user.value) return
+  if (!user.value || !user.value.id) {
+    console.warn('No user or user ID available for fetching orders')
+    loadingOrders.value = false
+    return
+  }
   
   try {
     loadingOrders.value = true

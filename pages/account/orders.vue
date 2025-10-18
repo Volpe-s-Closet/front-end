@@ -245,7 +245,11 @@ const hasFilters = computed(() => {
 
 // Methods
 const fetchOrders = async () => {
-  if (!user.value) return
+  if (!user.value || !user.value.id) {
+    console.warn('No user or user ID available for fetching orders')
+    loading.value = false
+    return
+  }
   
   try {
     loading.value = true

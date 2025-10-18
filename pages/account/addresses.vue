@@ -292,7 +292,10 @@ const countries = ref([
 
 // Methods
 const fetchAddresses = async () => {
-  if (!user.value) return
+  if (!user.value || !user.value.id) {
+    console.warn('No user or user ID available for fetching addresses')
+    return
+  }
 
   try {
     const customer = await getCustomer(user.value.id)
@@ -357,6 +360,11 @@ const closeAddressForm = () => {
 }
 
 const saveAddress = async () => {
+  if (!user.value || !user.value.id) {
+    errorMessage.value = 'User not authenticated'
+    return
+  }
+
   saving.value = true
   errorMessage.value = ''
   successMessage.value = ''
@@ -382,6 +390,12 @@ const saveAddress = async () => {
 }
 
 const copyBillingToShipping = () => {
+  if (!user.value || !user.value.id) {
+    errorMessage.value = 'User not authenticated'
+    sameAsBilling.value = false
+    return
+  }
+
   if (sameAsBilling.value && addresses.value.billing) {
     const billingCopy = { ...addresses.value.billing }
     delete billingCopy.phone // Remove phone from shipping address

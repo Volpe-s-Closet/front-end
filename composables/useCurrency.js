@@ -9,66 +9,11 @@ export const useCurrency = () => {
         decimals: 2
     }))
 
-    // Fetch currency settings from WooCommerce
+    // Fetch currency settings from WooCommerce via server API
     const fetchCurrencySettings = async () => {
         try {
-            const config = useRuntimeConfig()
-            const apiUrl = config.public.woocommerceUrl
-            const consumerKey = config.public.woocommerceKey
-            const consumerSecret = config.public.woocommerceSecret
-
-            if (!apiUrl || !consumerKey || !consumerSecret) {
-                console.warn('WooCommerce API credentials not configured, using default currency settings')
-                return
-            }
-
-            const credentials = btoa(`${consumerKey}:${consumerSecret}`)
-
-            // Fetch WooCommerce currency settings
-            const response = await $fetch(`${apiUrl}/wp-json/wc/v3/settings/general`, {
-                headers: {
-                    'Authorization': `Basic ${credentials}`,
-                    'Content-Type': 'application/json'
-                }
-            })
-
-            // Extract currency settings from WooCommerce response
-            const settings = {}
-            response.forEach(setting => {
-                switch (setting.id) {
-                    case 'woocommerce_currency':
-                        settings.currency = setting.value
-                        break
-                    case 'woocommerce_currency_pos':
-                        settings.position = setting.value
-                        break
-                    case 'woocommerce_price_decimal_sep':
-                        settings.decimal_separator = setting.value
-                        break
-                    case 'woocommerce_price_thousand_sep':
-                        settings.thousand_separator = setting.value
-                        break
-                    case 'woocommerce_price_num_decimals':
-                        settings.decimals = parseInt(setting.value)
-                        break
-                }
-            })
-
-            // Get currency symbol from WooCommerce or use common symbols
-            const currencySymbols = {
-                'USD': '$',
-                'EUR': '€',
-                'GBP': '£',
-                'JPY': '¥',
-                'CAD': 'C$',
-                'AUD': 'A$',
-                'CHF': 'CHF',
-                'CNY': '¥',
-                'SEK': 'kr',
-                'NZD': 'NZ$'
-            }
-
-            settings.symbol = currencySymbols[settings.currency] || settings.currency
+            // Fetch WooCommerce currency settings via our server API
+            const settings = await $fetch('/api/woocommerce/settings/currency')
 
             // Update global state
             currencySettings.value = { ...currencySettings.value, ...settings }

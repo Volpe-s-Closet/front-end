@@ -1,27 +1,8 @@
 export const useWooCommerce = () => {
-    const config = useRuntimeConfig()
-
-    // WooCommerce API configuration
-    const apiUrl = config.public.woocommerceUrl || 'https://your-wordpress-site.com'
-    const consumerKey = config.public.woocommerceKey
-    const consumerSecret = config.public.woocommerceSecret
-
-    // Create basic auth header for WooCommerce REST API
-    const createAuthHeader = () => {
-        const credentials = btoa(`${consumerKey}:${consumerSecret}`)
-        return {
-            'Authorization': `Basic ${credentials}`,
-            'Content-Type': 'application/json'
-        }
-    }
-
-    // Generic API call function
+    // Generic API call function - now calls our server API routes
     const apiCall = async (endpoint, options = {}) => {
         try {
-            const response = await $fetch(`${apiUrl}/wp-json/wc/v3/${endpoint}`, {
-                headers: createAuthHeader(),
-                ...options
-            })
+            const response = await $fetch(`/api/woocommerce/${endpoint}`, options)
             return response
         } catch (error) {
             console.error('WooCommerce API Error:', error)
@@ -31,19 +12,11 @@ export const useWooCommerce = () => {
 
     // Products
     const getProducts = async (params = {}) => {
-        const queryString = new URLSearchParams(params).toString()
-        return await apiCall(`products${queryString ? '?' + queryString : ''}`)
+        return await apiCall('products', { query: params })
     }
 
     const getProduct = async (identifier) => {
-        // If identifier is numeric, treat as ID, otherwise treat as slug
-        if (/^\d+$/.test(identifier)) {
-            return await apiCall(`products/${identifier}`)
-        } else {
-            // Fetch by slug
-            const products = await apiCall(`products?slug=${identifier}`)
-            return products.length > 0 ? products[0] : null
-        }
+        return await apiCall(`products/${identifier}`)
     }
 
     const searchProducts = async (search, params = {}) => {
@@ -61,8 +34,9 @@ export const useWooCommerce = () => {
 
     // Product reviews
     const getProductReviews = async (productId, params = {}) => {
-        const queryString = new URLSearchParams(params).toString()
-        return await apiCall(`products/reviews?product=${productId}${queryString ? '&' + queryString : ''}`)
+        return await apiCall('products/reviews', { 
+            query: { product: productId, ...params }
+        })
     }
 
     const createProductReview = async (reviewData) => {
@@ -76,14 +50,18 @@ export const useWooCommerce = () => {
     const getRelatedProducts = async (productId, categoryIds = [], limit = 4) => {
         if (categoryIds.length === 0) return []
 
-        const categoryQuery = categoryIds.map(id => `category=${id}`).join('&')
-        return await apiCall(`products?${categoryQuery}&exclude=${productId}&per_page=${limit}&orderby=popularity`)
+        const params = {
+            category: categoryIds.join(','),
+            exclude: productId,
+            per_page: limit,
+            orderby: 'popularity'
+        }
+        return await apiCall('products', { query: params })
     }
 
     // Categories
     const getCategories = async (params = {}) => {
-        const queryString = new URLSearchParams(params).toString()
-        return await apiCall(`products/categories${queryString ? '?' + queryString : ''}`)
+        return await apiCall('products/categories', { query: params })
     }
 
     const getCategory = async (id) => {

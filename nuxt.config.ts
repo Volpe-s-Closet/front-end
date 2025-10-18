@@ -13,13 +13,13 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     // Private keys (only available on server-side)
+    woocommerceKey: '', // NUXT_WOOCOMMERCE_KEY
+    woocommerceSecret: '', // NUXT_WOOCOMMERCE_SECRET
     
     // Public keys (exposed to client-side)
     // These will automatically map to NUXT_PUBLIC_* environment variables
     public: {
       woocommerceUrl: '', // NUXT_PUBLIC_WOOCOMMERCE_URL
-      woocommerceKey: '', // NUXT_PUBLIC_WOOCOMMERCE_KEY  
-      woocommerceSecret: '', // NUXT_PUBLIC_WOOCOMMERCE_SECRET
       wordpressUrl: '' // NUXT_PUBLIC_WORDPRESS_URL
     }
   },
