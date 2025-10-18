@@ -1,9 +1,7 @@
 export default defineNuxtPlugin(() => {
+  // Initialize auth on client side only
   const { initAuth } = useAuth()
   
-  // Initialize auth on client side after DOM is ready
-  if (process.client) {
-    console.log('Auth plugin running on client')
-    initAuth()
-  }
+  // Initialize auth when the plugin loads
+  initAuth()
 })

@@ -2,17 +2,24 @@ export const useCart = () => {
   // Use Nuxt's useState for global state management
   const cartItems = useState('cart.items', () => [])
   const isCartOpen = useState('cart.isOpen', () => false)
+  const isHydrated = useState('cart.isHydrated', () => false)
   
   // Get currency formatting
   const { formatPrice } = useCurrency()
 
   // Initialize cart from localStorage
   const initCart = () => {
-    if (process.client) {
+    if (process.client && !isHydrated.value) {
       const stored = localStorage.getItem('cart')
       if (stored) {
-        cartItems.value = JSON.parse(stored)
+        try {
+          cartItems.value = JSON.parse(stored)
+        } catch (error) {
+          console.error('Error parsing cart from localStorage:', error)
+          cartItems.value = []
+        }
       }
+      isHydrated.value = true
     }
   }
 
@@ -126,13 +133,7 @@ export const useCart = () => {
     isCartOpen.value = false
   }
 
-  // Initialize cart on client side
-  if (process.client) {
-    // Only initialize if cart is empty (to avoid re-initializing on every call)
-    if (cartItems.value.length === 0) {
-      initCart()
-    }
-  }
+  // Cart initialization is handled by the cart.client.js plugin
 
   return {
     cartItems,
@@ -140,6 +141,7 @@ export const useCart = () => {
     cartTotal,
     cartItemCount,
     cartSubtotal,
+    isHydrated,
     addToCart,
     removeFromCart,
     updateQuantity,

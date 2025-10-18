@@ -8,16 +8,23 @@
     :class="buttonClasses"
     @click="handleClick"
   >
-    <Icon 
-      v-if="loading" 
-      name="heroicons:arrow-path" 
-      :class="iconClasses"
-    />
-    <Icon 
-      v-else-if="computedIcon" 
-      :name="computedIcon" 
-      :class="iconClasses"
-    />
+    <ClientOnly>
+      <Icon 
+        v-if="loading" 
+        name="heroicons:arrow-path" 
+        :class="iconClasses"
+      />
+      <Icon 
+        v-else-if="computedIcon" 
+        :name="computedIcon" 
+        :class="iconClasses"
+      />
+      <template #fallback>
+        <span v-if="loading || computedIcon" :class="iconClasses">
+          <!-- Fallback for SSR -->
+        </span>
+      </template>
+    </ClientOnly>
     <span v-if="slots.default || computedText">
       <slot>{{ computedText }}</slot>
     </span>

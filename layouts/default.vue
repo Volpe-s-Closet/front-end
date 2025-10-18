@@ -31,7 +31,12 @@
                 @keyup.enter="handleSearch"
                 v-model="searchQuery"
               >
-              <Icon name="heroicons:magnifying-glass" class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+              <ClientOnly>
+                <Icon name="heroicons:magnifying-glass" class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                <template #fallback>
+                  <div class="absolute left-3 top-2.5 h-5 w-5 bg-gray-200 rounded"></div>
+                </template>
+              </ClientOnly>
               <BaseButton 
                 v-if="searchQuery"
                 @click="clearSearch"
@@ -60,21 +65,31 @@
                 </div>
               </div>
               <NuxtLink v-else to="/login" class="text-gray-700 hover:text-gray-900">
-                <Icon name="heroicons:user-circle" class="h-6 w-6" />
+                <ClientOnly>
+                  <Icon name="heroicons:user-circle" class="h-6 w-6" />
+                  <template #fallback>
+                    <div class="h-6 w-6 bg-gray-200 rounded-full"></div>
+                  </template>
+                </ClientOnly>
               </NuxtLink>
               <template #fallback>
                 <NuxtLink to="/login" class="text-gray-700 hover:text-gray-900">
-                  <Icon name="heroicons:user-circle" class="h-6 w-6" />
+                  <div class="h-6 w-6 bg-gray-200 rounded-full"></div>
                 </NuxtLink>
               </template>
             </ClientOnly>
 
             <!-- Cart -->
             <BaseButton @click="toggleCart" variant="ghost" size="sm" class="relative text-gray-700 hover:text-gray-900">
-              <Icon name="heroicons:shopping-bag" class="h-6 w-6" />
-              <span v-if="cartItemCount > 0" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                {{ cartItemCount }}
-              </span>
+              <ClientOnly>
+                <Icon name="heroicons:shopping-bag" class="h-6 w-6" />
+                <span v-if="cartItemCount > 0" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {{ cartItemCount }}
+                </span>
+                <template #fallback>
+                  <div class="h-6 w-6 bg-gray-200 rounded"></div>
+                </template>
+              </ClientOnly>
             </BaseButton>
 
             <!-- Mobile menu button -->
@@ -159,10 +174,7 @@ const showAccountMenu = ref(false)
 // Debounced search
 let searchTimeout = null
 
-// Initialize cart on layout mount
-onMounted(() => {
-  initCart()
-})
+// Cart initialization is handled by the cart.client.js plugin
 
 const handleSearch = () => {
   if (searchQuery.value.trim()) {
