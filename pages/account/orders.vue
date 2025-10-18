@@ -192,6 +192,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: 'auth'
+})
+
 const { user } = useAuth()
 const { getOrders } = useWooCommerce()
 const { getPlaceholderImage, handleImageError } = useProductImage()
@@ -204,11 +208,6 @@ useHead({
     { name: 'description', content: 'View and manage your order history.' }
   ]
 })
-
-// Redirect if not authenticated
-if (!user.value) {
-  navigateTo('/login')
-}
 
 // Data
 const orders = ref([])

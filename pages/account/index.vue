@@ -225,6 +225,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: 'auth'
+})
+
 const { user, logout, updateUserProfile, getUserProfile } = useAuth()
 const { getOrders } = useWooCommerce()
 
@@ -235,11 +239,6 @@ useHead({
     { name: 'description', content: 'Manage your account settings and view your order history.' }
   ]
 })
-
-// Redirect if not authenticated
-if (!user.value) {
-  navigateTo('/login')
-}
 
 // Data
 const editMode = ref(false)

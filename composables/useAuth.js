@@ -1,39 +1,64 @@
 export const useAuth = () => {
-  const user = ref(null)
-  const token = ref(null)
+  const user = useState('auth.user', () => null)
+  const token = useState('auth.token', () => null)
   const isAuthenticated = computed(() => !!token.value)
+  const isInitialized = useState('auth.initialized', () => false)
 
   // Initialize auth from localStorage
   const initAuth = () => {
-    if (process.client) {
-      const storedToken = localStorage.getItem('auth_token')
-      const storedUser = localStorage.getItem('user_data')
-      
-      if (storedToken && storedUser) {
-        token.value = storedToken
-        user.value = JSON.parse(storedUser)
+    if (process.client && !isInitialized.value) {
+      try {
+        const storedToken = localStorage.getItem('auth_token')
+        const storedUser = localStorage.getItem('user_data')
+        
+        console.log('Initializing auth - Token:', !!storedToken, 'User:', !!storedUser)
+        
+        if (storedToken && storedUser) {
+          const userData = JSON.parse(storedUser)
+          token.value = storedToken
+          user.value = userData
+          console.log('Auth initialized successfully')
+        } else {
+          console.log('No stored auth data found')
+        }
+        
+        isInitialized.value = true
+      } catch (error) {
+        console.error('Error initializing auth:', error)
+        clearAuth()
+        isInitialized.value = true
       }
     }
   }
 
   // Save auth data
   const saveAuth = (authToken, userData) => {
-    if (process.client) {
-      localStorage.setItem('auth_token', authToken)
-      localStorage.setItem('user_data', JSON.stringify(userData))
-    }
     token.value = authToken
     user.value = userData
+    
+    if (process.client) {
+      try {
+        localStorage.setItem('auth_token', authToken)
+        localStorage.setItem('user_data', JSON.stringify(userData))
+      } catch (error) {
+        console.error('Error saving auth data:', error)
+      }
+    }
   }
 
   // Clear auth data
   const clearAuth = () => {
-    if (process.client) {
-      localStorage.removeItem('auth_token')
-      localStorage.removeItem('user_data')
-    }
     token.value = null
     user.value = null
+    
+    if (process.client) {
+      try {
+        localStorage.removeItem('auth_token')
+        localStorage.removeItem('user_data')
+      } catch (error) {
+        console.error('Error clearing auth data:', error)
+      }
+    }
   }
 
   // Login function (to be used with JWT plugin)
@@ -68,15 +93,33 @@ export const useAuth = () => {
   const register = async (userData) => {
     try {
       const config = useRuntimeConfig()
+      // Use custom WordPress registration endpoint
       const response = await $fetch(`${config.public.wordpressUrl}/wp-json/wp/v2/users/register`, {
         method: 'POST',
-        body: userData
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: {
+          username: userData.username,
+          email: userData.email,
+          password: userData.password,
+          first_name: userData.first_name,
+          last_name: userData.last_name
+        }
       })
 
       return { success: true, data: response }
     } catch (error) {
       console.error('Registration error:', error)
-      return { success: false, error: error.message }
+      let errorMessage = 'Registration failed. Please try again.'
+      
+      if (error.data?.message) {
+        errorMessage = error.data.message
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+      
+      return { success: false, error: errorMessage }
     }
   }
 
@@ -134,20 +177,19 @@ export const useAuth = () => {
     }
   }
 
-  // Initialize on mount
-  onMounted(() => {
-    initAuth()
-  })
+
 
   return {
     user: readonly(user),
     token: readonly(token),
     isAuthenticated,
+    isInitialized: readonly(isInitialized),
     login,
     logout,
     register,
     validateToken,
     getUserProfile,
-    updateUserProfile
+    updateUserProfile,
+    initAuth
   }
 }

@@ -41,25 +41,32 @@
           <!-- Right side actions -->
           <div class="flex items-center space-x-4">
             <!-- Account -->
-            <div class="relative" v-if="isAuthenticated">
-              <button @click="toggleAccountMenu" class="flex items-center text-gray-700 hover:text-gray-900">
-                <Icon name="heroicons:user-circle" class="h-6 w-6" />
-              </button>
-              <div v-if="showAccountMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                <NuxtLink to="/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  My Account
-                </NuxtLink>
-                <NuxtLink to="/account/orders" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Orders
-                </NuxtLink>
-                <button @click="logout" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Logout
+            <ClientOnly>
+              <div class="relative" v-if="isAuthenticated">
+                <button @click="toggleAccountMenu" class="flex items-center text-gray-700 hover:text-gray-900">
+                  <Icon name="heroicons:user-circle" class="h-6 w-6" />
                 </button>
+                <div v-if="showAccountMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                  <NuxtLink to="/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    My Account
+                  </NuxtLink>
+                  <NuxtLink to="/account/orders" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Orders
+                  </NuxtLink>
+                  <button @click="logout" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Logout
+                  </button>
+                </div>
               </div>
-            </div>
-            <NuxtLink v-else to="/login" class="text-gray-700 hover:text-gray-900">
-              <Icon name="heroicons:user-circle" class="h-6 w-6" />
-            </NuxtLink>
+              <NuxtLink v-else to="/login" class="text-gray-700 hover:text-gray-900">
+                <Icon name="heroicons:user-circle" class="h-6 w-6" />
+              </NuxtLink>
+              <template #fallback>
+                <NuxtLink to="/login" class="text-gray-700 hover:text-gray-900">
+                  <Icon name="heroicons:user-circle" class="h-6 w-6" />
+                </NuxtLink>
+              </template>
+            </ClientOnly>
 
             <!-- Cart -->
             <button @click="toggleCart" class="relative text-gray-700 hover:text-gray-900">

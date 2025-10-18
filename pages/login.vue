@@ -99,6 +99,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: 'guest'
+})
+
 const { login, isAuthenticated } = useAuth()
 
 // SEO
@@ -108,11 +112,6 @@ useHead({
     { name: 'description', content: 'Sign in to your account to access your orders and account settings.' }
   ]
 })
-
-// Redirect if already authenticated
-if (isAuthenticated.value) {
-  navigateTo('/account')
-}
 
 // Data
 const loginForm = ref({
