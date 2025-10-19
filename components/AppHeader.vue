@@ -1,10 +1,10 @@
 <template>
-  <header class="bg-white shadow-sm border-b relative z-40">
+  <header class="bg-white shadow-sm border-b sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <!-- Mobile menu button (left side on mobile) -->
         <BaseButton @click="toggleMobileMenu" variant="ghost" size="sm" icon="heroicons:bars-3"
-          class="md:hidden text-gray-700 hover:text-gray-900" />
+          custom-padding="px-3 py-2" class="md:hidden text-gray-700 hover:text-gray-900" />
 
         <!-- Logo -->
         <div class="flex-shrink-0">
@@ -32,16 +32,16 @@
         <div class="flex items-center">
           <!-- Search Button -->
           <BaseButton @click="toggleSearchModal" variant="ghost" size="lg" icon="heroicons:magnifying-glass"
-            class="text-gray-700 hover:text-gray-900" />
+            custom-padding="px-3 py-2" class="text-gray-700 hover:text-gray-900" />
 
           <!-- Cart -->
           <ClientOnly>
             <BaseButton @click="toggleCart" variant="ghost" size="lg" icon="heroicons:shopping-bag"
-              :badge="cartItemCount > 0 ? cartItemCount : null" badge-color="red"
+              custom-padding="px-3 py-2" :badge="cartItemCount > 0 ? cartItemCount : null" badge-color="red"
               class="text-gray-700 hover:text-gray-900" />
             <template #fallback>
               <BaseButton @click="toggleCart" variant="ghost" size="lg" icon="heroicons:shopping-bag"
-                class="text-gray-700 hover:text-gray-900" />
+                custom-padding="px-3 py-2" class="text-gray-700 hover:text-gray-900" />
             </template>
           </ClientOnly>
 
@@ -50,7 +50,7 @@
             <div v-if="isAuthenticated">
               <DropDown :items="accountMenuItems" @item-click="handleAccountAction" trigger-icon="heroicons:user-circle"
                 trigger-label="Account" button-class="!bg-transparent hover:!bg-gray-100 !px-2 !py-2" position="right"
-                size="sm" hide-label />
+                size="sm" hide-label hide-chevron />
             </div>
             <NuxtLink v-else to="/login" class="text-gray-700 hover:text-gray-900">
               <ClientOnly>

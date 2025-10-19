@@ -1,24 +1,10 @@
 <template>
-  <component
-    :is="tag"
-    v-bind="linkProps"
-    :type="computedType"
-    :disabled="computedDisabled"
-    :class="buttonClasses"
-    @click="handleClick"
-  >
+  <component :is="tag" v-bind="linkProps" :type="computedType" :disabled="computedDisabled" :class="buttonClasses"
+    @click="handleClick">
     <div class="relative inline-flex items-center">
       <ClientOnly>
-        <Icon 
-          v-if="loading" 
-          name="heroicons:arrow-path" 
-          :class="iconClasses"
-        />
-        <Icon 
-          v-else-if="computedIcon" 
-          :name="computedIcon" 
-          :class="iconClasses"
-        />
+        <Icon v-if="loading" name="heroicons:arrow-path" :class="iconClasses" />
+        <Icon v-else-if="computedIcon" :name="computedIcon" :class="iconClasses" />
         <template #fallback>
           <span v-if="loading || computedIcon" :class="iconClasses">
             <!-- Fallback for SSR -->
@@ -28,12 +14,9 @@
       <span v-if="slots.default || computedText">
         <slot>{{ computedText }}</slot>
       </span>
-      
+
       <!-- Badge -->
-      <span 
-        v-if="badge && (computedIcon || loading)" 
-        :class="badgeClasses"
-      >
+      <span v-if="badge && (computedIcon || loading)" :class="badgeClasses">
         {{ badge }}
       </span>
     </div>
@@ -51,7 +34,7 @@ const props = defineProps({
     type: String,
     default: ''
   },
-  
+
   // Badge
   badge: {
     type: [String, Number],
@@ -62,7 +45,7 @@ const props = defineProps({
     default: 'red',
     validator: (value) => ['red', 'blue', 'green', 'yellow', 'gray'].includes(value)
   },
-  
+
   // Behavior
   loading: {
     type: Boolean,
@@ -72,7 +55,7 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  
+
   // Navigation
   to: {
     type: [String, Object],
@@ -82,23 +65,23 @@ const props = defineProps({
     type: String,
     default: null
   },
-  
+
   // HTML attributes
   type: {
     type: String,
     default: 'button'
   },
-  
+
   // Styling
   variant: {
     type: String,
     default: 'primary',
     validator: (value) => [
-      'primary', 
-      'secondary', 
-      'outline', 
-      'ghost', 
-      'danger', 
+      'primary',
+      'secondary',
+      'outline',
+      'ghost',
+      'danger',
       'success',
       'link'
     ].includes(value)
@@ -106,7 +89,7 @@ const props = defineProps({
   size: {
     type: String,
     default: 'md',
-    validator: (value) => ['xs', 'sm', 'md', 'lg', 'xl'].includes(value)
+    validator: (value) => ['xs', 'sm', 'md', 'lg', 'xl', 'compact', 'minimal'].includes(value)
   },
   fullWidth: {
     type: Boolean,
@@ -117,7 +100,15 @@ const props = defineProps({
     default: 'md',
     validator: (value) => ['none', 'sm', 'md', 'lg', 'full'].includes(value)
   },
-  
+  noPadding: {
+    type: Boolean,
+    default: false
+  },
+  customPadding: {
+    type: String,
+    default: null
+  },
+
   // Form-specific props
   action: {
     type: String,
@@ -129,13 +120,13 @@ const props = defineProps({
       'add', 'remove', 'increase', 'decrease', 'clear'
     ].includes(value)
   },
-  
+
   // Form validation
   isValid: {
     type: Boolean,
     default: true
   },
-  
+
   // Cart-specific props
   product: {
     type: Object,
@@ -152,7 +143,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits([
-  'click', 
+  'click',
   // Form events
   'submit', 'reset', 'cancel', 'save', 'delete',
   // Cart events
@@ -172,7 +163,7 @@ if (props.action && ['add', 'remove', 'increase', 'decrease', 'clear'].includes(
 const computedText = computed(() => {
   if (props.text) return props.text
   if (!props.action) return ''
-  
+
   const texts = {
     // Form actions
     submit: 'Submit',
@@ -193,7 +184,7 @@ const computedText = computed(() => {
 const computedIcon = computed(() => {
   if (props.icon) return props.icon
   if (!props.action) return ''
-  
+
   const icons = {
     // Form actions
     submit: '',
@@ -214,7 +205,7 @@ const computedIcon = computed(() => {
 const computedVariant = computed(() => {
   if (props.variant !== 'primary') return props.variant
   if (!props.action) return 'primary'
-  
+
   const variants = {
     // Form actions
     submit: 'primary',
@@ -235,7 +226,7 @@ const computedVariant = computed(() => {
 const computedType = computed(() => {
   if (props.type !== 'button') return props.type
   if (!props.action) return 'button'
-  
+
   const types = {
     // Form actions
     submit: 'submit',
@@ -255,17 +246,17 @@ const computedType = computed(() => {
 
 const computedDisabled = computed(() => {
   let baseDisabled = props.disabled || props.loading
-  
+
   // Form validation
   if (props.action && ['submit', 'save'].includes(props.action)) {
     baseDisabled = baseDisabled || !props.isValid
   }
-  
+
   // Cart-specific disable logic
   if (props.action === 'decrease' && props.quantity <= 1) {
     baseDisabled = true
   }
-  
+
   return baseDisabled
 })
 
@@ -290,11 +281,11 @@ const linkProps = computed(() => {
 // Handle click events
 const handleClick = async (event) => {
   if (computedDisabled.value) return
-  
+
   // Handle cart actions
   if (props.action && cartComposable) {
     const { addToCart, removeFromCart, updateQuantity, clearCart, openCart } = cartComposable
-    
+
     try {
       switch (props.action) {
         case 'add':
@@ -304,28 +295,28 @@ const handleClick = async (event) => {
             emit('added', { product: props.product, quantity: props.quantity, variation: props.variation })
           }
           break
-          
+
         case 'remove':
           if (props.product) {
             removeFromCart(props.product.id, props.variation)
             emit('removed', { product: props.product, variation: props.variation })
           }
           break
-          
+
         case 'increase':
           if (props.product) {
             updateQuantity(props.product.id, props.quantity + 1, props.variation)
             emit('updated', { product: props.product, quantity: props.quantity + 1, variation: props.variation })
           }
           break
-          
+
         case 'decrease':
           if (props.product && props.quantity > 1) {
             updateQuantity(props.product.id, props.quantity - 1, props.variation)
             emit('updated', { product: props.product, quantity: props.quantity - 1, variation: props.variation })
           }
           break
-          
+
         case 'clear':
           clearCart()
           emit('removed', { all: true })
@@ -335,12 +326,12 @@ const handleClick = async (event) => {
       console.error('Cart action error:', error)
     }
   }
-  
+
   // Emit action-specific events
   if (props.action) {
     emit(props.action, event)
   }
-  
+
   // Always emit click
   emit('click', event)
 }
@@ -350,12 +341,36 @@ const baseClasses = 'inline-flex items-center justify-center font-medium transit
 
 // Size classes
 const sizeClasses = computed(() => {
+  // Get text size for the current size
+  const textSizes = {
+    xs: 'text-xs',
+    sm: 'text-sm',
+    md: 'text-sm',
+    lg: 'text-base',
+    xl: 'text-lg',
+    compact: 'text-sm',
+    minimal: 'text-sm'
+  }
+  
+  // If custom padding is provided, use it with the text size
+  if (props.customPadding) {
+    return `${props.customPadding} ${textSizes[props.size]}`
+  }
+  
+  // If noPadding is true, use minimal padding
+  if (props.noPadding) {
+    return `px-1 py-1 ${textSizes[props.size]}`
+  }
+  
+  // Default size classes with padding and text
   const sizes = {
     xs: 'px-2 py-1 text-xs',
     sm: 'px-3 py-1.5 text-sm',
     md: 'px-4 py-2 text-sm',
     lg: 'px-6 py-3 text-base',
-    xl: 'px-8 py-4 text-lg'
+    xl: 'px-8 py-4 text-lg',
+    compact: 'px-3 py-2 text-sm',
+    minimal: 'px-1 py-1 text-sm'
   }
   return sizes[props.size]
 })
@@ -404,11 +419,13 @@ const iconClasses = computed(() => {
     sm: 'h-4 w-4',
     md: 'h-4 w-4',
     lg: 'h-5 w-5',
-    xl: 'h-6 w-6'
+    xl: 'h-6 w-6',
+    compact: 'h-4 w-4',
+    minimal: 'h-4 w-4'
   }
-  
+
   const spacingClasses = (computedText.value || slots.default) ? 'mr-2' : ''
-  
+
   return `${baseIconClasses} ${sizeIconClasses[props.size]} ${spacingClasses}`.trim()
 })
 
@@ -421,7 +438,7 @@ const badgeClasses = computed(() => {
     yellow: 'bg-yellow-500 text-black',
     gray: 'bg-gray-500 text-white'
   }
-  
+
   return `absolute -top-2 -right-2 ${colorClasses[props.badgeColor]} text-xs rounded-full h-5 w-5 flex items-center justify-center`
 })
 
