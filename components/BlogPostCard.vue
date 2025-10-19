@@ -2,9 +2,8 @@
   <article class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
     <!-- Featured Image -->
     <div v-if="featuredImage" class="aspect-video overflow-hidden">
-      <img :src="featuredImage" 
-           :alt="post.title.rendered"
-           class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+      <img :src="featuredImage" :alt="post.title.rendered"
+        class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
     </div>
 
     <div class="p-6">
@@ -13,8 +12,7 @@
         <time :datetime="post.date">{{ formattedDate }}</time>
         <span v-if="categories.length > 0" class="mx-2">•</span>
         <div v-if="categories.length > 0" class="flex flex-wrap gap-2">
-          <NuxtLink v-for="category in categories" :key="category.id"
-            :to="`/blog/category/${category.slug}`"
+          <NuxtLink v-for="category in categories" :key="category.id" :to="`/blog/category/${category.slug}`"
             class="text-blue-600 hover:text-blue-800 transition-colors">
             {{ category.name }}
           </NuxtLink>
@@ -23,9 +21,7 @@
 
       <!-- Post Title -->
       <h2 :class="titleClass">
-        <NuxtLink :to="`/blog/${post.slug}`" 
-          class="hover:text-blue-600 transition-colors"
-          v-html="post.title.rendered">
+        <NuxtLink :to="`/blog/${post.slug}`" class="hover:text-blue-600 transition-colors" v-html="post.title.rendered">
         </NuxtLink>
       </h2>
 
@@ -35,7 +31,7 @@
       </p>
 
       <!-- Read More -->
-      <NuxtLink :to="`/blog/${post.slug}`" 
+      <NuxtLink :to="`/blog/${post.slug}`"
         class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
         Read More
         <Icon name="heroicons:arrow-right" class="ml-1 h-4 w-4" />
@@ -80,7 +76,7 @@ const categories = computed(() => {
 
 const titleClass = computed(() => {
   const baseClass = 'font-bold text-gray-900 mb-3'
-  
+
   switch (props.size) {
     case 'small':
       return `${baseClass} text-lg line-clamp-2`
@@ -91,19 +87,3 @@ const titleClass = computed(() => {
   }
 })
 </script>
-
-<style scoped>
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-</style>

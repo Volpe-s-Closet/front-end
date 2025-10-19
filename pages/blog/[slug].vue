@@ -65,7 +65,7 @@
           <h1 class="text-4xl font-bold text-gray-900 mb-6" v-html="post.title.rendered"></h1>
 
           <!-- Post Content -->
-          <div class="prose prose-lg max-w-none" v-html="post.content.rendered"></div>
+          <div class="prose prose-lg prose-gray max-w-none prose-headings:text-gray-900 prose-a:text-blue-600 hover:prose-a:text-blue-800 prose-img:rounded-lg prose-img:shadow-sm prose-blockquote:border-l-4 prose-blockquote:border-blue-200 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600 prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-pre:bg-gray-900 prose-pre:text-gray-100" v-html="post.content.rendered"></div>
 
           <!-- Post Footer -->
           <div class="mt-12 pt-8 border-t border-gray-200">
@@ -204,60 +204,3 @@ watch(post, (newPost) => {
 }, { immediate: true })
 </script>
 
-<style scoped>
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Prose styles for blog content */
-:deep(.prose) {
-  @apply text-gray-700;
-}
-
-:deep(.prose h1) {
-  @apply text-3xl font-bold text-gray-900 mt-8 mb-4;
-}
-
-:deep(.prose h2) {
-  @apply text-2xl font-bold text-gray-900 mt-6 mb-3;
-}
-
-:deep(.prose h3) {
-  @apply text-xl font-semibold text-gray-900 mt-5 mb-2;
-}
-
-:deep(.prose p) {
-  @apply mb-4 leading-relaxed;
-}
-
-:deep(.prose a) {
-  @apply text-blue-600 hover:text-blue-800 transition-colors;
-}
-
-:deep(.prose img) {
-  @apply rounded-lg shadow-sm my-6;
-}
-
-:deep(.prose blockquote) {
-  @apply border-l-4 border-blue-200 pl-4 italic text-gray-600 my-6;
-}
-
-:deep(.prose ul) {
-  @apply list-disc list-inside mb-4 space-y-1;
-}
-
-:deep(.prose ol) {
-  @apply list-decimal list-inside mb-4 space-y-1;
-}
-
-:deep(.prose code) {
-  @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono;
-}
-
-:deep(.prose pre) {
-  @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-6;
-}
-</style>
