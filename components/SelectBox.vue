@@ -2,19 +2,21 @@
   <div class="relative" ref="dropdownRef">
     <!-- Trigger Button -->
     <button @click="toggleDropdown" :disabled="disabled" :class="[
-      'flex items-center space-x-2 bg-gray-100 rounded-lg px-3 py-2 font-medium text-gray-900 transition-colors',
+      'flex items-center justify-between bg-gray-100 rounded-lg px-3 py-2 font-medium text-gray-900 transition-colors',
       size === 'xs' ? 'text-xs sm:text-sm' : 'text-sm',
       disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200',
       buttonClass
     ]">
-      <Icon v-if="selectedOption.icon" :name="selectedOption.icon" class="h-4 w-4 text-gray-600" />
-      <span v-if="!hideLabel" :class="size === 'xs' ? 'hidden xs:inline' : ''">
-        {{ selectedOption.label }}
-      </span>
-      <span v-if="size === 'xs' && hideLabel" class="xs:hidden">
-        {{ placeholder }}
-      </span>
-      <Icon name="heroicons:chevron-down" class="h-4 w-4 text-gray-600" />
+      <div class="flex items-center space-x-2">
+        <Icon v-if="selectedOption.icon" :name="selectedOption.icon" class="h-4 w-4 text-gray-600" />
+        <span v-if="!hideLabel" :class="size === 'xs' ? 'hidden xs:inline' : ''">
+          {{ selectedOption.label }}
+        </span>
+        <span v-if="size === 'xs' && hideLabel" class="xs:hidden">
+          {{ placeholder }}
+        </span>
+      </div>
+      <Icon name="heroicons:chevron-down" class="h-4 w-4 text-gray-600 flex-shrink-0 ml-2" />
     </button>
 
     <!-- Dropdown Menu -->
