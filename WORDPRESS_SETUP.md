@@ -115,7 +115,18 @@ function custom_user_registration($request) {
 ### Product Settings
 1. Go to **WooCommerce > Settings > Products**
 2. Enable **Enable reviews** if you want product reviews
-3. Set up your **Shop page** and **Cart page**
+3. Configure **Review settings**:
+   - **Enable star rating on reviews**: Allow customers to rate products
+   - **Star ratings should be required**: Make ratings mandatory
+   - **Enable review rating verification**: Only allow reviews from verified purchasers
+4. Set up your **Shop page** and **Cart page**
+
+### Review & Comment Moderation
+1. Go to **Settings > Discussion** in WordPress admin
+2. Configure comment moderation settings:
+   - **Comment must be manually approved**: Enable if you want to moderate all reviews
+   - **Comment author must have a previously approved comment**: For trusted reviewers
+   - **Hold a comment in the queue if it contains X or more links**: Spam prevention
 
 ### Inventory Settings
 1. Go to **WooCommerce > Settings > Products > Inventory**
@@ -158,7 +169,121 @@ NUXT_WOOCOMMERCE_KEY=ck_your_consumer_key_here
 NUXT_WOOCOMMERCE_SECRET=cs_your_consumer_secret_here
 ```
 
-## 6. Blog Integration Setup
+## 6. Product Review System
+
+The frontend includes a comprehensive product review system that integrates with WooCommerce's native review functionality while adding enhanced features like purchase verification and moderation support.
+
+### Review System Features
+
+- **Purchase Verification**: Reviews can be restricted to customers who have purchased the product
+- **User Authentication**: Users must be logged in to leave reviews
+- **Rating System**: 5-star rating system with visual feedback
+- **Review Management**: Users can edit their existing reviews
+- **Moderation Support**: Shows pending/approved status for reviews
+- **WooCommerce Integration**: Respects all WooCommerce review settings
+
+### Review System Components
+
+#### ProductComments.vue
+Main component that handles the review interface and logic.
+
+**Props:**
+- `productId` (required): The WooCommerce product ID
+- `comments`: Array of existing reviews
+
+**Events:**
+- `comment-added`: Emitted when a review is successfully submitted
+- `refresh-comments`: Emitted to trigger a refresh of the reviews list
+
+#### Usage in Product Pages
+```vue
+<ProductComments 
+  :product-id="product.id" 
+  :comments="reviews"
+  @comment-added="handleCommentAdded"
+  @refresh-comments="refreshReviews"
+/>
+```
+
+### Review API Endpoints
+
+The system adds these custom API endpoints:
+
+#### Purchase Status Check
+`GET /api/woocommerce/products/[productId]/purchase-status`
+
+Checks if a customer has purchased a specific product (server-side verification).
+
+**Query Parameters:**
+- `customer_id`: The WooCommerce customer ID
+
+**Response:**
+```json
+{
+  "has_purchased": true,
+  "product_id": "123",
+  "customer_id": "456"
+}
+```
+
+#### Review Settings
+`GET /api/woocommerce/settings/reviews`
+
+Gets WooCommerce review configuration settings.
+
+**Response:**
+```json
+{
+  "reviews_enabled": true,
+  "purchase_verification_required": false,
+  "ratings_enabled": true,
+  "moderation_required": false,
+  "verification_label": "Verified Purchase"
+}
+```
+
+#### Review Management
+`POST /api/woocommerce/products/reviews`
+
+Creates new reviews or updates existing ones (handles both operations).
+
+### Review System States
+
+The component handles several user states:
+
+- **Loading**: While checking purchase status and settings
+- **Not Authenticated**: User needs to log in to review
+- **Purchase Required**: User must purchase product first (if verification enabled)
+- **Can Review**: User can leave or update reviews
+- **Has Reviewed**: User has already reviewed - shows edit option
+- **Pending Moderation**: Review submitted but awaiting approval
+
+### Review Security Features
+
+- **Server-side purchase verification** for security
+- **User authentication required** for all review operations
+- **Customer ID validation** prevents unauthorized access
+- **Review ownership verification** ensures users can only edit their own reviews
+
+### Review Configuration Options
+
+The system automatically respects these WooCommerce settings:
+
+1. **Enable Reviews**: Controls whether reviews are enabled globally
+2. **Purchase Verification**: When enabled, only verified purchasers can review
+3. **Enable Ratings**: Controls whether the star rating system is available
+4. **Comment Moderation**: WordPress setting for review approval workflow
+
+### Review Error Handling
+
+The system gracefully handles:
+- Network errors when checking purchase status
+- Missing WooCommerce settings (falls back to safe defaults)
+- Authentication failures
+- Review submission errors
+- Moderation queue status
+
+## 7. Blog Integration Setup
 
 The frontend includes a complete blog integration that consumes content from your WordPress site using the WordPress REST API.
 
@@ -202,7 +327,7 @@ The integration uses these WordPress REST API endpoints:
 - `pages/blog/category/[slug].vue` - Category-filtered blog posts
 - Updated navigation in `AppHeader.vue` and `MobileSidebar.vue`
 
-## 7. Testing the Setup
+## 8. Testing the Setup
 
 ### Test WooCommerce API
 You can test your WooCommerce API using curl:
@@ -240,7 +365,21 @@ curl -X POST \
   }'
 ```
 
-## 8. Optional Enhancements
+### Test Review System
+```bash
+# Get product reviews
+curl -X GET 'https://your-site.com/wp-json/wc/v3/products/reviews?product=123'
+
+# Get review settings (requires API credentials)
+curl -X GET \
+  'https://your-site.com/wp-json/wc/v3/settings/products' \
+  -u 'your_consumer_key:your_consumer_secret'
+
+# Test purchase verification (replace with actual product and customer IDs)
+curl -X GET 'https://your-frontend-domain.com/api/woocommerce/products/123/purchase-status?customer_id=456'
+```
+
+## 9. Optional Enhancements
 
 ### Custom Product Fields
 If you need custom product fields, consider using:
@@ -259,7 +398,7 @@ If you need custom product fields, consider using:
 - Configure product schema markup
 - Set up proper URL structures
 
-## 9. Troubleshooting
+## 10. Troubleshooting
 
 ### Common Issues
 
@@ -294,6 +433,13 @@ If you need custom product fields, consider using:
 - Make sure blog posts are assigned to categories
 - Check that categories are not empty (have at least one published post)
 - Verify category slugs match the URLs being requested
+
+**Review System Issues**
+- **Reviews not showing**: Check WooCommerce > Settings > Products > Enable reviews
+- **Purchase verification not working**: Verify customer has completed orders with "completed" status
+- **Reviews always pending**: Check WordPress > Settings > Discussion > Comment moderation settings
+- **Can't edit reviews**: Ensure user is logged in and owns the review
+- **API errors**: Check WooCommerce API credentials and permissions
 
 ### Debug Mode
 Enable WordPress debug mode by adding to `wp-config.php`:
