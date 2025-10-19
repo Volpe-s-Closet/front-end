@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  nuxt-app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NUXT_PUBLIC_SITE_URL=https://admin.volpescloset.com
+      - NUXT_WOOCOMMERCE_KEY=ck_7c30e3f5122a8574a8eacb5e124dc5630e845821
+      - NUXT_WOOCOMMERCE_SECRET=cs_4dde3a36bd2beb42f2d68a643b67187f197df005
+    restart: unless-stopped
