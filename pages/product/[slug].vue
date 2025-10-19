@@ -47,11 +47,12 @@
                 <div>
                   <h1 class="text-2xl font-bold text-gray-900 mb-3">{{ product.name }}</h1>
 
-                  <!-- Rating -->
+                  <!-- Rating Display -->
                   <div v-if="product.average_rating > 0" class="flex items-center space-x-2 mb-4">
                     <div class="flex items-center">
                       <span v-for="i in 5" :key="i" class="text-yellow-400 text-lg">
-                        {{ i <= Math.floor(product.average_rating) ? '★' : '☆' }} </span>
+                        {{ i <= Math.floor(product.average_rating) ? '★' : '☆' }}
+                      </span>
                     </div>
                     <span class="text-sm text-gray-600">({{ product.rating_count }} reviews)</span>
                   </div>
@@ -333,6 +334,8 @@ const hasVariations = computed(() => {
   return product.value?.type === 'variable' && variations.value && variations.value.length > 0
 })
 
+
+
 // Methods
 const updateSelectedVariation = () => {
   if (!variations.value?.length) return
@@ -372,17 +375,11 @@ const addToCart = () => {
   openCart()
 }
 
-const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-}
-
 const handleCommentAdded = () => {
   // Switch to reviews tab to show the new comment
   activeTab.value = 'reviews'
+  // Refresh reviews to update the count and rating
+  refreshReviews()
 }
 
 // Set page meta

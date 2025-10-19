@@ -33,12 +33,34 @@ export default defineEventHandler(async (event) => {
       }
     })
 
+    // Get general WordPress settings for comment moderation
+    try {
+      const generalSettings = await $fetch(`${siteUrl}/wp-json/wc/v3/settings/general`, {
+        headers: {
+          'Authorization': `Basic ${credentials}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      generalSettings.forEach(setting => {
+        switch (setting.id) {
+          case 'comment_moderation':
+            reviewSettings.moderation_required = setting.value === '1'
+            break
+        }
+      })
+    } catch (error) {
+      console.log('Could not fetch general settings for moderation')
+    }
+
     return {
       ...reviewSettings,
       // Default values if settings not found
       reviews_enabled: reviewSettings.reviews_enabled ?? true,
       purchase_verification_required: reviewSettings.purchase_verification_required ?? false,
-      ratings_enabled: reviewSettings.ratings_enabled ?? true
+      ratings_enabled: reviewSettings.ratings_enabled ?? true,
+      moderation_required: reviewSettings.moderation_required ?? false,
+      verification_label: reviewSettings.verification_label ?? 'Verified Purchase'
     }
   } catch (error) {
     // Return default settings if API call fails
@@ -47,6 +69,7 @@ export default defineEventHandler(async (event) => {
       reviews_enabled: true,
       purchase_verification_required: false,
       ratings_enabled: true,
+      moderation_required: false,
       verification_label: 'Verified Purchase'
     }
   }
