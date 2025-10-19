@@ -203,7 +203,13 @@ const changePassword = async () => {
         confirm_password: ''
       }
     } else {
-      errorMessage.value = result.error
+      // Handle the case where API validation succeeds but password change isn't supported
+      if (result.current_password_valid && result.redirect_url) {
+        errorMessage.value = `${result.error} Click here to change your password in WordPress admin.`
+        // You could also show a button to redirect to WordPress admin
+      } else {
+        errorMessage.value = result.error
+      }
     }
 
   } catch (error) {

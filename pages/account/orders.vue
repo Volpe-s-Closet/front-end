@@ -183,7 +183,15 @@ definePageMeta({
 })
 
 const { user } = useAuth()
-const { getOrders, getPlaceholderImage } = useCustomer()
+const { 
+  customerOrders, 
+  isLoadingOrders,
+  loadCustomerOrders,
+  loadCustomerProfile,
+  getPlaceholderImage,
+  formatDate,
+  getOrderStatusClass
+} = useCustomer()
 const { handleImageError } = useProducts()
 const { addToCart } = useCart()
 const { formatPrice } = useCurrency()
@@ -197,8 +205,6 @@ useHead({
 })
 
 // Data
-const orders = ref([])
-const loading = ref(true)
 const searchQuery = ref('')
 const statusFilter = ref('')
 const dateFilter = ref('')
@@ -207,7 +213,7 @@ const ordersPerPage = 10
 
 // Computed
 const filteredOrders = computed(() => {
-  let filtered = [...orders.value]
+  let filtered = [...customerOrders.value]
 
   // Search filter
   if (searchQuery.value) {
@@ -235,6 +241,8 @@ const filteredOrders = computed(() => {
   return filtered
 })
 
+const loading = computed(() => isLoadingOrders.value)
+
 const totalPages = computed(() => {
   return Math.ceil(filteredOrders.value.length / ordersPerPage)
 })
@@ -245,39 +253,8 @@ const hasFilters = computed(() => {
 
 // Methods
 const fetchOrders = async () => {
-  if (!user.value || !user.value.id) {
-    loading.value = false
-    return
-  }
-  
-  try {
-    loading.value = true
-    const fetchedOrders = await getOrders(user.value.id, { per_page: 100 })
-    orders.value = fetchedOrders
-  } catch (error) {
-    console.error('Error fetching orders:', error)
-  } finally {
-    loading.value = false
-  }
-}
-
-const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-}
-
-const getOrderStatusClass = (status) => {
-  const classes = {
-    'pending': 'bg-yellow-100 text-yellow-800',
-    'processing': 'bg-blue-100 text-blue-800',
-    'completed': 'bg-green-100 text-green-800',
-    'cancelled': 'bg-red-100 text-red-800',
-    'refunded': 'bg-gray-100 text-gray-800'
-  }
-  return classes[status] || 'bg-gray-100 text-gray-800'
+  await loadCustomerProfile(user.value)
+  await loadCustomerOrders(user.value, { per_page: 100 })
 }
 
 const capitalizeFirst = (str) => {

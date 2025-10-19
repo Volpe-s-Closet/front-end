@@ -91,14 +91,40 @@ export const useAuth = () => {
         // Handle different response structures
         let userData = response.user_data || response.data || response.user || null
 
+
+
         // If no user data in response, create basic user object
         if (!userData) {
           userData = {
-            id: response.user_id || null,
+            id: response.user_id || response.ID || null,
             email: email,
             username: email,
             display_name: response.user_display_name || email
           }
+        }
+
+        // Ensure we have a valid user ID - try multiple possible fields
+        const possibleIds = [
+          userData?.id,
+          userData?.ID,
+          userData?.user_id,
+          response.user_id,
+          response.ID,
+          response.data?.user_id,
+          response.data?.ID,
+          response.data?.user?.id,  // This is where the ID actually is!
+          response.data?.user?.ID
+        ]
+
+        const validId = possibleIds.find(id => id && id !== null && id !== 'null')
+        
+        if (validId) {
+          userData.id = validId
+          
+          // Also store other user info from the response
+          userData.email = response.user_email || email
+          userData.username = response.user_nicename || email
+          userData.display_name = response.user_display_name || email
         }
 
         saveAuth(response.token, userData)
@@ -115,6 +141,17 @@ export const useAuth = () => {
   // Logout function
   const logout = () => {
     clearAuth()
+
+    // Clear customer data if available
+    if (process.client) {
+      try {
+        const { clearCustomerData } = useCustomer()
+        clearCustomerData()
+      } catch (error) {
+        // Customer composable might not be available in all contexts
+      }
+    }
+
     navigateTo('/')
   }
 
@@ -152,22 +189,71 @@ export const useAuth = () => {
     }
   }
 
-  // Validate token
-  const validateToken = async () => {
-    if (!token.value) return false
+  // Validate token and get user data
+  const validateTokenAndGetUser = async (tokenToValidate = null) => {
+    const tokenValue = tokenToValidate || token.value
+    if (!tokenValue) return null
 
     try {
       const config = useRuntimeConfig()
       const response = await $fetch(`${config.public.siteUrl}/wp-json/jwt-auth/v1/token/validate`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token.value}`
+          'Authorization': `Bearer ${tokenValue}`
         }
       })
 
-      return response.code === 'jwt_auth_valid_token'
+      if (response.code === 'jwt_auth_valid_token') {
+        const userData = response.data || response
+        return userData
+      }
+      return null
     } catch (error) {
-      clearAuth()
+      if (!tokenToValidate) {
+        clearAuth()
+      }
+      return null
+    }
+  }
+
+  // Validate token
+  const validateToken = async () => {
+    const result = await validateTokenAndGetUser()
+    return result !== null
+  }
+
+  // Refresh user data from token
+  const refreshUserData = async () => {
+    if (!token.value) return false
+
+    try {
+      const tokenData = await validateTokenAndGetUser()
+      
+      if (tokenData) {
+        // Try different possible user ID fields
+        const userId = tokenData.user_id || tokenData.ID || tokenData.id || tokenData.user?.ID
+        
+        if (userId) {
+          // Update user data with fresh info from token
+          const updatedUser = {
+            ...user.value,
+            id: userId,
+            email: tokenData.user_email || tokenData.email || user.value.email,
+            username: tokenData.user_login || tokenData.username || user.value.username,
+            display_name: tokenData.user_display_name || tokenData.display_name || user.value.display_name
+          }
+          
+          user.value = updatedUser
+          if (process.client) {
+            localStorage.setItem('user_data', JSON.stringify(updatedUser))
+          }
+          return true
+        }
+      }
+      
+      return false
+    } catch (error) {
+      console.error('Error refreshing user data:', error)
       return false
     }
   }
@@ -185,21 +271,29 @@ export const useAuth = () => {
     }
   }
 
-  // Update user profile
-  const updateUserProfile = async (profileData) => {
+  // Update user profile (now delegates to customer composable)
+  const updateUserProfile = async (profileData, customerId = null) => {
     if (!token.value || !user.value) return { success: false, error: 'Not authenticated' }
 
     try {
-      const { updateCustomer } = useCustomer()
-      const updatedUser = await updateCustomer(user.value.id, profileData)
+      const { updateCustomerProfile } = useCustomer()
+      const result = await updateCustomerProfile(profileData, user.value)
 
-      // Update local user data
-      user.value = { ...user.value, ...updatedUser }
-      if (process.client) {
-        localStorage.setItem('user_data', JSON.stringify(user.value))
+      if (result.success) {
+        // Update local user data with relevant fields
+        user.value = {
+          ...user.value,
+          first_name: result.data.first_name,
+          last_name: result.data.last_name,
+          email: result.data.email
+        }
+
+        if (process.client) {
+          localStorage.setItem('user_data', JSON.stringify(user.value))
+        }
       }
 
-      return { success: true, data: updatedUser }
+      return result
     } catch (error) {
       console.error('Error updating profile:', error)
       return { success: false, error: error.message }
@@ -210,10 +304,25 @@ export const useAuth = () => {
   const changePassword = async (currentPassword, newPassword) => {
     if (!token.value || !user.value) return { success: false, error: 'Not authenticated' }
 
-    try {
-      const config = useRuntimeConfig()
+    // Get user ID using the same logic as profile updates
+    const { customerData } = useCustomer()
+    let userId = customerData.value?.id || user.value.id
 
-      const response = await $fetch(`${config.public.siteUrl}/wp-json/wp/v2/users/${user.value.id}`, {
+    // Check if we have a valid ID
+    if (!userId || userId === 'null') {
+      const refreshed = await refreshUserData()
+      
+      // Try again after refresh
+      userId = customerData.value?.id || user.value.id
+      
+      if (!userId || userId === 'null') {
+        return { success: false, error: 'Invalid user ID. Please log out and log in again.' }
+      }
+    }
+
+    try {
+      // Use our server API route for password change
+      const response = await $fetch('/api/auth/change-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -221,7 +330,9 @@ export const useAuth = () => {
         },
         body: {
           current_password: currentPassword,
-          password: newPassword
+          new_password: newPassword,
+          user_id: userId,
+          user_email: user.value.email
         }
       })
 
@@ -243,6 +354,8 @@ export const useAuth = () => {
     logout,
     register,
     validateToken,
+    validateTokenAndGetUser,
+    refreshUserData,
     getUserProfile,
     updateUserProfile,
     changePassword,
