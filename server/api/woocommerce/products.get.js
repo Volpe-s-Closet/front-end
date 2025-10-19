@@ -2,17 +2,8 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const query = getQuery(event)
   
-  const { woocommerceKey, woocommerceSecret } = config
-  const { siteUrl } = config.public
-  
-  if (!woocommerceKey || !woocommerceSecret || !siteUrl) {
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'WooCommerce API credentials not configured'
-    })
-  }
-  
-  const credentials = Buffer.from(`${woocommerceKey}:${woocommerceSecret}`).toString('base64')
+  const { woocommerceKey, woocommerceSecret, siteUrl } = validateWooCommerceConfig(config)
+  const credentials = createWooCommerceAuth(woocommerceKey, woocommerceSecret)
   
   try {
     const queryString = new URLSearchParams(query).toString()
