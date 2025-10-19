@@ -1,218 +1,151 @@
 <template>
   <NuxtLayout name="account">
-        <!-- Success/Error Messages -->
-        <div v-if="successMessage" class="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
-          <div class="flex">
-            <Icon name="heroicons:check-circle" class="h-5 w-5 mr-2" />
-            {{ successMessage }}
-          </div>
-        </div>
+    <!-- Success/Error Messages -->
+    <div v-if="successMessage" class="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
+      <div class="flex">
+        <Icon name="heroicons:check-circle" class="h-5 w-5 mr-2" />
+        {{ successMessage }}
+      </div>
+    </div>
 
-        <div v-if="errorMessage" class="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
-          <div class="flex">
-            <Icon name="heroicons:exclamation-circle" class="h-5 w-5 mr-2" />
-            {{ errorMessage }}
-          </div>
-        </div>
+    <div v-if="errorMessage" class="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
+      <div class="flex">
+        <Icon name="heroicons:exclamation-circle" class="h-5 w-5 mr-2" />
+        {{ errorMessage }}
+      </div>
+    </div>
 
-        <!-- Add New Payment Method Button -->
-        <div class="mb-6">
-          <BaseButton 
-            @click="showAddPaymentForm = true"
-            icon="heroicons:plus"
-            text="Add Payment Method"
-          />
-        </div>
+    <!-- Add New Payment Method Button -->
+    <div class="mb-6">
+      <BaseButton @click="showAddPaymentForm = true" icon="heroicons:plus" text="Add Payment Method" />
+    </div>
 
-        <!-- Payment Methods List -->
-        <div v-if="loading" class="space-y-4">
-          <div v-for="i in 3" :key="i" class="bg-white rounded-lg shadow-sm p-6 animate-pulse">
-            <div class="bg-gray-300 h-4 rounded mb-4"></div>
-            <div class="bg-gray-300 h-3 rounded w-2/3 mb-2"></div>
-            <div class="bg-gray-300 h-3 rounded w-1/2"></div>
-          </div>
-        </div>
+    <!-- Payment Methods List -->
+    <div v-if="loading" class="space-y-4">
+      <div v-for="i in 3" :key="i" class="bg-white rounded-lg shadow-sm p-6 animate-pulse">
+        <div class="bg-gray-300 h-4 rounded mb-4"></div>
+        <div class="bg-gray-300 h-3 rounded w-2/3 mb-2"></div>
+        <div class="bg-gray-300 h-3 rounded w-1/2"></div>
+      </div>
+    </div>
 
-        <div v-else-if="paymentMethods.length > 0" class="space-y-4">
-          <div 
-            v-for="method in paymentMethods" 
-            :key="method.id"
-            class="bg-white rounded-lg shadow-sm p-6"
-          >
-            <div class="flex items-center justify-between">
-              <div class="flex items-center space-x-4">
-                <!-- Card Icon -->
-                <div class="flex-shrink-0">
-                  <Icon 
-                    :name="getCardIcon(method.card_type)" 
-                    class="h-8 w-8 text-gray-600"
-                  />
-                </div>
-                
-                <!-- Card Details -->
-                <div>
-                  <div class="flex items-center space-x-2">
-                    <h3 class="font-medium text-gray-900">
-                      {{ method.card_type }} ending in {{ method.last4 }}
-                    </h3>
-                    <span 
-                      v-if="method.is_default"
-                      class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800"
-                    >
-                      Default
-                    </span>
-                  </div>
-                  <p class="text-sm text-gray-600">
-                    Expires {{ method.exp_month }}/{{ method.exp_year }}
-                  </p>
-                  <p v-if="method.billing_name" class="text-sm text-gray-600">
-                    {{ method.billing_name }}
-                  </p>
-                </div>
-              </div>
+    <div v-else-if="paymentMethods.length > 0" class="space-y-4">
+      <div v-for="method in paymentMethods" :key="method.id" class="bg-white rounded-lg shadow-sm p-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <!-- Card Icon -->
+            <div class="flex-shrink-0">
+              <Icon :name="getCardIcon(method.card_type)" class="h-8 w-8 text-gray-600" />
+            </div>
 
-              <!-- Actions -->
+            <!-- Card Details -->
+            <div>
               <div class="flex items-center space-x-2">
-                <BaseButton 
-                  v-if="!method.is_default"
-                  @click="setDefaultPaymentMethod(method.id)"
-                  variant="link"
-                  size="sm"
-                  text="Set as Default"
-                />
-                <BaseButton 
-                  @click="editPaymentMethod(method)"
-                  variant="link"
-                  size="sm"
-                  text="Edit"
-                  class="text-gray-600 hover:text-gray-800"
-                />
-                <BaseButton 
-                  @click="deletePaymentMethod(method.id)"
-                  variant="link"
-                  size="sm"
-                  text="Delete"
-                  class="text-red-600 hover:text-red-800"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- No Payment Methods -->
-        <div v-else class="text-center py-16">
-          <Icon name="heroicons:credit-card" class="h-24 w-24 text-gray-300 mx-auto mb-6" />
-          <h2 class="text-2xl font-semibold text-gray-900 mb-4">No payment methods</h2>
-          <p class="text-gray-600 mb-8">Add a payment method to make checkout faster and easier.</p>
-          <BaseButton 
-            @click="showAddPaymentForm = true"
-            text="Add Your First Payment Method"
-            size="lg"
-          />
-        </div>
-
-        <!-- Payment Method Form Modal -->
-        <div v-if="showAddPaymentForm || showEditPaymentForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div class="bg-white rounded-lg max-w-md w-full">
-            <div class="p-6">
-              <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-semibold">
-                  {{ showEditPaymentForm ? 'Edit Payment Method' : 'Add Payment Method' }}
+                <h3 class="font-medium text-gray-900">
+                  {{ method.card_type }} ending in {{ method.last4 }}
                 </h3>
-                <BaseButton 
-                  @click="closePaymentForm"
-                  variant="ghost"
-                  size="sm"
-                  icon="heroicons:x-mark"
-                />
+                <span v-if="method.is_default"
+                  class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                  Default
+                </span>
               </div>
+              <p class="text-sm text-gray-600">
+                Expires {{ method.exp_month }}/{{ method.exp_year }}
+              </p>
+              <p v-if="method.billing_name" class="text-sm text-gray-600">
+                {{ method.billing_name }}
+              </p>
+            </div>
+          </div>
 
-              <form @submit.prevent="savePaymentMethod" class="space-y-4">
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Cardholder Name *</label>
-                  <input
-                    v-model="paymentForm.billing_name"
-                    type="text"
-                    required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                </div>
+          <!-- Actions -->
+          <div class="flex items-center space-x-2">
+            <BaseButton v-if="!method.is_default" @click="setDefaultPaymentMethod(method.id)" variant="link" size="sm"
+              text="Set as Default" />
+            <BaseButton @click="editPaymentMethod(method)" variant="link" size="sm" text="Edit"
+              class="text-gray-600 hover:text-gray-800" />
+            <BaseButton @click="deletePaymentMethod(method.id)" variant="link" size="sm" text="Delete"
+              class="text-red-600 hover:text-red-800" />
+          </div>
+        </div>
+      </div>
+    </div>
 
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Card Number *</label>
-                  <input
-                    v-model="paymentForm.card_number"
-                    type="text"
-                    required
-                    maxlength="19"
-                    placeholder="1234 5678 9012 3456"
-                    @input="formatCardNumber"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                </div>
+    <!-- No Payment Methods -->
+    <div v-else class="text-center py-16">
+      <Icon name="heroicons:credit-card" class="h-24 w-24 text-gray-300 mx-auto mb-6" />
+      <h2 class="text-2xl font-semibold text-gray-900 mb-4">No payment methods</h2>
+      <p class="text-gray-600 mb-8">Add a payment method to make checkout faster and easier.</p>
+      <BaseButton @click="showAddPaymentForm = true" text="Add Your First Payment Method" size="lg" />
+    </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Expiry Date *</label>
-                    <input
-                      v-model="paymentForm.expiry"
-                      type="text"
-                      required
-                      placeholder="MM/YY"
-                      maxlength="5"
-                      @input="formatExpiry"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">CVV *</label>
-                    <input
-                      v-model="paymentForm.cvv"
-                      type="text"
-                      required
-                      maxlength="4"
-                      placeholder="123"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                  </div>
-                </div>
+    <!-- Payment Method Form Modal -->
+    <div v-if="showAddPaymentForm || showEditPaymentForm"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div class="bg-white rounded-lg max-w-md w-full">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-semibold">
+              {{ showEditPaymentForm ? 'Edit Payment Method' : 'Add Payment Method' }}
+            </h3>
+            <BaseButton @click="closePaymentForm" variant="ghost" size="sm" icon="heroicons:x-mark" />
+          </div>
 
-                <div class="flex items-center">
-                  <input 
-                    v-model="paymentForm.is_default"
-                    type="checkbox"
-                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                  >
-                  <span class="ml-2 text-sm text-gray-700">Set as default payment method</span>
-                </div>
+          <form @submit.prevent="savePaymentMethod" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Cardholder Name *</label>
+              <input v-model="paymentForm.billing_name" type="text" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
 
-                <div class="flex space-x-4 pt-4">
-                  <BaseButton
-                    action="save"
-                    :loading="saving"
-                    :disabled="saving"
-                    :text="`${showEditPaymentForm ? 'Update' : 'Add'} Payment Method`"
-                  />
-                  <BaseButton
-                    action="cancel"
-                    @click="closePaymentForm"
-                  />
-                </div>
-              </form>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Card Number *</label>
+              <input v-model="paymentForm.card_number" type="text" required maxlength="19"
+                placeholder="1234 5678 9012 3456" @input="formatCardNumber"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
 
-              <!-- Security Notice -->
-              <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
-                <div class="flex">
-                  <Icon name="heroicons:exclamation-triangle" class="h-5 w-5 text-yellow-600 mr-2 flex-shrink-0" />
-                  <div class="text-sm text-yellow-800">
-                    <p class="font-medium">Demo Payment System</p>
-                    <p>This is a demonstration. In production, use a secure payment processor like Stripe or PayPal. Never store actual card details.</p>
-                  </div>
-                </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Expiry Date *</label>
+                <input v-model="paymentForm.expiry" type="text" required placeholder="MM/YY" maxlength="5"
+                  @input="formatExpiry"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">CVV *</label>
+                <input v-model="paymentForm.cvv" type="text" required maxlength="4" placeholder="123"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <input v-model="paymentForm.is_default" type="checkbox"
+                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+              <span class="ml-2 text-sm text-gray-700">Set as default payment method</span>
+            </div>
+
+            <div class="flex space-x-4 pt-4">
+              <BaseButton action="save" :loading="saving" :disabled="saving"
+                :text="`${showEditPaymentForm ? 'Update' : 'Add'} Payment Method`" />
+              <BaseButton action="cancel" @click="closePaymentForm" />
+            </div>
+          </form>
+
+          <!-- Security Notice -->
+          <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+            <div class="flex">
+              <Icon name="heroicons:exclamation-triangle" class="h-5 w-5 text-yellow-600 mr-2 flex-shrink-0" />
+              <div class="text-sm text-yellow-800">
+                <p class="font-medium">Demo Payment System</p>
+                <p>This is a demonstration. In production, use a secure payment processor like Stripe or PayPal. Never
+                  store actual card details.</p>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
   </NuxtLayout>
 </template>
 
@@ -259,15 +192,15 @@ const fetchPaymentMethods = async () => {
   }
 
   loading.value = true
-  
+
   try {
     // Load customer profile to get any saved payment methods
     const customer = await loadCustomerProfile(user.value)
-    
+
     if (customer && customer.meta_data) {
       // Look for saved payment methods in customer meta data
       const savedMethods = customer.meta_data.find(meta => meta.key === 'payment_methods')
-      
+
       if (savedMethods && savedMethods.value) {
         try {
           paymentMethods.value = JSON.parse(savedMethods.value)
@@ -316,12 +249,12 @@ const formatExpiry = (event) => {
 
 const detectCardType = (cardNumber) => {
   const number = cardNumber.replace(/\s/g, '')
-  
+
   if (/^4/.test(number)) return 'Visa'
   if (/^5[1-5]/.test(number)) return 'Mastercard'
   if (/^3[47]/.test(number)) return 'American Express'
   if (/^6/.test(number)) return 'Discover'
-  
+
   return 'Unknown'
 }
 
@@ -337,8 +270,8 @@ const savePaymentMethod = async () => {
 
   try {
     // Validate form
-    if (!paymentForm.value.billing_name || !paymentForm.value.card_number || 
-        !paymentForm.value.expiry || !paymentForm.value.cvv) {
+    if (!paymentForm.value.billing_name || !paymentForm.value.card_number ||
+      !paymentForm.value.expiry || !paymentForm.value.cvv) {
       throw new Error('Please fill in all required fields')
     }
 
@@ -347,7 +280,7 @@ const savePaymentMethod = async () => {
     // 2. Tokenize cards on the client side using their SDK
     // 3. Never store actual card details in your database
     // 4. Only store payment tokens and metadata
-    
+
     // For demonstration purposes, we'll store minimal card info
     const cardType = detectCardType(paymentForm.value.card_number)
     const last4 = paymentForm.value.card_number.replace(/\s/g, '').slice(-4)
@@ -406,10 +339,10 @@ const savePaymentMethodsToCustomer = async () => {
 
     // Update customer meta data with payment methods
     const { updateCustomer } = useCustomer()
-    
+
     const metaData = customer?.meta_data || []
     const existingIndex = metaData.findIndex(meta => meta.key === 'payment_methods')
-    
+
     const paymentMethodsData = {
       key: 'payment_methods',
       value: JSON.stringify(paymentMethods.value)
@@ -446,10 +379,10 @@ const deletePaymentMethod = async (methodId) => {
   try {
     // Remove from local array
     paymentMethods.value = paymentMethods.value.filter(method => method.id !== methodId)
-    
+
     // Save updated list to customer data
     await savePaymentMethodsToCustomer()
-    
+
     successMessage.value = 'Payment method deleted successfully!'
   } catch (error) {
     console.error('Error deleting payment method:', error)
@@ -463,10 +396,10 @@ const setDefaultPaymentMethod = async (methodId) => {
     paymentMethods.value.forEach(method => {
       method.is_default = method.id === methodId
     })
-    
+
     // Save updated list to customer data
     await savePaymentMethodsToCustomer()
-    
+
     successMessage.value = 'Default payment method updated!'
   } catch (error) {
     console.error('Error setting default payment method:', error)

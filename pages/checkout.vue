@@ -388,7 +388,7 @@ const placeOrder = async () => {
       try {
         const customer = await loadCustomerProfile(user.value)
         const customerId = customer?.id || user.value.id
-        
+
         if (customerId && customerId !== 'null' && customerId !== null) {
           orderData.customer_id = customerId
         }
