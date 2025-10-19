@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-4 py-8">
+  <div class="min-h-screen bg-gray-50">
     <div v-if="pending" class="flex justify-center items-center min-h-[400px]">
       <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
     </div>
@@ -12,218 +12,252 @@
 
     <div v-else-if="product">
       <!-- Breadcrumb -->
-      <nav class="mb-8 text-sm">
-        <ol class="flex items-center space-x-2">
-          <li><NuxtLink to="/" class="text-blue-600 hover:text-blue-800">Home</NuxtLink></li>
-          <li class="text-gray-500">/</li>
-          <li v-if="product.categories && product.categories[0]">
-            <NuxtLink :to="`/category/${product.categories[0].slug}`" class="text-blue-600 hover:text-blue-800">
-              {{ product.categories[0].name }}
-            </NuxtLink>
-          </li>
-          <li v-if="product.categories && product.categories[0]" class="text-gray-500">/</li>
-          <li class="text-gray-900">{{ product.name }}</li>
-        </ol>
-      </nav>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-        <!-- Product Images -->
-        <ProductImageGallery 
-          :product="product" 
-          :selected-variation="selectedVariation" 
-        />
-
-        <!-- Product Details -->
-        <div class="space-y-6">
-          <div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ product.name }}</h1>
-            
-            <!-- Rating -->
-            <div v-if="product.average_rating > 0" class="flex items-center space-x-2 mb-4">
-              <div class="flex items-center">
-                <span v-for="i in 5" :key="i" class="text-yellow-400">
-                  {{ i <= Math.floor(product.average_rating) ? '★' : '☆' }}
-                </span>
-              </div>
-              <span class="text-sm text-gray-600">({{ product.rating_count }} reviews)</span>
-            </div>
-
-            <div class="flex items-center space-x-4">
-              <span class="text-2xl font-bold text-blue-600">
-                {{ formatPrice(selectedVariation?.price || product.price) }}
-              </span>
-              <span v-if="(selectedVariation?.regular_price || product.regular_price) && (selectedVariation?.regular_price || product.regular_price) !== (selectedVariation?.price || product.price)" 
-                    class="text-lg text-gray-500 line-through">
-                {{ formatPrice(selectedVariation?.regular_price || product.regular_price) }}
-              </span>
-              <span v-if="(selectedVariation?.sale_price || product.sale_price)" class="bg-red-100 text-red-800 px-2 py-1 rounded text-sm font-medium">
-                Sale!
-              </span>
-            </div>
-          </div>
-
-          <div v-if="product.short_description" class="prose prose-sm">
-            <div v-html="product.short_description"></div>
-          </div>
-
-          <!-- Product Variations -->
-          <div v-if="hasVariations" class="space-y-4">
-            <div v-for="attribute in productAttributes" :key="attribute.name" class="space-y-2">
-              <label class="text-sm font-medium text-gray-700">{{ attribute.name }}:</label>
-              <SelectBox
-                v-model="selectedAttributes[attribute.name]"
-                @change="updateSelectedVariation"
-                :options="[
-                  { value: '', label: `Choose ${attribute.name}` },
-                  ...attribute.options.map(option => ({ value: option, label: option }))
-                ]"
-                :placeholder="`Choose ${attribute.name}`"
-                button-class="w-full"
-              />
-            </div>
-          </div>
-
-          <!-- Stock Status -->
-          <div class="flex items-center space-x-2">
-            <span class="text-sm font-medium text-gray-700">Availability:</span>
-            <span :class="isInStock ? 'text-green-600' : 'text-red-600'" class="text-sm font-medium">
-              {{ getStockStatusText }}
-            </span>
-            <span v-if="(selectedVariation?.stock_quantity ?? product.stock_quantity)" class="text-sm text-gray-500">
-              ({{ selectedVariation?.stock_quantity ?? product.stock_quantity }} available)
-            </span>
-          </div>
-
-          <!-- Add to Cart Section -->
-          <div class="space-y-4">
-            <div class="flex items-center space-x-4">
-              <label for="quantity" class="text-sm font-medium text-gray-700">Quantity:</label>
-              <input 
-                id="quantity"
-                v-model.number="quantity" 
-                type="number" 
-                min="1" 
-                :max="selectedVariation?.stock_quantity || product.stock_quantity || 999"
-                class="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            
-            <BaseButton 
-              action="add"
-              :product="product"
-              :quantity="quantity"
-              :variation="selectedAttributes"
-              @click="addToCart"
-              :disabled="!isInStock || (hasVariations && !selectedVariation)"
-              full-width
-              size="lg"
-              :text="!isInStock ? getStockStatusText : 
-                     (hasVariations && !selectedVariation) ? 'Select Options' : 'Add to Cart'"
-            />
-          </div>
-
-          <!-- Product Meta -->
-          <div class="border-t pt-6 space-y-2">
-            <div v-if="selectedVariation?.sku || product.sku" class="flex justify-between">
-              <span class="text-gray-600">SKU:</span>
-              <span class="font-medium">{{ selectedVariation?.sku || product.sku }}</span>
-            </div>
-            <div v-if="product.categories && product.categories.length" class="flex justify-between">
-              <span class="text-gray-600">Categories:</span>
-              <div class="flex flex-wrap gap-2">
-                <NuxtLink 
-                  v-for="category in product.categories" 
-                  :key="category.id"
-                  :to="`/category/${category.slug}`"
-                  class="text-blue-600 hover:text-blue-800 text-sm"
-                >
-                  {{ category.name }}
+      <div class="bg-white border-b">
+        <div class="container mx-auto px-4 py-3">
+          <nav class="text-sm">
+            <ol class="flex items-center space-x-2">
+              <li><NuxtLink to="/" class="text-gray-600 hover:text-gray-900">Home</NuxtLink></li>
+              <li class="text-gray-400">/</li>
+              <li v-if="product.categories && product.categories[0]">
+                <NuxtLink :to="`/category/${product.categories[0].slug}`" class="text-gray-600 hover:text-gray-900">
+                  {{ product.categories[0].name }}
                 </NuxtLink>
-              </div>
-            </div>
-            <div v-if="product.tags && product.tags.length" class="flex justify-between">
-              <span class="text-gray-600">Tags:</span>
-              <div class="flex flex-wrap gap-2">
-                <span v-for="tag in product.tags" :key="tag.id" class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
-                  {{ tag.name }}
-                </span>
-              </div>
-            </div>
-          </div>
+              </li>
+              <li v-if="product.categories && product.categories[0]" class="text-gray-400">/</li>
+              <li class="text-gray-900 font-medium">{{ product.name }}</li>
+            </ol>
+          </nav>
         </div>
       </div>
 
-      <!-- Product Tabs -->
-      <div class="border-b border-gray-200 mb-8">
-        <nav class="-mb-px flex space-x-8">
-          <BaseButton 
-            @click="activeTab = 'description'"
-            variant="ghost"
-            size="sm"
-            text="Description"
-            :class="[
-              'py-2 px-1 border-b-2 font-medium text-sm',
-              activeTab === 'description' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            ]"
-          />
-          <BaseButton 
-            @click="activeTab = 'reviews'"
-            variant="ghost"
-            size="sm"
-            :text="`Reviews (${reviews?.length || 0})`"
-            :class="[
-              'py-2 px-1 border-b-2 font-medium text-sm',
-              activeTab === 'reviews' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            ]"
-          />
-        </nav>
-      </div>
+      <!-- Main Product Section -->
+      <div class="bg-white">
+        <div class="container mx-auto px-4 py-8">
+          <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            <!-- Product Images -->
+            <div class="lg:col-span-3">
+              <ProductImageGallery 
+                :product="product" 
+                :selected-variation="selectedVariation" 
+              />
+            </div>
 
-      <!-- Tab Content -->
-      <div class="mb-12">
-        <!-- Description Tab -->
-        <div v-if="activeTab === 'description'" class="prose max-w-none">
-          <div v-if="product.description" v-html="product.description"></div>
-          <p v-else class="text-gray-500">No description available.</p>
-        </div>
-
-        <!-- Reviews Tab -->
-        <div v-if="activeTab === 'reviews'" class="space-y-6">
-          <div v-if="reviews && reviews.length > 0" class="space-y-6">
-            <div v-for="review in reviews" :key="review.id" class="border-b border-gray-200 pb-6">
-              <div class="flex items-start justify-between mb-2">
+            <!-- Product Details Sidebar -->
+            <div class="lg:col-span-2">
+              <div class="sticky top-8 space-y-6">
                 <div>
-                  <h4 class="font-medium text-gray-900">{{ review.reviewer }}</h4>
-                  <div class="flex items-center mt-1">
-                    <span v-for="i in 5" :key="i" class="text-yellow-400 text-sm">
-                      {{ i <= review.rating ? '★' : '☆' }}
+                  <h1 class="text-2xl font-bold text-gray-900 mb-3">{{ product.name }}</h1>
+                  
+                  <!-- Rating -->
+                  <div v-if="product.average_rating > 0" class="flex items-center space-x-2 mb-4">
+                    <div class="flex items-center">
+                      <span v-for="i in 5" :key="i" class="text-yellow-400 text-lg">
+                        {{ i <= Math.floor(product.average_rating) ? '★' : '☆' }}
+                      </span>
+                    </div>
+                    <span class="text-sm text-gray-600">({{ product.rating_count }} reviews)</span>
+                  </div>
+
+                  <!-- Price -->
+                  <div class="flex items-center space-x-3 mb-4">
+                    <span class="text-3xl font-bold text-gray-900">
+                      {{ formatPrice(selectedVariation?.price || product.price) }}
                     </span>
-                    <span class="ml-2 text-sm text-gray-500">{{ formatDate(review.date_created) }}</span>
+                    <span v-if="(selectedVariation?.regular_price || product.regular_price) && (selectedVariation?.regular_price || product.regular_price) !== (selectedVariation?.price || product.price)" 
+                          class="text-xl text-gray-500 line-through">
+                      {{ formatPrice(selectedVariation?.regular_price || product.regular_price) }}
+                    </span>
+                    <span v-if="(selectedVariation?.sale_price || product.sale_price)" class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">
+                      Sale!
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Short Description -->
+                <div v-if="product.short_description" class="prose prose-sm text-gray-600 border-b pb-6">
+                  <div v-html="product.short_description"></div>
+                </div>
+
+                <!-- Product Variations -->
+                <div v-if="hasVariations" class="space-y-4 border-b pb-6">
+                  <div v-for="attribute in productAttributes" :key="attribute.name" class="space-y-2">
+                    <label class="text-sm font-semibold text-gray-900">{{ attribute.name }}:</label>
+                    <SelectBox
+                      v-model="selectedAttributes[attribute.name]"
+                      @change="updateSelectedVariation"
+                      :options="[
+                        { value: '', label: `Choose ${attribute.name}` },
+                        ...attribute.options.map(option => ({ value: option, label: option }))
+                      ]"
+                      :placeholder="`Choose ${attribute.name}`"
+                      button-class="w-full"
+                    />
+                  </div>
+                </div>
+
+                <!-- Stock & Quantity -->
+                <div class="space-y-4 border-b pb-6">
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-semibold text-gray-900">Availability:</span>
+                    <div class="flex items-center space-x-2">
+                      <div :class="isInStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'" 
+                           class="px-3 py-1 rounded-full text-sm font-medium">
+                        {{ getStockStatusText }}
+                      </div>
+                      <span v-if="(selectedVariation?.stock_quantity ?? product.stock_quantity)" class="text-sm text-gray-500">
+                        ({{ selectedVariation?.stock_quantity ?? product.stock_quantity }} left)
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center space-x-4">
+                    <label for="quantity" class="text-sm font-semibold text-gray-900">Quantity:</label>
+                    <input 
+                      id="quantity"
+                      v-model.number="quantity" 
+                      type="number" 
+                      min="1" 
+                      :max="selectedVariation?.stock_quantity || product.stock_quantity || 999"
+                      class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+
+                <!-- Add to Cart -->
+                <BaseButton 
+                  action="add"
+                  :product="product"
+                  :quantity="quantity"
+                  :variation="selectedAttributes"
+                  @click="addToCart"
+                  :disabled="!isInStock || (hasVariations && !selectedVariation)"
+                  full-width
+                  size="lg"
+                  :text="!isInStock ? getStockStatusText : 
+                         (hasVariations && !selectedVariation) ? 'Select Options' : 'Add to Cart'"
+                  class="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-6 rounded-lg transition-colors"
+                />
+
+                <!-- Product Meta -->
+                <div class="space-y-3 text-sm">
+                  <div v-if="selectedVariation?.sku || product.sku" class="flex justify-between">
+                    <span class="text-gray-600">SKU:</span>
+                    <span class="font-medium text-gray-900">{{ selectedVariation?.sku || product.sku }}</span>
+                  </div>
+                  <div v-if="product.categories && product.categories.length" class="flex justify-between">
+                    <span class="text-gray-600">Categories:</span>
+                    <div class="flex flex-wrap gap-2">
+                      <NuxtLink 
+                        v-for="category in product.categories" 
+                        :key="category.id"
+                        :to="`/category/${category.slug}`"
+                        class="text-gray-900 hover:text-gray-700 font-medium"
+                      >
+                        {{ category.name }}
+                      </NuxtLink>
+                    </div>
+                  </div>
+                  <div v-if="product.tags && product.tags.length" class="flex justify-between">
+                    <span class="text-gray-600">Tags:</span>
+                    <div class="flex flex-wrap gap-2">
+                      <span v-for="tag in product.tags" :key="tag.id" class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
+                        {{ tag.name }}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="prose prose-sm" v-html="review.review"></div>
             </div>
           </div>
-          <div v-else class="text-center py-8 text-gray-500">
-            No reviews yet. Be the first to review this product!
+        </div>
+      </div>
+
+      <!-- Product Information Tabs -->
+      <div class="bg-white border-t">
+        <div class="container mx-auto px-4">
+          <!-- Tab Navigation -->
+          <div class="border-b border-gray-200">
+            <nav class="-mb-px flex space-x-8">
+              <button 
+                @click="activeTab = 'description'"
+                :class="[
+                  'py-4 px-1 border-b-2 font-medium text-sm transition-colors',
+                  activeTab === 'description' 
+                    ? 'border-gray-900 text-gray-900' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                ]"
+              >
+                Description
+              </button>
+              <button 
+                @click="activeTab = 'reviews'"
+                :class="[
+                  'py-4 px-1 border-b-2 font-medium text-sm transition-colors',
+                  activeTab === 'reviews' 
+                    ? 'border-gray-900 text-gray-900' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                ]"
+              >
+                Reviews ({{ reviews?.length || 0 }})
+              </button>
+            </nav>
+          </div>
+
+          <!-- Tab Content -->
+          <div class="py-8">
+            <!-- Description Tab -->
+            <div v-if="activeTab === 'description'" class="prose prose-lg max-w-none">
+              <div v-if="product.description" v-html="product.description"></div>
+              <p v-else class="text-gray-500">No description available.</p>
+            </div>
+
+            <!-- Reviews Tab -->
+            <div v-if="activeTab === 'reviews'">
+              <div v-if="reviews && reviews.length > 0" class="space-y-8">
+                <div v-for="review in reviews" :key="review.id" class="border-b border-gray-100 pb-8 last:border-b-0">
+                  <div class="flex items-start justify-between mb-3">
+                    <div>
+                      <h4 class="font-semibold text-gray-900">{{ review.reviewer }}</h4>
+                      <div class="flex items-center mt-1">
+                        <span v-for="i in 5" :key="i" class="text-yellow-400">
+                          {{ i <= review.rating ? '★' : '☆' }}
+                        </span>
+                        <span class="ml-2 text-sm text-gray-500">{{ formatDate(review.date_created) }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="prose prose-sm" v-html="review.review"></div>
+                </div>
+              </div>
+              <div v-else class="text-center py-12 text-gray-500">
+                <p class="text-lg">No reviews yet.</p>
+                <p class="text-sm">Be the first to review this product!</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Related Products -->
-      <div v-if="relatedProducts && relatedProducts.length > 0" class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Products</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <ProductCard v-for="relatedProduct in relatedProducts" :key="relatedProduct.id" :product="relatedProduct" />
-        </div>
-      </div>
+      <!-- Related Products Sections -->
+      <div v-if="(relatedProducts && relatedProducts.length > 0) || (categoryProducts && categoryProducts.length > 0)" class="bg-gray-50 py-12">
+        <div class="container mx-auto px-4">
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-12">
+            <!-- Related Products -->
+            <div v-if="relatedProducts && relatedProducts.length > 0">
+              <h2 class="text-xl font-bold text-gray-900 mb-6">You might also like</h2>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <ProductCard v-for="relatedProduct in relatedProducts" :key="relatedProduct.id" :product="relatedProduct" />
+              </div>
+            </div>
 
-      <!-- Products from Same Category -->
-      <div v-if="categoryProducts && categoryProducts.length > 0" class="mb-12">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">More from {{ product.categories[0]?.name }}</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <ProductCard v-for="categoryProduct in categoryProducts" :key="categoryProduct.id" :product="categoryProduct" />
+            <!-- Products from Same Category -->
+            <div v-if="categoryProducts && categoryProducts.length > 0">
+              <h2 class="text-xl font-bold text-gray-900 mb-6">More from {{ product.categories[0]?.name }}</h2>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <ProductCard v-for="categoryProduct in categoryProducts" :key="categoryProduct.id" :product="categoryProduct" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
