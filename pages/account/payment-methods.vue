@@ -201,12 +201,12 @@
               </form>
 
               <!-- Security Notice -->
-              <div class="mt-6 p-4 bg-gray-50 rounded-md">
+              <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
                 <div class="flex">
-                  <Icon name="heroicons:shield-check" class="h-5 w-5 text-green-600 mr-2 flex-shrink-0" />
-                  <div class="text-sm text-gray-700">
-                    <p class="font-medium">Your payment information is secure</p>
-                    <p>We use industry-standard encryption to protect your data.</p>
+                  <Icon name="heroicons:exclamation-triangle" class="h-5 w-5 text-yellow-600 mr-2 flex-shrink-0" />
+                  <div class="text-sm text-yellow-800">
+                    <p class="font-medium">Demo Payment System</p>
+                    <p>This is a demonstration. In production, use a secure payment processor like Stripe or PayPal. Never store actual card details.</p>
                   </div>
                 </div>
               </div>
@@ -222,6 +222,7 @@ definePageMeta({
 })
 
 const { user } = useAuth()
+const { displayCustomer, loadCustomerProfile } = useCustomer()
 
 // SEO
 useHead({
@@ -251,33 +252,42 @@ const paymentForm = ref({
 
 // Methods
 const fetchPaymentMethods = async () => {
+  if (!user.value) {
+    console.warn('No user available for fetching payment methods')
+    loading.value = false
+    return
+  }
+
   loading.value = true
   
-  // Simulate API call - In real implementation, this would call your payment processor API
-  setTimeout(() => {
-    // Mock data for demonstration
-    paymentMethods.value = [
-      {
-        id: 1,
-        card_type: 'Visa',
-        last4: '4242',
-        exp_month: '12',
-        exp_year: '2025',
-        billing_name: 'John Doe',
-        is_default: true
-      },
-      {
-        id: 2,
-        card_type: 'Mastercard',
-        last4: '5555',
-        exp_month: '08',
-        exp_year: '2024',
-        billing_name: 'John Doe',
-        is_default: false
+  try {
+    // Load customer profile to get any saved payment methods
+    const customer = await loadCustomerProfile(user.value)
+    
+    if (customer && customer.meta_data) {
+      // Look for saved payment methods in customer meta data
+      const savedMethods = customer.meta_data.find(meta => meta.key === 'payment_methods')
+      
+      if (savedMethods && savedMethods.value) {
+        try {
+          paymentMethods.value = JSON.parse(savedMethods.value)
+        } catch (error) {
+          console.error('Error parsing saved payment methods:', error)
+          paymentMethods.value = []
+        }
+      } else {
+        paymentMethods.value = []
       }
-    ]
+    } else {
+      paymentMethods.value = []
+    }
+  } catch (error) {
+    console.error('Error fetching payment methods:', error)
+    errorMessage.value = 'Failed to load payment methods'
+    paymentMethods.value = []
+  } finally {
     loading.value = false
-  }, 1000)
+  }
 }
 
 const getCardIcon = (cardType) => {
@@ -316,6 +326,11 @@ const detectCardType = (cardNumber) => {
 }
 
 const savePaymentMethod = async () => {
+  if (!user.value) {
+    errorMessage.value = 'User not authenticated'
+    return
+  }
+
   saving.value = true
   errorMessage.value = ''
   successMessage.value = ''
@@ -327,11 +342,13 @@ const savePaymentMethod = async () => {
       throw new Error('Please fill in all required fields')
     }
 
-    // In a real implementation, you would:
-    // 1. Tokenize the card with your payment processor (Stripe, PayPal, etc.)
-    // 2. Save the token to your backend
-    // 3. Never store actual card details
-
+    // SECURITY WARNING: In a real implementation, you should:
+    // 1. Use a payment processor like Stripe, PayPal, or Square
+    // 2. Tokenize cards on the client side using their SDK
+    // 3. Never store actual card details in your database
+    // 4. Only store payment tokens and metadata
+    
+    // For demonstration purposes, we'll store minimal card info
     const cardType = detectCardType(paymentForm.value.card_number)
     const last4 = paymentForm.value.card_number.replace(/\s/g, '').slice(-4)
     const [exp_month, exp_year] = paymentForm.value.expiry.split('/')
@@ -343,14 +360,15 @@ const savePaymentMethod = async () => {
       exp_month: exp_month,
       exp_year: `20${exp_year}`,
       billing_name: paymentForm.value.billing_name,
-      is_default: paymentForm.value.is_default
+      is_default: paymentForm.value.is_default,
+      created_at: new Date().toISOString()
     }
 
     if (showEditPaymentForm.value) {
       // Update existing method
       const index = paymentMethods.value.findIndex(m => m.id === editingPaymentId.value)
       if (index !== -1) {
-        paymentMethods.value[index] = newMethod
+        paymentMethods.value[index] = { ...paymentMethods.value[index], ...newMethod }
       }
       successMessage.value = 'Payment method updated successfully!'
     } else {
@@ -365,6 +383,8 @@ const savePaymentMethod = async () => {
       successMessage.value = 'Payment method added successfully!'
     }
 
+    // Save to customer meta data (in real app, use proper payment processor)
+    await savePaymentMethodsToCustomer()
     closePaymentForm()
 
   } catch (error) {
@@ -372,6 +392,39 @@ const savePaymentMethod = async () => {
     errorMessage.value = error.message || 'Failed to save payment method. Please try again.'
   } finally {
     saving.value = false
+  }
+}
+
+const savePaymentMethodsToCustomer = async () => {
+  try {
+    const customer = displayCustomer.value
+    const customerId = customer?.id || user.value.id
+
+    if (!customerId) {
+      throw new Error('No valid customer ID found')
+    }
+
+    // Update customer meta data with payment methods
+    const { updateCustomer } = useCustomer()
+    
+    const metaData = customer?.meta_data || []
+    const existingIndex = metaData.findIndex(meta => meta.key === 'payment_methods')
+    
+    const paymentMethodsData = {
+      key: 'payment_methods',
+      value: JSON.stringify(paymentMethods.value)
+    }
+
+    if (existingIndex !== -1) {
+      metaData[existingIndex] = paymentMethodsData
+    } else {
+      metaData.push(paymentMethodsData)
+    }
+
+    await updateCustomer(customerId, { meta_data: metaData })
+  } catch (error) {
+    console.error('Error saving payment methods to customer:', error)
+    throw error
   }
 }
 
@@ -391,8 +444,12 @@ const deletePaymentMethod = async (methodId) => {
   if (!confirm('Are you sure you want to delete this payment method?')) return
 
   try {
-    // In real implementation, call API to delete payment method
+    // Remove from local array
     paymentMethods.value = paymentMethods.value.filter(method => method.id !== methodId)
+    
+    // Save updated list to customer data
+    await savePaymentMethodsToCustomer()
+    
     successMessage.value = 'Payment method deleted successfully!'
   } catch (error) {
     console.error('Error deleting payment method:', error)
@@ -406,6 +463,10 @@ const setDefaultPaymentMethod = async (methodId) => {
     paymentMethods.value.forEach(method => {
       method.is_default = method.id === methodId
     })
+    
+    // Save updated list to customer data
+    await savePaymentMethodsToCustomer()
+    
     successMessage.value = 'Default payment method updated!'
   } catch (error) {
     console.error('Error setting default payment method:', error)
@@ -425,6 +486,20 @@ const closePaymentForm = () => {
     is_default: false
   }
 }
+
+// Watch for customer data changes
+watch(displayCustomer, (customer) => {
+  if (customer && customer.meta_data) {
+    const savedMethods = customer.meta_data.find(meta => meta.key === 'payment_methods')
+    if (savedMethods && savedMethods.value) {
+      try {
+        paymentMethods.value = JSON.parse(savedMethods.value)
+      } catch (error) {
+        console.error('Error parsing saved payment methods:', error)
+      }
+    }
+  }
+}, { immediate: true })
 
 // Initialize
 onMounted(() => {
