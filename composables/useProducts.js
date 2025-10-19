@@ -48,6 +48,34 @@ export const useProducts = () => {
         })
     }
 
+    // Check if user has purchased a product
+    const checkPurchaseStatus = async (productId, customerId) => {
+        try {
+            const response = await $fetch(`/api/woocommerce/products/${productId}/purchase-status`, {
+                query: { customer_id: customerId }
+            })
+            return response.has_purchased
+        } catch (error) {
+            console.error('Error checking purchase status:', error)
+            return false
+        }
+    }
+
+    // Get review settings from WooCommerce
+    const getReviewSettings = async () => {
+        try {
+            return await $fetch('/api/woocommerce/settings/reviews')
+        } catch (error) {
+            console.error('Error fetching review settings:', error)
+            return {
+                reviews_enabled: true,
+                purchase_verification_required: false,
+                ratings_enabled: true,
+                verification_label: 'Verified Purchase'
+            }
+        }
+    }
+
     // Related products (by category)
     const getRelatedProducts = async (productId, categoryIds = [], limit = 4) => {
         if (categoryIds.length === 0) return []
@@ -132,6 +160,8 @@ export const useProducts = () => {
         // Reviews
         getProductReviews,
         createProductReview,
+        checkPurchaseStatus,
+        getReviewSettings,
 
         // Product images
         getProductImage,
