@@ -109,8 +109,7 @@
           <NuxtLink v-for="(product, index) in bestSellers" :key="product.id" :to="`/product/${product.slug}`"
             class="group relative bg-white border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer block">
             <!-- Bestseller Badge -->
-            <div
-              class="absolute -top-2 -right-2 z-10 bg-gray-900 text-white text-xs font-bold px-2 py-1 rounded-full">
+            <div class="absolute -top-2 -right-2 z-10 bg-gray-900 text-white text-xs font-bold px-2 py-1 rounded-full">
               #{{ index + 1 }}
             </div>
 
@@ -142,44 +141,41 @@
     </section>
 
     <!-- Latest Products -->
-    <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+    <section class="py-16 bg-white border-t border-gray-100">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
-            <Icon name="heroicons:sparkles" class="h-8 w-8 text-blue-600" />
-          </div>
-          <h2 class="text-4xl font-bold text-gray-900 mb-4">New Arrivals</h2>
-          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">New Arrivals</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
             Fresh additions to our collection, just for you
           </p>
         </div>
 
-        <div v-if="latestLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div v-for="i in 8" :key="i" class="bg-white rounded-2xl p-6 animate-pulse shadow-lg">
-            <div class="bg-gray-300 h-48 rounded-xl mb-4"></div>
-            <div class="bg-gray-300 h-4 rounded mb-2"></div>
-            <div class="bg-gray-300 h-4 rounded w-2/3"></div>
+        <div v-if="latestLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div v-for="i in 8" :key="i" class="bg-white border border-gray-200 rounded-xl p-5 animate-pulse">
+            <div class="bg-gray-100 h-48 rounded-lg mb-4"></div>
+            <div class="bg-gray-200 h-4 rounded mb-2"></div>
+            <div class="bg-gray-200 h-4 rounded w-2/3"></div>
           </div>
         </div>
 
-        <div v-else-if="latestProducts.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div v-else-if="latestProducts.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <NuxtLink v-for="product in latestProducts" :key="product.id" :to="`/product/${product.slug}`"
-            class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 relative overflow-hidden cursor-pointer block">
+            class="group bg-white border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden cursor-pointer block">
             <!-- New Badge -->
-            <div class="absolute top-4 left-4 z-10 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+            <div class="absolute top-3 left-3 z-10 bg-gray-900 text-white text-xs font-bold px-2 py-1 rounded-full">
               NEW
             </div>
 
-            <div class="p-6">
-              <div class="aspect-square overflow-hidden rounded-xl mb-4 bg-gray-50">
+            <div class="p-5">
+              <div class="aspect-square overflow-hidden rounded-lg mb-4 bg-gray-50">
                 <img :src="getProductImage(product)" :alt="product.name"
-                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
               </div>
               <h3 class="text-gray-900 font-semibold text-lg mb-2 line-clamp-2" v-html="product.name"></h3>
               <div class="flex items-center justify-between">
-                <span class="text-2xl font-bold text-gray-900" v-html="product.price_html"></span>
+                <span class="text-xl font-bold text-gray-900" v-html="product.price_html"></span>
                 <span
-                  class="bg-blue-500 group-hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200">
+                  class="bg-gray-900 group-hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
                   View Details
                 </span>
               </div>
@@ -187,11 +183,11 @@
           </NuxtLink>
         </div>
 
-        <div class="text-center mt-12">
+        <div class="text-center mt-10">
           <NuxtLink to="/search?orderby=date"
-            class="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+            class="inline-flex items-center bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
             View All New Arrivals
-            <Icon name="heroicons:arrow-right" class="ml-2 h-5 w-5" />
+            <Icon name="heroicons:arrow-right" class="ml-2 h-4 w-4" />
           </NuxtLink>
         </div>
       </div>
@@ -200,32 +196,29 @@
     <!-- Popular Blog Posts -->
     <section class="py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-6">
-            <Icon name="heroicons:document-text" class="h-8 w-8 text-purple-600" />
-          </div>
-          <h2 class="text-4xl font-bold text-gray-900 mb-4">Latest Stories</h2>
-          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Latest Stories</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
             Insights, tips, and inspiration from our community
           </p>
         </div>
 
-        <div v-if="blogLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div v-for="i in 6" :key="i" class="bg-gray-100 rounded-2xl overflow-hidden animate-pulse">
-            <div class="bg-gray-300 h-48"></div>
-            <div class="p-6">
-              <div class="bg-gray-300 h-4 rounded mb-2"></div>
-              <div class="bg-gray-300 h-4 rounded w-2/3 mb-4"></div>
-              <div class="bg-gray-300 h-3 rounded mb-2"></div>
-              <div class="bg-gray-300 h-3 rounded mb-2"></div>
-              <div class="bg-gray-300 h-3 rounded w-1/2"></div>
+        <div v-if="blogLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div v-for="i in 6" :key="i" class="bg-white border border-gray-200 rounded-xl overflow-hidden animate-pulse">
+            <div class="bg-gray-100 h-48"></div>
+            <div class="p-5">
+              <div class="bg-gray-200 h-4 rounded mb-2"></div>
+              <div class="bg-gray-200 h-4 rounded w-2/3 mb-4"></div>
+              <div class="bg-gray-200 h-3 rounded mb-2"></div>
+              <div class="bg-gray-200 h-3 rounded mb-2"></div>
+              <div class="bg-gray-200 h-3 rounded w-1/2"></div>
             </div>
           </div>
         </div>
 
-        <div v-else-if="blogPosts.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div v-else-if="blogPosts.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <article v-for="post in blogPosts" :key="post.id"
-            class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 overflow-hidden">
+            class="group bg-white border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
             <!-- Featured Image -->
             <div v-if="getFeaturedImageUrl(post)" class="aspect-video overflow-hidden">
               <img :src="getFeaturedImageUrl(post)" :alt="post.title.rendered"
@@ -242,7 +235,7 @@
 
               <!-- Post Title -->
               <h3
-                class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors">
+                class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
                 <NuxtLink :to="`/blog/${post.slug}`" v-html="post.title.rendered"></NuxtLink>
               </h3>
 
@@ -253,7 +246,7 @@
 
               <!-- Read More -->
               <NuxtLink :to="`/blog/${post.slug}`"
-                class="inline-flex items-center text-purple-600 hover:text-purple-800 font-semibold group-hover:translate-x-1 transition-all duration-200">
+                class="inline-flex items-center text-gray-700 hover:text-gray-900 font-semibold group-hover:translate-x-1 transition-all duration-200">
                 Read Article
                 <Icon name="heroicons:arrow-right" class="ml-2 h-4 w-4" />
               </NuxtLink>
@@ -261,11 +254,11 @@
           </article>
         </div>
 
-        <div class="text-center mt-12">
+        <div class="text-center mt-10">
           <NuxtLink to="/blog"
-            class="inline-flex items-center bg-purple-500 hover:bg-purple-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+            class="inline-flex items-center bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
             View All Articles
-            <Icon name="heroicons:arrow-right" class="ml-2 h-5 w-5" />
+            <Icon name="heroicons:arrow-right" class="ml-2 h-4 w-4" />
           </NuxtLink>
         </div>
       </div>
@@ -442,53 +435,3 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Custom scrollbar for slider */
-.slider-container::-webkit-scrollbar {
-  display: none;
-}
-
-.slider-container {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* Smooth transitions */
-.transition-all {
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Hover effects */
-.group:hover .group-hover\:scale-110 {
-  transform: scale(1.1);
-}
-
-.group:hover .group-hover\:translate-x-1 {
-  transform: translateX(0.25rem);
-}
-
-.group:hover .group-hover\:text-purple-600 {
-  color: rgb(147 51 234);
-}
-
-/* Background patterns */
-.bg-pattern {
-  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.15) 1px, transparent 0);
-  background-size: 20px 20px;
-}
-</style>
