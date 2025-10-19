@@ -2,7 +2,7 @@
   <div v-if="isOpen" class="fixed inset-0 z-50 overflow-y-auto">
     <!-- Backdrop -->
     <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="closeModal"></div>
-    
+
     <!-- Modal -->
     <div class="flex min-h-full items-center justify-center p-4">
       <div class="relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
@@ -36,19 +36,118 @@
         <!-- Order Details -->
         <div v-else-if="order" class="p-6 space-y-6">
           <!-- Order Status & Total -->
-          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <div>
-              <p class="text-sm text-gray-600">Placed on {{ formatDate(order.date_created) }}</p>
-              <span :class="[
-                'inline-flex px-3 py-1 text-sm font-semibold rounded-full mt-2',
-                getOrderStatusClass(order.status)
-              ]">
-                {{ capitalizeFirst(order.status) }}
-              </span>
+          <div class="p-4 bg-gray-50 rounded-lg">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <p class="text-sm text-gray-600">Placed on {{ formatDate(order.date_created) }}</p>
+                <span :class="[
+                  'inline-flex px-3 py-1 text-sm font-semibold rounded-full mt-2',
+                  getOrderStatusClass(order.status)
+                ]">
+                  {{ capitalizeFirst(order.status) }}
+                </span>
+              </div>
+              <div class="text-right">
+                <p class="text-2xl font-bold">{{ formatPrice(order.total) }}</p>
+                <p class="text-gray-600">Total</p>
+              </div>
             </div>
-            <div class="text-right">
-              <p class="text-2xl font-bold">{{ formatPrice(order.total) }}</p>
-              <p class="text-gray-600">Total</p>
+
+            <!-- Status-specific information and actions -->
+            <div v-if="getStatusInfo(order)" class="border-t pt-4 mt-4">
+              <div class="bg-white p-4 rounded-lg border-l-4" :class="getStatusBorderClass(order.status)">
+                <div class="flex items-start">
+                  <Icon :name="getStatusIcon(order.status)" class="h-5 w-5 mt-0.5 mr-3"
+                    :class="getStatusIconClass(order.status)" />
+                  <div class="flex-1">
+                    <h4 class="font-medium text-gray-900 mb-1">{{ getStatusInfo(order).title }}</h4>
+                    <p class="text-sm text-gray-600 mb-3">{{ getStatusInfo(order).description }}</p>
+
+                    <!-- Status-specific content -->
+                    <div v-if="order.status === 'pending'" class="space-y-3">
+                      <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600">Payment Due:</span>
+                        <span class="font-medium">{{ formatPrice(order.total) }}</span>
+                      </div>
+                      <BaseButton @click="payNow" text="Pay Now" size="sm" class="w-full" />
+                    </div>
+
+                    <div v-else-if="order.status === 'refunded'" class="space-y-2">
+                      <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600">Refunded Amount:</span>
+                        <span class="font-medium text-green-600">{{ formatPrice(getRefundedAmount(order)) }}</span>
+                      </div>
+                      <div v-if="order.date_modified" class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600">Refund Date:</span>
+                        <span>{{ formatDate(order.date_modified) }}</span>
+                      </div>
+
+                      <!-- Debug refund data -->
+                      <div class="text-xs text-gray-400 mt-2 p-2 bg-gray-50 rounded">
+                        <p>Debug - Refund fields:</p>
+                        <p>refunds: {{ order.refunds ? order.refunds.length + ' items' : 'null' }}</p>
+                        <p>refund_total: {{ order.refund_total || 'null' }}</p>
+                        <p>total_refunded: {{ order.total_refunded || 'null' }}</p>
+                        <p>order total: {{ order.total }}</p>
+                      </div>
+
+                      <div v-if="order.refunds && order.refunds.length > 0" class="mt-3">
+                        <p class="text-sm font-medium text-gray-700 mb-2">Refund Details:</p>
+                        <div v-for="refund in order.refunds" :key="refund.id"
+                          class="text-sm text-gray-600 bg-gray-50 p-2 rounded">
+                          <div class="flex justify-between">
+                            <span>Refund #{{ refund.id }}</span>
+                            <span class="font-medium">{{ formatPrice(refund.amount) }}</span>
+                          </div>
+                          <p v-if="refund.reason" class="text-xs mt-1">Reason: {{ refund.reason }}</p>
+                        </div>
+                      </div>
+
+                      <div v-else-if="getRefundedAmount(order) > 0" class="mt-3">
+                        <p class="text-sm text-gray-600">This order has been refunded but detailed refund information is
+                          not available.</p>
+                      </div>
+                    </div>
+
+                    <div v-else-if="order.status === 'failed'" class="space-y-2">
+                      <div v-if="order.customer_note" class="text-sm">
+                        <span class="text-gray-600">Failure Reason:</span>
+                        <p class="mt-1 text-red-600">{{ order.customer_note }}</p>
+                      </div>
+                      <BaseButton @click="retryPayment" text="Retry Payment" variant="outline" size="sm" />
+                    </div>
+
+                    <div v-else-if="order.status === 'on-hold'" class="space-y-2">
+                      <div v-if="order.customer_note" class="text-sm">
+                        <span class="text-gray-600">Hold Reason:</span>
+                        <p class="mt-1">{{ order.customer_note }}</p>
+                      </div>
+                    </div>
+
+                    <div v-else-if="order.status === 'processing'" class="space-y-2">
+                      <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600">Estimated Delivery:</span>
+                        <span>{{ getEstimatedDelivery(order) }}</span>
+                      </div>
+                      <div v-if="order.tracking_number" class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600">Tracking Number:</span>
+                        <span class="font-mono">{{ order.tracking_number }}</span>
+                      </div>
+                    </div>
+
+                    <div v-else-if="order.status === 'completed'" class="space-y-2">
+                      <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600">Completed on:</span>
+                        <span>{{ formatDate(order.date_completed || order.date_modified) }}</span>
+                      </div>
+                      <div class="flex space-x-2">
+                        <BaseButton @click="downloadInvoice" text="Download Invoice" variant="outline" size="sm" />
+                        <BaseButton @click="leaveReview" text="Leave Review" variant="outline" size="sm" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -56,16 +155,10 @@
           <div>
             <h3 class="text-lg font-semibold mb-4">Items Ordered</h3>
             <div class="space-y-3">
-              <div 
-                v-for="item in order.line_items" 
-                :key="item.id"
-                class="flex items-center space-x-4 p-3 border rounded-lg"
-              >
-                <img 
-                  :src="item.image?.src || getPlaceholderImage()" 
-                  :alt="item.name"
-                  class="w-12 h-12 object-cover rounded"
-                >
+              <div v-for="item in order.line_items" :key="item.id"
+                class="flex items-center space-x-4 p-3 border rounded-lg">
+                <img :src="item.image?.src || getPlaceholderImage()" :alt="item.name"
+                  class="w-12 h-12 object-cover rounded">
                 <div class="flex-1">
                   <h4 class="font-medium">{{ item.name }}</h4>
                   <p class="text-sm text-gray-600">Qty: {{ item.quantity }} × {{ formatPrice(item.price) }}</p>
@@ -109,10 +202,11 @@
                   {{ order.shipping.first_name }} {{ order.shipping.last_name }}
                 </p>
                 <p v-if="order.shipping.company">{{ order.shipping.company }}</p>
-                <p v-if="order.shipping.address_1">{{ order.shipping.address_1}}</p>
-                <p v-if="order.shipping.address_2">{{ order.shipping.address_2}}</p>
+                <p v-if="order.shipping.address_1">{{ order.shipping.address_1 }}</p>
+                <p v-if="order.shipping.address_2">{{ order.shipping.address_2 }}</p>
                 <p v-if="order.shipping.city || order.shipping.state || order.shipping.postcode">
-                  {{ order.shipping.city }}{{ order.shipping.city && order.shipping.state ? ', ' : '' }}{{ order.shipping.state }} {{ order.shipping.postcode }}
+                  {{ order.shipping.city }}{{ order.shipping.city && order.shipping.state ? ', ' : '' }}{{
+                    order.shipping.state }} {{ order.shipping.postcode }}
                 </p>
                 <p v-if="order.shipping.country">{{ order.shipping.country }}</p>
               </div>
@@ -126,10 +220,11 @@
                   {{ order.billing.first_name }} {{ order.billing.last_name }}
                 </p>
                 <p v-if="order.billing.company">{{ order.billing.company }}</p>
-                <p v-if="order.billing.address_1">{{ order.billing.address_1}}</p>
-                <p v-if="order.billing.address_2">{{ order.billing.address_2}}</p>
+                <p v-if="order.billing.address_1">{{ order.billing.address_1 }}</p>
+                <p v-if="order.billing.address_2">{{ order.billing.address_2 }}</p>
                 <p v-if="order.billing.city || order.billing.state || order.billing.postcode">
-                  {{ order.billing.city }}{{ order.billing.city && order.billing.state ? ', ' : '' }}{{ order.billing.state }} {{ order.billing.postcode }}
+                  {{ order.billing.city }}{{ order.billing.city && order.billing.state ? ', ' : '' }}{{
+                    order.billing.state }} {{ order.billing.postcode }}
                 </p>
                 <p v-if="order.billing.country">{{ order.billing.country }}</p>
                 <p v-if="order.billing.email" class="mt-2">
@@ -156,10 +251,21 @@
 
         <!-- Footer -->
         <div class="sticky bottom-0 bg-gray-50 px-6 py-4 border-t">
-          <div class="flex justify-end space-x-3">
-            <BaseButton @click="closeModal" text="Close" variant="outline" />
-            <BaseButton v-if="order?.status === 'completed'" @click="reorderItems" 
-              :loading="reordering" text="Reorder" />
+          <div class="flex justify-between items-center">
+            <div class="flex space-x-3">
+              <!-- Status-specific footer actions -->
+              <BaseButton v-if="order?.status === 'pending'" @click="payNow" text="Pay Now" />
+              <BaseButton v-if="order?.status === 'failed'" @click="retryPayment" text="Retry Payment"
+                variant="outline" />
+              <BaseButton v-if="order?.status === 'completed'" @click="downloadInvoice" text="Download Invoice"
+                variant="outline" />
+            </div>
+
+            <div class="flex space-x-3">
+              <BaseButton @click="closeModal" text="Close" variant="outline" />
+              <BaseButton v-if="['completed', 'processing'].includes(order?.status)" @click="reorderItems"
+                :loading="reordering" text="Reorder" />
+            </div>
           </div>
         </div>
       </div>
@@ -195,19 +301,19 @@ const reordering = ref(false)
 // Methods
 const fetchOrder = async () => {
   if (!props.orderId) return
-  
+
   try {
     loading.value = true
     error.value = null
-    
+
     // Ensure customer profile is loaded
     if (!customerData.value && user.value) {
       await loadCustomerProfile(user.value)
     }
-    
+
     // Get customer ID for validation
     const customerId = customerData.value?.id || user.value?.id
-    
+
     // Fetch the order
     const orderData = await getOrder(props.orderId, customerId)
     order.value = orderData
@@ -228,12 +334,12 @@ const closeModal = () => {
 
 const reorderItems = async () => {
   if (!order.value?.line_items) return
-  
+
   reordering.value = true
-  
+
   try {
     let itemsAdded = 0
-    
+
     for (const item of order.value.line_items) {
       try {
         const product = {
@@ -244,14 +350,14 @@ const reorderItems = async () => {
           sku: item.sku || '',
           variation_id: item.variation_id || null
         }
-        
+
         await addToCart(product, parseInt(item.quantity))
         itemsAdded++
       } catch (itemError) {
         console.warn(`Failed to add item ${item.name} to cart:`, itemError)
       }
     }
-    
+
     if (itemsAdded > 0) {
       emit('reorder')
       closeModal()
@@ -267,6 +373,30 @@ const reorderItems = async () => {
   }
 }
 
+// Status-specific action methods
+const payNow = () => {
+  // Redirect to checkout with order details
+  const checkoutUrl = `/checkout?order_id=${order.value.id}&pay_for_order=true`
+  window.location.href = checkoutUrl
+}
+
+const retryPayment = () => {
+  // Similar to payNow but for failed orders
+  payNow()
+}
+
+const downloadInvoice = () => {
+  // Generate and download invoice
+  const invoiceUrl = `/invoice/${order.value.id}`
+  window.open(invoiceUrl, '_blank')
+}
+
+const leaveReview = () => {
+  // Navigate to review page or open review modal
+  emit('close')
+  navigateTo(`/account/reviews?order_id=${order.value.id}`)
+}
+
 // Utility functions
 const formatDate = (dateString) => {
   if (!dateString) return 'N/A'
@@ -279,16 +409,26 @@ const formatDate = (dateString) => {
 
 const getOrderStatusClass = (status) => {
   const classes = {
-    'pending': 'bg-yellow-100 text-yellow-800',
+    'pending': 'bg-orange-100 text-orange-800',
+    'pending-payment': 'bg-orange-100 text-orange-800',
+    'pending_payment': 'bg-orange-100 text-orange-800',
     'processing': 'bg-blue-100 text-blue-800',
+    'on-hold': 'bg-purple-100 text-purple-800',
     'completed': 'bg-green-100 text-green-800',
-    'cancelled': 'bg-red-100 text-red-800'
+    'cancelled': 'bg-red-100 text-red-800',
+    'refunded': 'bg-gray-100 text-gray-800',
+    'failed': 'bg-red-100 text-red-800',
+    'draft': 'bg-gray-100 text-gray-600'
   }
   return classes[status] || 'bg-gray-100 text-gray-800'
 }
 
 const capitalizeFirst = (str) => {
-  return str.charAt(0).toUpperCase() + str.slice(1)
+  if (!str) return ''
+  // Handle hyphenated statuses
+  return str.split('-').map(word =>
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join(' ')
 }
 
 const hasShippingAddress = (shipping) => {
@@ -297,6 +437,142 @@ const hasShippingAddress = (shipping) => {
 
 const hasBillingAddress = (billing) => {
   return billing && (billing.address_1 || billing.city || billing.first_name)
+}
+
+// Status-specific helper functions
+const getStatusInfo = (order) => {
+  const statusInfo = {
+    'pending-payment': {
+      title: 'Payment Required',
+      description: 'Your order is waiting for payment. Complete your payment to process the order.'
+    },
+    'pending_payment': {
+      title: 'Payment Required',
+      description: 'Your order is waiting for payment. Complete your payment to process the order.'
+    },
+    'pending': {
+      title: 'Payment Required',
+      description: 'Your order is waiting for payment. Complete your payment to process the order.'
+    },
+    'processing': {
+      title: 'Order Processing',
+      description: 'Your order is being prepared and will be shipped soon.'
+    },
+    'on-hold': {
+      title: 'Order On Hold',
+      description: 'Your order has been put on hold. Please contact us for more information.'
+    },
+    'completed': {
+      title: 'Order Completed',
+      description: 'Your order has been completed and delivered.'
+    },
+    'cancelled': {
+      title: 'Order Cancelled',
+      description: 'This order has been cancelled.'
+    },
+    'refunded': {
+      title: 'Order Refunded',
+      description: 'This order has been refunded. See details below.'
+    },
+    'failed': {
+      title: 'Payment Failed',
+      description: 'The payment for this order failed. You can retry the payment.'
+    },
+    'draft': {
+      title: 'Draft Order',
+      description: 'This is a draft order that has not been finalized.'
+    }
+  }
+
+  return statusInfo[order.status] || null
+}
+
+const getStatusIcon = (status) => {
+  const icons = {
+    'pending-payment': 'heroicons:credit-card',
+    'pending_payment': 'heroicons:credit-card',
+    'pending': 'heroicons:credit-card',
+    'processing': 'heroicons:cog-6-tooth',
+    'on-hold': 'heroicons:pause-circle',
+    'completed': 'heroicons:check-circle',
+    'cancelled': 'heroicons:x-circle',
+    'refunded': 'heroicons:arrow-uturn-left',
+    'failed': 'heroicons:exclamation-triangle',
+    'draft': 'heroicons:document'
+  }
+
+  return icons[status] || 'heroicons:information-circle'
+}
+
+const getStatusIconClass = (status) => {
+  const classes = {
+    'pending-payment': 'text-orange-500',
+    'pending_payment': 'text-orange-500',
+    'pending': 'text-orange-500',
+    'processing': 'text-blue-500',
+    'on-hold': 'text-purple-500',
+    'completed': 'text-green-500',
+    'cancelled': 'text-red-500',
+    'refunded': 'text-gray-500',
+    'failed': 'text-red-500',
+    'draft': 'text-gray-400'
+  }
+
+  return classes[status] || 'text-gray-500'
+}
+
+const getStatusBorderClass = (status) => {
+  const classes = {
+    'pending-payment': 'border-orange-400',
+    'pending_payment': 'border-orange-400',
+    'pending': 'border-orange-400',
+    'processing': 'border-blue-400',
+    'on-hold': 'border-purple-400',
+    'completed': 'border-green-400',
+    'cancelled': 'border-red-400',
+    'refunded': 'border-gray-400',
+    'failed': 'border-red-400',
+    'draft': 'border-gray-300'
+  }
+
+  return classes[status] || 'border-gray-400'
+}
+
+const getRefundedAmount = (order) => {
+  // Check multiple possible refund amount fields
+  if (order.refunds && order.refunds.length > 0) {
+    return order.refunds.reduce((total, refund) => total + parseFloat(refund.amount || 0), 0)
+  }
+
+  // Check if there's a refund_total field
+  if (order.refund_total && parseFloat(order.refund_total) > 0) {
+    return parseFloat(order.refund_total)
+  }
+
+  // Check if there's a total_refunded field
+  if (order.total_refunded && parseFloat(order.total_refunded) > 0) {
+    return parseFloat(order.total_refunded)
+  }
+
+  // For refunded orders, if no specific refund amount, assume full refund
+  if (order.status === 'refunded') {
+    return parseFloat(order.total || 0)
+  }
+
+  return 0
+}
+
+const getEstimatedDelivery = (order) => {
+  // Calculate estimated delivery (example: 3-5 business days from order date)
+  const orderDate = new Date(order.date_created)
+  const estimatedDate = new Date(orderDate)
+  estimatedDate.setDate(orderDate.getDate() + 5) // Add 5 days
+
+  return estimatedDate.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  })
 }
 
 // Watch for orderId changes
@@ -320,9 +596,9 @@ onMounted(() => {
       closeModal()
     }
   }
-  
+
   document.addEventListener('keydown', handleEscape)
-  
+
   onUnmounted(() => {
     document.removeEventListener('keydown', handleEscape)
   })

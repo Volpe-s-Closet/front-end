@@ -14,9 +14,14 @@
             class="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
             <option value="">All Orders</option>
             <option value="pending">Pending</option>
+            <option value="pending-payment">Pending Payment</option>
             <option value="processing">Processing</option>
+            <option value="on-hold">On Hold</option>
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>
+            <option value="refunded">Refunded</option>
+            <option value="failed">Failed</option>
+            <option value="draft">Draft</option>
           </select>
         </div>
         <div>
@@ -238,7 +243,11 @@ const fetchOrders = async () => {
 }
 
 const capitalizeFirst = (str) => {
-  return str.charAt(0).toUpperCase() + str.slice(1)
+  if (!str) return ''
+  // Handle hyphenated statuses
+  return str.split('-').map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join(' ')
 }
 
 const clearFilters = () => {

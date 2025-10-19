@@ -30,6 +30,7 @@ export default defineEventHandler(async (event) => {
     })
     
     console.log('Server: Order retrieved successfully')
+    console.log('Server: Order status:', response.status)
     console.log('Server: Order customer ID:', response.customer_id)
     
     // Optional: Validate customer ownership if customer ID is provided
@@ -45,6 +46,35 @@ export default defineEventHandler(async (event) => {
           statusCode: 403,
           statusMessage: 'You do not have permission to view this order'
         })
+      }
+    }
+    
+    // If order is refunded, try to fetch refund details
+    if (response.status === 'refunded') {
+      console.log('Server: Fetching refund details for refunded order')
+      try {
+        const refunds = await $fetch(`${siteUrl}/wp-json/wc/v3/orders/${id}/refunds`, {
+          headers: {
+            'Authorization': `Basic ${credentials}`,
+            'Content-Type': 'application/json'
+          }
+        })
+        
+        console.log('Server: Refunds retrieved:', refunds)
+        
+        // Add refunds to the response
+        response.refunds = refunds
+        
+        // Calculate total refunded amount
+        if (refunds && refunds.length > 0) {
+          response.total_refunded = refunds.reduce((total, refund) => {
+            return total + Math.abs(parseFloat(refund.amount || 0))
+          }, 0)
+          console.log('Server: Total refunded amount:', response.total_refunded)
+        }
+      } catch (refundError) {
+        console.warn('Server: Could not fetch refund details:', refundError)
+        // Continue without refund details
       }
     }
     
