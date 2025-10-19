@@ -6,20 +6,22 @@
       <p class="text-gray-600 mt-2">Review your items before checkout</p>
     </div>
 
-    <!-- Empty Cart -->
-    <div v-if="cartItems.length === 0" class="text-center py-16">
-      <Icon name="heroicons:shopping-bag" class="h-24 w-24 text-gray-300 mx-auto mb-6" />
-      <h2 class="text-2xl font-semibold text-gray-900 mb-4">Your cart is empty</h2>
-      <p class="text-gray-600 mb-8">Looks like you haven't added any items to your cart yet.</p>
-      <BaseButton 
-        to="/search" 
-        text="Start Shopping"
-        size="lg"
-      />
-    </div>
+    <!-- Cart Content - Use ClientOnly to prevent hydration mismatch -->
+    <ClientOnly>
+      <!-- Empty Cart -->
+      <div v-if="cartItems.length === 0" class="text-center py-16">
+        <Icon name="heroicons:shopping-bag" class="h-24 w-24 text-gray-300 mx-auto mb-6" />
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Your cart is empty</h2>
+        <p class="text-gray-600 mb-8">Looks like you haven't added any items to your cart yet.</p>
+        <BaseButton 
+          to="/search" 
+          text="Start Shopping"
+          size="lg"
+        />
+      </div>
 
-    <!-- Cart Content -->
-    <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Cart Content -->
+      <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Cart Items -->
       <div class="lg:col-span-2">
         <div class="bg-white rounded-lg shadow-sm">
@@ -198,6 +200,19 @@
         </div>
       </div>
     </div>
+
+      <!-- Loading fallback for server-side rendering -->
+      <template #fallback>
+        <div class="text-center py-16">
+          <div class="animate-pulse">
+            <div class="h-24 w-24 bg-gray-200 rounded-full mx-auto mb-6"></div>
+            <div class="h-8 bg-gray-200 rounded w-48 mx-auto mb-4"></div>
+            <div class="h-4 bg-gray-200 rounded w-64 mx-auto mb-8"></div>
+            <div class="h-12 bg-gray-200 rounded w-32 mx-auto"></div>
+          </div>
+        </div>
+      </template>
+    </ClientOnly>
   </div>
 </template>
 
@@ -211,7 +226,7 @@ const {
   removeFromCart, 
   clearCart,
   addToCart,
-  formatPrice 
+  formatPrice
 } = useCart()
 
 const { getProducts, getCartItemImage, getProductImage, handleImageError } = useProducts()
@@ -226,6 +241,7 @@ useHead({
 
 // Data
 const recommendedProducts = ref([])
+const loadingRecommended = ref(false)
 
 // Methods
 const confirmClearCart = () => {
@@ -235,21 +251,30 @@ const confirmClearCart = () => {
 }
 
 const fetchRecommendedProducts = async () => {
+  if (loadingRecommended.value) return
+  
+  loadingRecommended.value = true
   try {
-    // Get random products or products from same categories
+    // Get recent products (more reliable than rand or popularity)
     const products = await getProducts({ 
       per_page: 6,
-      orderby: 'rand',
+      orderby: 'date',
+      order: 'desc',
       status: 'publish'
     })
     recommendedProducts.value = products
   } catch (error) {
     console.error('Error fetching recommended products:', error)
+    // Set empty array on error to prevent UI issues
+    recommendedProducts.value = []
+  } finally {
+    loadingRecommended.value = false
   }
 }
 
 // Initialize
 onMounted(() => {
+  // Since we're using ClientOnly, we can fetch recommendations immediately
   fetchRecommendedProducts()
 })
 </script>

@@ -13,11 +13,19 @@ export const useCart = () => {
       const stored = localStorage.getItem('cart')
       if (stored) {
         try {
-          cartItems.value = JSON.parse(stored)
+          const parsedCart = JSON.parse(stored)
+          // Ensure we have a valid array
+          if (Array.isArray(parsedCart)) {
+            cartItems.value = parsedCart
+          } else {
+            cartItems.value = []
+          }
         } catch (error) {
           console.error('Error parsing cart from localStorage:', error)
           cartItems.value = []
         }
+      } else {
+        cartItems.value = []
       }
       isHydrated.value = true
     }
