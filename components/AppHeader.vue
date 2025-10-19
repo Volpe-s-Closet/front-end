@@ -1,7 +1,11 @@
 <template>
-  <header class="bg-white shadow-sm border-b">
+  <header class="bg-white shadow-sm border-b relative z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
+        <!-- Mobile menu button (left side on mobile) -->
+        <BaseButton @click="toggleMobileMenu" variant="ghost" size="sm" icon="heroicons:bars-3"
+          class="md:hidden text-gray-700 hover:text-gray-900" />
+
         <!-- Logo -->
         <div class="flex-shrink-0">
           <NuxtLink to="/" class="text-2xl font-bold text-gray-900">
@@ -9,7 +13,7 @@
           </NuxtLink>
         </div>
 
-        <!-- Navigation -->
+        <!-- Navigation (Desktop) -->
         <nav class="hidden md:flex space-x-8">
           <NuxtLink to="/categories" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">
             Categories
@@ -19,48 +23,29 @@
           </NuxtLink>
         </nav>
 
-        <!-- Search Bar -->
-        <div class="flex-1 max-w-lg mx-8">
-          <div class="relative">
-            <input
-              type="text"
-              placeholder="Search products..."
-              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              @keyup.enter="handleSearch"
-              v-model="searchQuery"
-            >
-            <ClientOnly>
-              <Icon name="heroicons:magnifying-glass" class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-              <template #fallback>
-                <div class="absolute left-3 top-2.5 h-5 w-5 bg-gray-200 rounded"></div>
-              </template>
-            </ClientOnly>
-            <BaseButton 
-              v-if="searchQuery"
-              @click="clearSearch"
-              variant="ghost"
-              size="xs"
-              icon="heroicons:x-mark"
-              class="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
-            />
-          </div>
-        </div>
-
         <!-- Right side actions -->
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center">
+          <!-- Search Button -->
+          <BaseButton @click="toggleSearchModal" variant="ghost" size="lg" icon="heroicons:magnifying-glass"
+            class="text-gray-700 hover:text-gray-900" />
+
+          <!-- Cart -->
+          <ClientOnly>
+            <BaseButton @click="toggleCart" variant="ghost" size="lg" icon="heroicons:shopping-bag"
+              :badge="cartItemCount > 0 ? cartItemCount : null" badge-color="red"
+              class="text-gray-700 hover:text-gray-900" />
+            <template #fallback>
+              <BaseButton @click="toggleCart" variant="ghost" size="lg" icon="heroicons:shopping-bag"
+                class="text-gray-700 hover:text-gray-900" />
+            </template>
+          </ClientOnly>
+
           <!-- Account -->
           <ClientOnly>
             <div v-if="isAuthenticated">
-              <DropDown
-                :items="accountMenuItems"
-                @item-click="handleAccountAction"
-                trigger-icon="heroicons:user-circle"
-                trigger-label="Account"
-                button-class="!bg-transparent hover:!bg-gray-100 !px-2 !py-2"
-                position="right"
-                size="sm"
-                hide-label
-              />
+              <DropDown :items="accountMenuItems" @item-click="handleAccountAction" trigger-icon="heroicons:user-circle"
+                trigger-label="Account" button-class="!bg-transparent hover:!bg-gray-100 !px-2 !py-2" position="right"
+                size="sm" hide-label />
             </div>
             <NuxtLink v-else to="/login" class="text-gray-700 hover:text-gray-900">
               <ClientOnly>
@@ -76,35 +61,23 @@
               </NuxtLink>
             </template>
           </ClientOnly>
-
-          <!-- Cart -->
-          <BaseButton 
-            @click="toggleCart" 
-            variant="ghost" 
-            size="lg" 
-            icon="heroicons:shopping-bag" 
-            :badge="cartItemCount > 0 ? cartItemCount : null"
-            badge-color="red"
-            class="text-gray-700 hover:text-gray-900"
-          />
-
-          <!-- Mobile menu button -->
-          <BaseButton @click="toggleMobileMenu" variant="ghost" size="sm" icon="heroicons:bars-3" class="md:hidden text-gray-700 hover:text-gray-900" />
-        </div>
-      </div>
-
-      <!-- Mobile Navigation -->
-      <div v-if="showMobileMenu" class="md:hidden border-t border-gray-200 pt-4 pb-3">
-        <div class="space-y-1">
-          <NuxtLink to="/categories" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900">
-            Categories
-          </NuxtLink>
-          <NuxtLink to="/search" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900">
-            All Products
-          </NuxtLink>
         </div>
       </div>
     </div>
+
+    <!-- Mobile Sidebar -->
+    <MobileSidebar :is-open="showMobileMenu" @close="closeMobileMenu" />
+
+    <!-- Search Modal -->
+    <SearchModal :is-open="showSearchModal" @close="closeSearchModal" :search-query="searchQuery" @search="handleSearch"
+      @clear-search="clearSearch" />
+
+    <!-- Mobile Sidebar Overlay -->
+    <Transition enter-active-class="transition-opacity duration-300" enter-from-class="opacity-0"
+      enter-to-class="opacity-100" leave-active-class="transition-opacity duration-300" leave-from-class="opacity-100"
+      leave-to-class="opacity-0">
+      <div v-if="showMobileMenu" class="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden" @click="closeMobileMenu" />
+    </Transition>
   </header>
 </template>
 
@@ -114,6 +87,7 @@ const { isAuthenticated, logout } = useAuth()
 
 const searchQuery = ref('')
 const showMobileMenu = ref(false)
+const showSearchModal = ref(false)
 
 // Account dropdown menu items
 const accountMenuItems = [
@@ -135,12 +109,13 @@ const accountMenuItems = [
   }
 ]
 
-// Debounced search
-let searchTimeout = null
 
-const handleSearch = () => {
-  if (searchQuery.value.trim()) {
-    navigateTo(`/search?q=${encodeURIComponent(searchQuery.value)}`)
+
+const handleSearch = (query) => {
+  if (query && query.trim()) {
+    searchQuery.value = query
+    navigateTo(`/search?q=${encodeURIComponent(query)}`)
+    closeSearchModal()
   }
 }
 
@@ -148,24 +123,22 @@ const clearSearch = () => {
   searchQuery.value = ''
 }
 
-// Watch for search query changes and debounce
-watch(searchQuery, (newValue) => {
-  if (searchTimeout) {
-    clearTimeout(searchTimeout)
-  }
-  
-  searchTimeout = setTimeout(() => {
-    if (newValue.trim()) {
-      navigateTo(`/search?q=${encodeURIComponent(newValue)}`)
-    } else {
-      // Navigate to all products when search is cleared
-      navigateTo('/search')
-    }
-  }, 300)
-})
+
 
 const toggleMobileMenu = () => {
   showMobileMenu.value = !showMobileMenu.value
+}
+
+const closeMobileMenu = () => {
+  showMobileMenu.value = false
+}
+
+const toggleSearchModal = () => {
+  showSearchModal.value = !showSearchModal.value
+}
+
+const closeSearchModal = () => {
+  showSearchModal.value = false
 }
 
 const handleAccountAction = () => {
