@@ -117,7 +117,7 @@
               <div class="text-sm text-gray-700 text-center sm:text-right">
                 <span v-if="!loading">
                   Showing <span class="font-medium">{{ startItem }}</span> to <span class="font-medium">{{ endItem
-                  }}</span> of
+                    }}</span> of
                   <span class="font-medium">{{ totalProducts }}</span> results
                 </span>
               </div>
@@ -238,7 +238,6 @@ const handleSortChange = () => {
 
 // Loading states
 const loading = ref(true)
-const loadingMore = ref(false)
 
 // Refs
 const filtersRef = ref(null)
@@ -550,6 +549,7 @@ const handleResize = () => {
 
   resizeTimeout = setTimeout(() => {
     const currentIsMobile = window.innerWidth < 1024 // lg breakpoint
+    const wasDesktop = !isMobile.value
     isMobile.value = currentIsMobile
 
     if (currentIsMobile) {
@@ -559,8 +559,13 @@ const handleResize = () => {
       if (gridSize.value > 2) {
         gridSize.value = 2
       }
+    } else if (wasDesktop !== !currentIsMobile) {
+      // Transitioning from mobile to desktop/tablet
+      // If user had 1 column selected, change to 2 (minimum for larger screens)
+      if (gridSize.value === 1) {
+        gridSize.value = 2
+      }
     }
-    // On desktop, no automatic changes needed - user can select any option
   }, 150) // 150ms debounce
 }
 
