@@ -80,7 +80,7 @@ definePageMeta({
 })
 
 const route = useRoute()
-const { getOrder, getPlaceholderImage } = useProducts()
+const { getOrder, getPlaceholderImage } = useCustomer()
 const { formatPrice } = useCurrency()
 
 // Data

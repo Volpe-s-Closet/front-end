@@ -177,7 +177,7 @@ export const useAuth = () => {
     if (!token.value || !user.value) return null
 
     try {
-      const { getCustomer } = useProducts()
+      const { getCustomer } = useCustomer()
       return await getCustomer(user.value.id)
     } catch (error) {
       console.error('Error fetching user profile:', error)
@@ -190,7 +190,7 @@ export const useAuth = () => {
     if (!token.value || !user.value) return { success: false, error: 'Not authenticated' }
 
     try {
-      const { updateCustomer } = useProducts()
+      const { updateCustomer } = useCustomer()
       const updatedUser = await updateCustomer(user.value.id, profileData)
 
       // Update local user data

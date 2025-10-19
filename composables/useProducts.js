@@ -70,42 +70,7 @@ export const useProducts = () => {
         return await apiCall(`products/attributes/${attributeId}/terms`)
     }
 
-    // Orders (requires authentication)
-    const getOrders = async (customerId, params = {}) => {
-        return await apiCall(`orders`, {
-            query: { customer: customerId, ...params }
-        })
-    }
 
-    const getOrder = async (orderId) => {
-        return await apiCall(`orders/${orderId}`)
-    }
-
-    const createOrder = async (orderData) => {
-        return await apiCall('orders', {
-            method: 'POST',
-            body: orderData
-        })
-    }
-
-    // Customers (requires authentication)
-    const getCustomer = async (customerId) => {
-        return await apiCall(`customers/${customerId}`)
-    }
-
-    const updateCustomer = async (customerId, customerData) => {
-        return await apiCall(`customers/${customerId}`, {
-            method: 'PUT',
-            body: customerData
-        })
-    }
-
-    const createCustomer = async (customerData) => {
-        return await apiCall('customers', {
-            method: 'POST',
-            body: customerData
-        })
-    }
 
     // Product image utilities
     const getProductImage = (product) => {
@@ -167,16 +132,6 @@ export const useProducts = () => {
         // Reviews
         getProductReviews,
         createProductReview,
-
-        // Orders
-        getOrders,
-        getOrder,
-        createOrder,
-
-        // Customers
-        getCustomer,
-        updateCustomer,
-        createCustomer,
 
         // Product images
         getProductImage,

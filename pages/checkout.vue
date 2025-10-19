@@ -380,7 +380,8 @@
 
 <script setup>
 const { cartItems, cartSubtotal, clearCart, formatPrice } = useCart()
-const { createOrder, getCartItemImage, handleImageError } = useProducts()
+const { createOrder } = useCustomer()
+const { getCartItemImage, handleImageError } = useProducts()
 
 // SEO
 useHead({

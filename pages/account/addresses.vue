@@ -1,231 +1,170 @@
 <template>
   <NuxtLayout name="account">
-        <!-- Success/Error Messages -->
-        <div v-if="successMessage" class="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
-          <div class="flex">
-            <Icon name="heroicons:check-circle" class="h-5 w-5 mr-2" />
-            {{ successMessage }}
-          </div>
+    <!-- Success/Error Messages -->
+    <div v-if="successMessage" class="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
+      <div class="flex">
+        <Icon name="heroicons:check-circle" class="h-5 w-5 mr-2" />
+        {{ successMessage }}
+      </div>
+    </div>
+
+    <div v-if="errorMessage" class="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
+      <div class="flex">
+        <Icon name="heroicons:exclamation-circle" class="h-5 w-5 mr-2" />
+        {{ errorMessage }}
+      </div>
+    </div>
+
+    <!-- Address Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Billing Address -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold flex items-center">
+            <Icon name="heroicons:credit-card" class="h-5 w-5 mr-2 text-blue-600" />
+            Billing Address
+          </h2>
+          <BaseButton @click="editAddress('billing')" variant="link" size="sm"
+            :text="addresses.billing && hasAddressData(addresses.billing) ? 'Edit' : 'Add'" />
         </div>
 
-        <div v-if="errorMessage" class="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
-          <div class="flex">
-            <Icon name="heroicons:exclamation-circle" class="h-5 w-5 mr-2" />
-            {{ errorMessage }}
-          </div>
+        <div v-if="addresses.billing && hasAddressData(addresses.billing)" class="space-y-2">
+          <p class="font-medium">{{ getFullName(addresses.billing) }}</p>
+          <p v-if="addresses.billing.company">{{ addresses.billing.company }}</p>
+          <p>{{ addresses.billing.address_1 }}</p>
+          <p v-if="addresses.billing.address_2">{{ addresses.billing.address_2 }}</p>
+          <p>{{ addresses.billing.city }}, {{ addresses.billing.state }} {{ addresses.billing.postcode }}</p>
+          <p>{{ getCountryName(addresses.billing.country) }}</p>
+          <p v-if="addresses.billing.phone" class="text-gray-600">{{ addresses.billing.phone }}</p>
         </div>
 
-        <!-- Address Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <!-- Billing Address -->
-          <div class="bg-white rounded-lg shadow-sm p-6">
-            <div class="flex items-center justify-between mb-4">
-              <h2 class="text-lg font-semibold flex items-center">
-                <Icon name="heroicons:credit-card" class="h-5 w-5 mr-2 text-blue-600" />
-                Billing Address
-              </h2>
-              <BaseButton 
-                @click="editAddress('billing')"
-                variant="link"
-                size="sm"
-                :text="addresses.billing && hasAddressData(addresses.billing) ? 'Edit' : 'Add'"
-              />
-            </div>
+        <div v-else class="text-center py-8 text-gray-500">
+          <Icon name="heroicons:map-pin" class="h-12 w-12 mx-auto mb-2 text-gray-300" />
+          <p>No billing address added</p>
+        </div>
+      </div>
 
-            <div v-if="addresses.billing && hasAddressData(addresses.billing)" class="space-y-2">
-              <p class="font-medium">{{ getFullName(addresses.billing) }}</p>
-              <p v-if="addresses.billing.company">{{ addresses.billing.company }}</p>
-              <p>{{ addresses.billing.address_1 }}</p>
-              <p v-if="addresses.billing.address_2">{{ addresses.billing.address_2 }}</p>
-              <p>{{ addresses.billing.city }}, {{ addresses.billing.state }} {{ addresses.billing.postcode }}</p>
-              <p>{{ getCountryName(addresses.billing.country) }}</p>
-              <p v-if="addresses.billing.phone" class="text-gray-600">{{ addresses.billing.phone }}</p>
-            </div>
-
-            <div v-else class="text-center py-8 text-gray-500">
-              <Icon name="heroicons:map-pin" class="h-12 w-12 mx-auto mb-2 text-gray-300" />
-              <p>No billing address added</p>
-            </div>
-          </div>
-
-          <!-- Shipping Address -->
-          <div class="bg-white rounded-lg shadow-sm p-6">
-            <div class="flex items-center justify-between mb-4">
-              <h2 class="text-lg font-semibold flex items-center">
-                <Icon name="heroicons:truck" class="h-5 w-5 mr-2 text-green-600" />
-                Shipping Address
-              </h2>
-              <BaseButton 
-                @click="editAddress('shipping')"
-                variant="link"
-                size="sm"
-                :text="addresses.shipping && hasAddressData(addresses.shipping) ? 'Edit' : 'Add'"
-              />
-            </div>
-
-            <div v-if="addresses.shipping && hasAddressData(addresses.shipping)" class="space-y-2">
-              <p class="font-medium">{{ getFullName(addresses.shipping) }}</p>
-              <p v-if="addresses.shipping.company">{{ addresses.shipping.company }}</p>
-              <p>{{ addresses.shipping.address_1 }}</p>
-              <p v-if="addresses.shipping.address_2">{{ addresses.shipping.address_2 }}</p>
-              <p>{{ addresses.shipping.city }}, {{ addresses.shipping.state }} {{ addresses.shipping.postcode }}</p>
-              <p>{{ getCountryName(addresses.shipping.country) }}</p>
-            </div>
-
-            <div v-else class="text-center py-8 text-gray-500">
-              <Icon name="heroicons:map-pin" class="h-12 w-12 mx-auto mb-2 text-gray-300" />
-              <p>No shipping address added</p>
-            </div>
-
-            <div v-if="addresses.billing && hasAddressData(addresses.billing)" class="mt-4 pt-4 border-t">
-              <label class="flex items-center">
-                <input 
-                  type="checkbox" 
-                  v-model="sameAsBilling"
-                  @change="copyBillingToShipping"
-                  class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                >
-                <span class="ml-2 text-sm text-gray-700">Same as billing address</span>
-              </label>
-            </div>
-          </div>
+      <!-- Shipping Address -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold flex items-center">
+            <Icon name="heroicons:truck" class="h-5 w-5 mr-2 text-green-600" />
+            Shipping Address
+          </h2>
+          <BaseButton @click="editAddress('shipping')" variant="link" size="sm"
+            :text="addresses.shipping && hasAddressData(addresses.shipping) ? 'Edit' : 'Add'" />
         </div>
 
-        <!-- Address Form Modal -->
-        <div v-if="showAddressForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div class="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
-            <div class="p-6">
-              <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-semibold">
-                  {{ editingAddress === 'billing' ? 'Edit Billing Address' : 'Edit Shipping Address' }}
-                </h3>
-                <BaseButton 
-                  @click="closeAddressForm"
-                  variant="ghost"
-                  size="sm"
-                  icon="heroicons:x-mark"
-                />
+        <div v-if="addresses.shipping && hasAddressData(addresses.shipping)" class="space-y-2">
+          <p class="font-medium">{{ getFullName(addresses.shipping) }}</p>
+          <p v-if="addresses.shipping.company">{{ addresses.shipping.company }}</p>
+          <p>{{ addresses.shipping.address_1 }}</p>
+          <p v-if="addresses.shipping.address_2">{{ addresses.shipping.address_2 }}</p>
+          <p>{{ addresses.shipping.city }}, {{ addresses.shipping.state }} {{ addresses.shipping.postcode }}</p>
+          <p>{{ getCountryName(addresses.shipping.country) }}</p>
+        </div>
+
+        <div v-else class="text-center py-8 text-gray-500">
+          <Icon name="heroicons:map-pin" class="h-12 w-12 mx-auto mb-2 text-gray-300" />
+          <p>No shipping address added</p>
+        </div>
+
+        <div v-if="addresses.billing && hasAddressData(addresses.billing)" class="mt-4 pt-4 border-t">
+          <label class="flex items-center">
+            <input type="checkbox" v-model="sameAsBilling" @change="copyBillingToShipping"
+              class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+            <span class="ml-2 text-sm text-gray-700">Same as billing address</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Address Form Modal -->
+    <div v-if="showAddressForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div class="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-semibold">
+              {{ editingAddress === 'billing' ? 'Edit Billing Address' : 'Edit Shipping Address' }}
+            </h3>
+            <BaseButton @click="closeAddressForm" variant="ghost" size="sm" icon="heroicons:x-mark" />
+          </div>
+
+          <form @submit.prevent="saveAddress" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                <input v-model="addressForm.first_name" type="text" required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               </div>
-
-              <form @submit.prevent="saveAddress" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
-                    <input
-                      v-model="addressForm.first_name"
-                      type="text"
-                      required
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
-                    <input
-                      v-model="addressForm.last_name"
-                      type="text"
-                      required
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                  </div>
-                </div>
-
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Company</label>
-                  <input
-                    v-model="addressForm.company"
-                    type="text"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                </div>
-
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 1 *</label>
-                  <input
-                    v-model="addressForm.address_1"
-                    type="text"
-                    required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                </div>
-
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 2</label>
-                  <input
-                    v-model="addressForm.address_2"
-                    type="text"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
-                    <input
-                      v-model="addressForm.city"
-                      type="text"
-                      required
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">State/Province *</label>
-                    <input
-                      v-model="addressForm.state"
-                      type="text"
-                      required
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Postal Code *</label>
-                    <input
-                      v-model="addressForm.postcode"
-                      type="text"
-                      required
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                  </div>
-                </div>
-
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Country *</label>
-                  <select
-                    v-model="addressForm.country"
-                    required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">Select Country</option>
-                    <option v-for="country in countries" :key="country.code" :value="country.code">
-                      {{ country.name }}
-                    </option>
-                  </select>
-                </div>
-
-                <div v-if="editingAddress === 'billing'">
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-                  <input
-                    v-model="addressForm.phone"
-                    type="tel"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                </div>
-
-                <div class="flex space-x-4 pt-4">
-                  <BaseButton
-                    action="save"
-                    :loading="saving"
-                    :disabled="saving"
-                    text="Save Address"
-                  />
-                  <BaseButton
-                    action="cancel"
-                    @click="closeAddressForm"
-                  />
-                </div>
-              </form>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                <input v-model="addressForm.last_name" type="text" required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              </div>
             </div>
-          </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Company</label>
+              <input v-model="addressForm.company" type="text"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 1 *</label>
+              <input v-model="addressForm.address_1" type="text" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 2</label>
+              <input v-model="addressForm.address_2" type="text"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                <input v-model="addressForm.city" type="text" required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">State/Province *</label>
+                <input v-model="addressForm.state" type="text" required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Postal Code *</label>
+                <input v-model="addressForm.postcode" type="text" required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Country *</label>
+              <select v-model="addressForm.country" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option value="">Select Country</option>
+                <option v-for="country in countries" :key="country.code" :value="country.code">
+                  {{ country.name }}
+                </option>
+              </select>
+            </div>
+
+            <div v-if="editingAddress === 'billing'">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+              <input v-model="addressForm.phone" type="tel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
+
+            <div class="flex space-x-4 pt-4">
+              <BaseButton action="save" :loading="saving" :disabled="saving" text="Save Address" />
+              <BaseButton action="cancel" @click="closeAddressForm" />
+            </div>
+          </form>
         </div>
+      </div>
+    </div>
   </NuxtLayout>
 </template>
 
@@ -235,7 +174,7 @@ definePageMeta({
 })
 
 const { user } = useAuth()
-const { getCustomer, updateCustomer } = useProducts()
+const { getCustomer, updateCustomer } = useCustomer()
 
 // SEO
 useHead({
@@ -325,7 +264,7 @@ const getCountryName = (countryCode) => {
 const editAddress = (type) => {
   editingAddress.value = type
   const address = addresses.value[type] || {}
-  
+
   addressForm.value = {
     first_name: address.first_name || '',
     last_name: address.last_name || '',
@@ -338,7 +277,7 @@ const editAddress = (type) => {
     country: address.country || '',
     phone: address.phone || ''
   }
-  
+
   showAddressForm.value = true
 }
 
@@ -374,13 +313,13 @@ const saveAddress = async () => {
     updateData[editingAddress.value] = { ...addressForm.value }
 
     await updateCustomer(user.value.id, updateData)
-    
+
     // Update local addresses
     addresses.value[editingAddress.value] = { ...addressForm.value }
-    
+
     successMessage.value = `${editingAddress.value === 'billing' ? 'Billing' : 'Shipping'} address updated successfully!`
     closeAddressForm()
-    
+
   } catch (error) {
     console.error('Error saving address:', error)
     errorMessage.value = 'Failed to save address. Please try again.'
@@ -400,7 +339,7 @@ const copyBillingToShipping = () => {
     const billingCopy = { ...addresses.value.billing }
     delete billingCopy.phone // Remove phone from shipping address
     addresses.value.shipping = billingCopy
-    
+
     // Save to server
     updateCustomer(user.value.id, { shipping: billingCopy })
       .then(() => {

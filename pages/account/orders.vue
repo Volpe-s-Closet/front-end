@@ -183,7 +183,8 @@ definePageMeta({
 })
 
 const { user } = useAuth()
-const { getOrders, getPlaceholderImage, handleImageError } = useProducts()
+const { getOrders, getPlaceholderImage } = useCustomer()
+const { handleImageError } = useProducts()
 const { addToCart } = useCart()
 const { formatPrice } = useCurrency()
 
