@@ -10,34 +10,26 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-          <SelectBox
-            v-model="statusFilter"
-            :options="[
-              { value: '', label: 'All Orders' },
-              { value: 'pending', label: 'Pending Payment' },
-              { value: 'processing', label: 'Processing' },
-              { value: 'on-hold', label: 'On Hold' },
-              { value: 'completed', label: 'Completed' },
-              { value: 'cancelled', label: 'Cancelled' },
-              { value: 'refunded', label: 'Refunded' },
-              { value: 'failed', label: 'Failed' },
-              { value: 'draft', label: 'Draft' }
-            ]"
-            placeholder="All Orders"
-          />
+          <SelectBox v-model="statusFilter" :options="[
+            { value: '', label: 'All Orders' },
+            { value: 'pending', label: 'Pending Payment' },
+            { value: 'processing', label: 'Processing' },
+            { value: 'on-hold', label: 'On Hold' },
+            { value: 'completed', label: 'Completed' },
+            { value: 'cancelled', label: 'Cancelled' },
+            { value: 'refunded', label: 'Refunded' },
+            { value: 'failed', label: 'Failed' },
+            { value: 'draft', label: 'Draft' }
+          ]" placeholder="All Orders" />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
-          <SelectBox
-            v-model="dateFilter"
-            :options="[
-              { value: '', label: 'All Time' },
-              { value: '30', label: 'Last 30 Days' },
-              { value: '90', label: 'Last 3 Months' },
-              { value: '365', label: 'Last Year' }
-            ]"
-            placeholder="All Time"
-          />
+          <SelectBox v-model="dateFilter" :options="[
+            { value: '', label: 'All Time' },
+            { value: '30', label: 'Last 30 Days' },
+            { value: '90', label: 'Last 3 Months' },
+            { value: '365', label: 'Last Year' }
+          ]" placeholder="All Time" />
         </div>
       </div>
     </div>
@@ -92,8 +84,8 @@
           <div class="border-t pt-4 mt-4 flex flex-col sm:flex-row gap-3">
             <BaseButton @click="openOrderDetails(order.id)" text="View Details" size="sm" />
 
-            <BaseButton v-if="order.status === 'pending'" @click="openPaymentModal(order.id)" 
-              text="Pay Now" variant="primary" size="sm" />
+            <BaseButton v-if="order.status === 'pending'" @click="openPaymentModal(order.id)" text="Pay Now"
+              variant="primary" size="sm" />
 
             <BaseButton v-if="order.status === 'completed'" @click="reorderItems(order)"
               :loading="reorderingOrderId === order.id" :disabled="reorderingOrderId === order.id" text="Reorder"
@@ -148,20 +140,12 @@
     </div>
 
     <!-- Order Details Modal -->
-    <OrderDetailsModal 
-      :is-open="showOrderModal" 
-      :order-id="selectedOrderId"
-      @close="closeOrderModal"
-      @reorder="handleReorder"
-    />
+    <OrderDetailsModal :is-open="showOrderModal" :order-id="selectedOrderId" @close="closeOrderModal"
+      @reorder="handleReorder" />
 
     <!-- Payment Modal -->
-    <OrderPaymentModal 
-      :is-open="showPaymentModal" 
-      :order="selectedOrderForPayment"
-      @close="closePaymentModal"
-      @payment-success="handlePaymentSuccess"
-    />
+    <OrderPaymentModal :is-open="showPaymentModal" :order="selectedOrderForPayment" @close="closePaymentModal"
+      @payment-success="handlePaymentSuccess" />
   </NuxtLayout>
 </template>
 
@@ -263,7 +247,7 @@ const fetchOrders = async () => {
 const capitalizeFirst = (str) => {
   if (!str) return ''
   // Handle hyphenated statuses
-  return str.split('-').map(word => 
+  return str.split('-').map(word =>
     word.charAt(0).toUpperCase() + word.slice(1)
   ).join(' ')
 }
@@ -378,11 +362,8 @@ const cancelOrder = async (orderId) => {
     })
 
     if (response) {
-      // Update local order status
-      const orderIndex = customerOrders.value.findIndex(order => order.id === orderId)
-      if (orderIndex !== -1) {
-        customerOrders.value[orderIndex].status = 'cancelled'
-      }
+      // Refresh the entire orders list to get the latest data
+      await fetchOrders()
 
       alert('Order cancelled successfully')
     }
