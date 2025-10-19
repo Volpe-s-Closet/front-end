@@ -1,12 +1,13 @@
 # WordPress & WooCommerce Setup Instructions
 
-This document provides step-by-step instructions for configuring your WordPress site with WooCommerce to work with this Nuxt.js frontend.
+This document provides step-by-step instructions for configuring your WordPress site with WooCommerce and blog functionality to work with this Nuxt.js frontend.
 
 ## Prerequisites
 
 - WordPress site with admin access
 - WooCommerce plugin installed and activated
 - SSL certificate (HTTPS) recommended for production
+- Published blog posts (for blog functionality)
 
 
 ## 1. WooCommerce REST API Setup
@@ -157,7 +158,51 @@ NUXT_WOOCOMMERCE_KEY=ck_your_consumer_key_here
 NUXT_WOOCOMMERCE_SECRET=cs_your_consumer_secret_here
 ```
 
-## 6. Testing the Setup
+## 6. Blog Integration Setup
+
+The frontend includes a complete blog integration that consumes content from your WordPress site using the WordPress REST API.
+
+### WordPress Blog Requirements
+
+Your WordPress site needs:
+
+1. **WordPress REST API enabled** (enabled by default in WordPress 4.7+)
+2. **Published blog posts** with the following recommended setup:
+   - Featured images for better visual appeal
+   - Categories for organization
+   - Proper excerpts (auto-generated or manual)
+   - Tags for better content organization
+
+### Blog Features Included
+
+The blog integration provides:
+
+- **Blog post listing** (`/blog`) with pagination and category sidebar
+- **Individual blog post pages** (`/blog/{slug}`) with full content and related posts
+- **Category-based filtering** (`/blog/category/{slug}`)
+- **SEO optimization** with meta tags and Open Graph
+- **Responsive design** with loading states and error handling
+- **Social sharing** functionality
+- **Navigation integration** in header and mobile menu
+
+### Blog API Endpoints Used
+
+The integration uses these WordPress REST API endpoints:
+
+- `GET /wp-json/wp/v2/posts` - List blog posts
+- `GET /wp-json/wp/v2/posts/{id}` - Get single post by ID
+- `GET /wp-json/wp/v2/categories` - List blog categories
+
+### Blog Components Added
+
+- `composables/useBlog.js` - Blog functionality and state management
+- `components/BlogPostCard.vue` - Reusable blog post card component
+- `pages/blog/index.vue` - Main blog listing page
+- `pages/blog/[slug].vue` - Individual blog post page
+- `pages/blog/category/[slug].vue` - Category-filtered blog posts
+- Updated navigation in `AppHeader.vue` and `MobileSidebar.vue`
+
+## 7. Testing the Setup
 
 ### Test WooCommerce API
 You can test your WooCommerce API using curl:
@@ -170,6 +215,20 @@ curl -X GET \
 
 Replace `your_consumer_key` and `your_consumer_secret` with the values from your WooCommerce REST API settings.
 
+### Test WordPress Blog API
+Test the blog functionality:
+
+```bash
+# Get blog posts
+curl -X GET 'https://your-site.com/wp-json/wp/v2/posts'
+
+# Get blog categories
+curl -X GET 'https://your-site.com/wp-json/wp/v2/categories'
+
+# Get a specific post by slug
+curl -X GET 'https://your-site.com/wp-json/wp/v2/posts?slug=your-post-slug'
+```
+
 ### Test JWT Authentication
 ```bash
 curl -X POST \
@@ -181,7 +240,7 @@ curl -X POST \
   }'
 ```
 
-## 7. Optional Enhancements
+## 8. Optional Enhancements
 
 ### Custom Product Fields
 If you need custom product fields, consider using:
@@ -200,7 +259,7 @@ If you need custom product fields, consider using:
 - Configure product schema markup
 - Set up proper URL structures
 
-## 8. Troubleshooting
+## 9. Troubleshooting
 
 ### Common Issues
 
@@ -220,6 +279,21 @@ If you need custom product fields, consider using:
 **SSL Certificate Issues**
 - Ensure your WordPress site has a valid SSL certificate
 - Update WordPress and WooCommerce URLs to use HTTPS
+
+**Blog Posts Not Loading**
+- Check that `NUXT_PUBLIC_SITE_URL` is correctly set in your environment
+- Verify WordPress REST API is accessible at `/wp-json/wp/v2/posts`
+- Ensure blog posts are published and not in draft status
+
+**Blog Images Not Displaying**
+- Ensure WordPress site allows external image requests
+- Check that featured images are properly set on blog posts
+- Verify image URLs are accessible from your frontend domain
+
+**Blog Categories Empty**
+- Make sure blog posts are assigned to categories
+- Check that categories are not empty (have at least one published post)
+- Verify category slugs match the URLs being requested
 
 ### Debug Mode
 Enable WordPress debug mode by adding to `wp-config.php`:

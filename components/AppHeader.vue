@@ -23,6 +23,9 @@
           <NuxtLink to="/search" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">
             All Products
           </NuxtLink>
+          <NuxtLink to="/blog" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">
+            Blog
+          </NuxtLink>
         </nav>
 
         <!-- Right side actions -->
