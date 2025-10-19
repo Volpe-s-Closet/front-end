@@ -87,6 +87,9 @@
           <div class="border-t pt-4 mt-4 flex flex-col sm:flex-row gap-3">
             <BaseButton @click="openOrderDetails(order.id)" text="View Details" size="sm" />
 
+            <BaseButton v-if="order.status === 'pending'" @click="openPaymentModal(order.id)" 
+              text="Pay Now" variant="primary" size="sm" />
+
             <BaseButton v-if="order.status === 'completed'" @click="reorderItems(order)"
               :loading="reorderingOrderId === order.id" :disabled="reorderingOrderId === order.id" text="Reorder"
               variant="secondary" size="sm" />
@@ -146,6 +149,14 @@
       @close="closeOrderModal"
       @reorder="handleReorder"
     />
+
+    <!-- Payment Modal -->
+    <OrderPaymentModal 
+      :is-open="showPaymentModal" 
+      :order="selectedOrderForPayment"
+      @close="closePaymentModal"
+      @payment-success="handlePaymentSuccess"
+    />
   </NuxtLayout>
 </template>
 
@@ -188,6 +199,8 @@ const reorderingOrderId = ref(null)
 // Modal state
 const showOrderModal = ref(false)
 const selectedOrderId = ref(null)
+const showPaymentModal = ref(false)
+const selectedOrderForPayment = ref(null)
 
 // Computed
 const filteredOrders = computed(() => {
@@ -272,6 +285,24 @@ const handleReorder = () => {
   // The modal will handle the reorder and navigation
   // We just need to close the modal
   closeOrderModal()
+}
+
+// Payment modal methods
+const openPaymentModal = (orderId) => {
+  const order = customerOrders.value.find(o => o.id === orderId)
+  selectedOrderForPayment.value = order
+  showPaymentModal.value = true
+}
+
+const closePaymentModal = () => {
+  showPaymentModal.value = false
+  selectedOrderForPayment.value = null
+}
+
+const handlePaymentSuccess = () => {
+  // Refresh orders to show updated status
+  fetchOrders()
+  closePaymentModal()
 }
 
 // Reset to first page when filters change
