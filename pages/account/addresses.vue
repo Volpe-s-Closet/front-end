@@ -62,6 +62,7 @@
           <p v-if="addresses.shipping.address_2">{{ addresses.shipping.address_2 }}</p>
           <p>{{ addresses.shipping.city }}, {{ addresses.shipping.state }} {{ addresses.shipping.postcode }}</p>
           <p>{{ getCountryName(addresses.shipping.country) }}</p>
+          <p v-if="addresses.shipping.phone" class="text-gray-600">{{ addresses.shipping.phone }}</p>
         </div>
 
         <div v-else class="text-center py-8 text-gray-500">
@@ -151,9 +152,11 @@
               </select>
             </div>
 
-            <div v-if="editingAddress === 'billing'">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-              <input v-model="addressForm.phone" type="tel"
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Phone{{ editingAddress === 'billing' ? ' *' : ' (Optional)' }}
+              </label>
+              <input v-model="addressForm.phone" type="tel" :required="editingAddress === 'billing'"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
             </div>
 
@@ -174,7 +177,13 @@ definePageMeta({
 })
 
 const { user } = useAuth()
-const { getCustomer, updateCustomer } = useCustomer()
+const {
+  displayCustomer,
+  loadCustomerProfile,
+  updateCustomer,
+  getCustomer,
+  findCustomerProfile
+} = useCustomer()
 
 // SEO
 useHead({
@@ -231,16 +240,29 @@ const countries = ref([
 
 // Methods
 const fetchAddresses = async () => {
-  if (!user.value || !user.value.id) {
-    console.warn('No user or user ID available for fetching addresses')
+  if (!user.value) {
+    console.warn('No user available for fetching addresses')
     return
   }
 
   try {
-    const customer = await getCustomer(user.value.id)
-    addresses.value = {
-      billing: customer.billing || {},
-      shipping: customer.shipping || {}
+    // Use the same customer loading logic as other pages
+    const customer = await loadCustomerProfile(user.value)
+
+
+
+    if (customer) {
+      addresses.value = {
+        billing: customer.billing || {},
+        shipping: customer.shipping || {}
+      }
+
+    } else {
+      console.warn('No customer data found')
+      addresses.value = {
+        billing: {},
+        shipping: {}
+      }
     }
   } catch (error) {
     console.error('Error fetching addresses:', error)
@@ -299,7 +321,7 @@ const closeAddressForm = () => {
 }
 
 const saveAddress = async () => {
-  if (!user.value || !user.value.id) {
+  if (!user.value) {
     errorMessage.value = 'User not authenticated'
     return
   }
@@ -309,10 +331,18 @@ const saveAddress = async () => {
   successMessage.value = ''
 
   try {
+    // Get the correct customer ID using the same logic as other pages
+    const customer = displayCustomer.value || await findCustomerProfile(user.value)
+    const customerId = customer?.id || user.value.id
+
+    if (!customerId) {
+      throw new Error('No valid customer ID found')
+    }
+
     const updateData = {}
     updateData[editingAddress.value] = { ...addressForm.value }
 
-    await updateCustomer(user.value.id, updateData)
+    await updateCustomer(customerId, updateData)
 
     // Update local addresses
     addresses.value[editingAddress.value] = { ...addressForm.value }
@@ -328,30 +358,47 @@ const saveAddress = async () => {
   }
 }
 
-const copyBillingToShipping = () => {
-  if (!user.value || !user.value.id) {
+const copyBillingToShipping = async () => {
+  if (!user.value) {
     errorMessage.value = 'User not authenticated'
     sameAsBilling.value = false
     return
   }
 
   if (sameAsBilling.value && addresses.value.billing) {
-    const billingCopy = { ...addresses.value.billing }
-    delete billingCopy.phone // Remove phone from shipping address
-    addresses.value.shipping = billingCopy
+    try {
+      // Get the correct customer ID
+      const customer = displayCustomer.value || await findCustomerProfile(user.value)
+      const customerId = customer?.id || user.value.id
 
-    // Save to server
-    updateCustomer(user.value.id, { shipping: billingCopy })
-      .then(() => {
-        successMessage.value = 'Shipping address updated to match billing address!'
-      })
-      .catch(error => {
-        console.error('Error copying address:', error)
-        errorMessage.value = 'Failed to update shipping address'
-        sameAsBilling.value = false
-      })
+      if (!customerId) {
+        throw new Error('No valid customer ID found')
+      }
+
+      const billingCopy = { ...addresses.value.billing }
+      // Keep phone number when copying to shipping (user can remove it if not needed)
+      addresses.value.shipping = billingCopy
+
+      // Save to server
+      await updateCustomer(customerId, { shipping: billingCopy })
+      successMessage.value = 'Shipping address updated to match billing address!'
+    } catch (error) {
+      console.error('Error copying address:', error)
+      errorMessage.value = 'Failed to update shipping address'
+      sameAsBilling.value = false
+    }
   }
 }
+
+// Watch for customer data changes
+watch(displayCustomer, (customer) => {
+  if (customer) {
+    addresses.value = {
+      billing: customer.billing || {},
+      shipping: customer.shipping || {}
+    }
+  }
+}, { immediate: true })
 
 // Initialize
 onMounted(() => {
