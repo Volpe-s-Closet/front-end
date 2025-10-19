@@ -22,18 +22,16 @@
         <!-- Controls Bar -->
         <div class="bg-white border border-gray-200 rounded-lg p-3 sm:p-4 mb-6">
           <!-- Mobile Layout -->
-          <div class="block lg:hidden space-y-4">
-            <!-- Top Row: View Mode and Grid Size -->
-            <div class="flex flex-col xs:flex-row justify-center items-center gap-3 xs:gap-4">
+          <div class="block lg:hidden">
+            <!-- Single Row: View Mode, Grid Size, and Sort -->
+            <div class="flex justify-between items-center gap-3">
               <!-- View Mode Toggle -->
               <GroupButtons v-model="viewMode" :options="viewModeOptions" size="xs" />
 
               <!-- Grid Size Toggle (only show in grid mode) -->
               <GroupButtons v-if="viewMode === 'grid'" v-model="gridSize" :options="mobileGridSizeOptions" size="xs" />
-            </div>
 
-            <!-- Sort -->
-            <div class="flex justify-center">
+              <!-- Sort -->
               <SelectBox v-model="sortBy" :options="sortOptions" size="xs" position="left" placeholder="Sort" hide-label
                 @change="handleSortChange" />
             </div>
@@ -105,19 +103,13 @@
               <!-- Items per page -->
               <div class="flex items-center space-x-2">
                 <label class="text-sm font-medium text-gray-700">Show:</label>
-                <SelectBox
-                  v-model="perPage"
-                  @change="handlePerPageChange"
-                  :options="[
-                    { value: 6, label: '6' },
-                    { value: 12, label: '12' },
-                    { value: 24, label: '24' },
-                    { value: 36, label: '36' },
-                    { value: 48, label: '48' }
-                  ]"
-                  placeholder="12"
-                  size="sm"
-                />
+                <SelectBox v-model="perPage" @change="handlePerPageChange" :options="[
+                  { value: 6, label: '6' },
+                  { value: 12, label: '12' },
+                  { value: 24, label: '24' },
+                  { value: 36, label: '36' },
+                  { value: 48, label: '48' }
+                ]" placeholder="12" size="sm" />
                 <span class="text-sm text-gray-600">per page</span>
               </div>
 
@@ -125,7 +117,7 @@
               <div class="text-sm text-gray-700 text-center sm:text-right">
                 <span v-if="!loading">
                   Showing <span class="font-medium">{{ startItem }}</span> to <span class="font-medium">{{ endItem
-                    }}</span> of
+                  }}</span> of
                   <span class="font-medium">{{ totalProducts }}</span> results
                 </span>
               </div>
