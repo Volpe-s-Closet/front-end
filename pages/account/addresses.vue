@@ -81,8 +81,8 @@
     </div>
 
     <!-- Address Form Modal -->
-    <div v-if="showAddressForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div class="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
+    <div v-if="showAddressForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" @click="closeAddressForm">
+      <div class="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto" @click.stop>
         <div class="p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold">
@@ -143,13 +143,10 @@
 
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Country *</label>
-              <select v-model="addressForm.country" required
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                <option value="">Select Country</option>
-                <option v-for="country in countries" :key="country.code" :value="country.code">
-                  {{ country.name }}
-                </option>
-              </select>
+              <SelectBox v-model="addressForm.country" :options="[
+                { value: '', label: 'Select Country' },
+                ...countries.map(country => ({ value: country.code, label: country.name }))
+              ]" placeholder="Select Country" button-class="w-full" />
             </div>
 
             <div>

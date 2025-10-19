@@ -1,7 +1,7 @@
 <template>
-  <div class="relative" ref="dropdownRef">
+  <div class="relative" ref="dropdownRef" @click.stop>
     <!-- Trigger Button -->
-    <button @click="toggleDropdown" :disabled="disabled" :class="[
+    <button @click.stop="toggleDropdown" :disabled="disabled" :class="[
       'flex items-center justify-between bg-gray-100 rounded-lg px-3 py-2 font-medium text-gray-900 transition-colors',
       size === 'xs' ? 'text-xs sm:text-sm' : 'text-sm',
       disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200',
@@ -21,14 +21,13 @@
 
     <!-- Dropdown Menu -->
     <div v-if="isOpen" :class="[
-      'absolute top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50',
+      'absolute top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 w-max min-w-full',
       position === 'left' ? 'left-0' : 'right-0',
-      size === 'xs' ? 'w-48' : 'w-56',
       menuClass
     ]">
       <div class="py-1">
-        <button v-for="option in options" :key="option.value" @click="selectOption(option)" :class="[
-          'flex items-center w-full px-3 py-2 text-sm text-left transition-colors',
+        <button v-for="option in options" :key="option.value" @click.stop="selectOption(option)" :class="[
+          'flex items-center w-full px-3 py-2 text-sm text-left transition-colors whitespace-nowrap',
           modelValue === option.value ? 'bg-blue-50 text-blue-700' : 'text-gray-700',
           option.danger ? 'text-red-600 hover:bg-red-50' : 'hover:bg-gray-50'
         ]">
@@ -123,8 +122,9 @@ const selectedOption = computed(() => {
 })
 
 // Methods
-const toggleDropdown = () => {
+const toggleDropdown = (event) => {
   if (!props.disabled) {
+    event.stopPropagation()
     isOpen.value = !isOpen.value
   }
 }
@@ -136,6 +136,7 @@ const selectOption = (option) => {
 }
 
 const closeDropdown = (event) => {
+  // Don't close if clicking inside the dropdown
   if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
     isOpen.value = false
   }

@@ -105,14 +105,19 @@
               <!-- Items per page -->
               <div class="flex items-center space-x-2">
                 <label class="text-sm font-medium text-gray-700">Show:</label>
-                <select v-model="perPage" @change="handlePerPageChange"
-                  class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                  <option :value="6">6</option>
-                  <option :value="12">12</option>
-                  <option :value="24">24</option>
-                  <option :value="36">36</option>
-                  <option :value="48">48</option>
-                </select>
+                <SelectBox
+                  v-model="perPage"
+                  @change="handlePerPageChange"
+                  :options="[
+                    { value: 6, label: '6' },
+                    { value: 12, label: '12' },
+                    { value: 24, label: '24' },
+                    { value: 36, label: '36' },
+                    { value: 48, label: '48' }
+                  ]"
+                  placeholder="12"
+                  size="sm"
+                />
                 <span class="text-sm text-gray-600">per page</span>
               </div>
 
