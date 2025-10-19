@@ -270,6 +270,10 @@
         </div>
       </div>
     </div>
+
+    <!-- Payment Modal -->
+    <OrderPaymentModal :is-open="showPaymentModal" :order="order" @close="closePaymentModal"
+      @payment-success="handlePaymentSuccess" />
   </div>
 </template>
 
@@ -297,6 +301,7 @@ const order = ref(null)
 const loading = ref(false)
 const error = ref(null)
 const reordering = ref(false)
+const showPaymentModal = ref(false)
 
 // Methods
 const fetchOrder = async () => {
@@ -375,9 +380,7 @@ const reorderItems = async () => {
 
 // Status-specific action methods
 const payNow = () => {
-  // Redirect to checkout with order details
-  const checkoutUrl = `/checkout?order_id=${order.value.id}&pay_for_order=true`
-  window.location.href = checkoutUrl
+  showPaymentModal.value = true
 }
 
 const retryPayment = () => {
@@ -395,6 +398,17 @@ const leaveReview = () => {
   // Navigate to review page or open review modal
   emit('close')
   navigateTo(`/account/reviews?order_id=${order.value.id}`)
+}
+
+const handlePaymentSuccess = (paymentResponse) => {
+  // Refresh the order data to show updated status
+  fetchOrder()
+  // Show success message
+  alert('Payment completed successfully! Your order is now being processed.')
+}
+
+const closePaymentModal = () => {
+  showPaymentModal.value = false
 }
 
 // Utility functions
