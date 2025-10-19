@@ -15,9 +15,11 @@
 
         <!-- Navigation (Desktop) -->
         <nav class="hidden md:flex space-x-8">
-          <NuxtLink to="/categories" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-            Categories
-          </NuxtLink>
+          <div class="relative">
+            <DropDown :items="categoryDropdownItems" trigger-label="Categories"
+              button-class="!bg-transparent hover:!bg-gray-100 !px-3 !py-2 !text-gray-700 hover:!text-gray-900 !text-sm !font-medium"
+              position="left" @item-click="handleCategoryClick" />
+          </div>
           <NuxtLink to="/search" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">
             All Products
           </NuxtLink>
@@ -84,6 +86,7 @@
 <script setup>
 const { cartItemCount, toggleCart } = useCart()
 const { isAuthenticated, logout } = useAuth()
+const { categories, fetchCategories, getCategoriesForDropdown } = useWooCommerce()
 
 const searchQuery = ref('')
 const showMobileMenu = ref(false)
@@ -108,6 +111,21 @@ const accountMenuItems = [
     action: () => logout()
   }
 ]
+
+// Categories dropdown items
+const categoryDropdownItems = computed(() => {
+  const items = getCategoriesForDropdown()
+
+  // Add "All Categories" link at the top
+  return [
+    {
+      label: 'All Categories',
+      action: () => navigateTo('/categories')
+    },
+    ...(items.length > 0 ? [{ label: '', divider: true }] : []),
+    ...items
+  ]
+})
 
 
 
@@ -145,4 +163,14 @@ const handleAccountAction = () => {
   // Actions are already defined in the menu items
   // This handler is just for additional logic if needed
 }
+
+const handleCategoryClick = (item) => {
+  // Actions are already defined in the menu items
+  // This handler is just for additional logic if needed
+}
+
+// Fetch categories on component mount
+onMounted(() => {
+  fetchCategories()
+})
 </script>

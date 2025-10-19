@@ -12,12 +12,8 @@
       <!-- Filters Sidebar -->
       <div class="w-full lg:w-1/4">
         <div class="lg:sticky lg:top-4">
-          <ProductFilters 
-            :categories="categories"
-            :attributes="attributes"
-            @filtersChanged="handleFiltersChanged"
-            ref="filtersRef"
-          />
+          <ProductFilters :categories="categories" :attributes="attributes" @filtersChanged="handleFiltersChanged"
+            ref="filtersRef" />
         </div>
       </div>
 
@@ -30,32 +26,16 @@
             <!-- Top Row: View Mode and Grid Size -->
             <div class="flex flex-col xs:flex-row justify-center items-center gap-3 xs:gap-4">
               <!-- View Mode Toggle -->
-              <GroupButtons
-                v-model="viewMode"
-                :options="viewModeOptions"
-                size="xs"
-              />
+              <GroupButtons v-model="viewMode" :options="viewModeOptions" size="xs" />
 
               <!-- Grid Size Toggle (only show in grid mode) -->
-              <GroupButtons
-                v-if="viewMode === 'grid'"
-                v-model="gridSize"
-                :options="mobileGridSizeOptions"
-                size="xs"
-              />
+              <GroupButtons v-if="viewMode === 'grid'" v-model="gridSize" :options="mobileGridSizeOptions" size="xs" />
             </div>
-            
+
             <!-- Sort -->
             <div class="flex justify-center">
-              <SelectBox
-                v-model="sortBy"
-                :options="sortOptions"
-                size="xs"
-                position="left"
-                placeholder="Sort"
-                hide-label
-                @change="handleSortChange"
-              />
+              <SelectBox v-model="sortBy" :options="sortOptions" size="xs" position="left" placeholder="Sort" hide-label
+                @change="handleSortChange" />
             </div>
           </div>
 
@@ -66,31 +46,18 @@
               <!-- Left: View Mode and Grid Size -->
               <div class="flex items-center gap-4">
                 <!-- View Mode Toggle -->
-                <GroupButtons
-                  v-model="viewMode"
-                  :options="viewModeOptions"
-                  size="sm"
-                />
+                <GroupButtons v-model="viewMode" :options="viewModeOptions" size="sm" />
 
                 <!-- Grid Size Toggle (only show in grid mode) -->
-                <GroupButtons
-                  v-if="viewMode === 'grid'"
-                  v-model="gridSize"
-                  :options="desktopGridSizeOptions"
-                  size="sm"
-                />
+                <GroupButtons v-if="viewMode === 'grid'" v-model="gridSize" :options="desktopGridSizeOptions"
+                  size="sm" />
               </div>
-              
+
               <!-- Right: Sort -->
               <div class="flex items-center space-x-3">
                 <span class="text-sm font-medium text-gray-700">Sort by:</span>
-                <SelectBox
-                  v-model="sortBy"
-                  :options="sortOptions"
-                  size="sm"
-                  position="right"
-                  @change="handleSortChange"
-                />
+                <SelectBox v-model="sortBy" :options="sortOptions" size="sm" position="right"
+                  @change="handleSortChange" />
               </div>
             </div>
           </div>
@@ -109,21 +76,12 @@
         <div v-else-if="products.length > 0">
           <!-- Grid View -->
           <div v-if="viewMode === 'grid'" :class="getGridClasses()">
-            <ProductCard 
-              v-for="product in products" 
-              :key="product.id" 
-              :product="product" 
-            />
+            <ProductCard v-for="product in products" :key="product.id" :product="product" />
           </div>
 
           <!-- List View -->
           <div v-else class="space-y-4">
-            <ProductCard 
-              v-for="product in products" 
-              :key="product.id" 
-              :product="product" 
-              :view-mode="'list'"
-            />
+            <ProductCard v-for="product in products" :key="product.id" :product="product" :view-mode="'list'" />
           </div>
         </div>
 
@@ -135,26 +93,20 @@
             <span v-if="searchQuery">Try adjusting your search terms or filters.</span>
             <span v-else>No products match your current filters.</span>
           </p>
-          <BaseButton 
-            @click="clearAllFilters"
-            text="Clear All Filters"
-          />
+          <BaseButton @click="clearAllFilters" text="Clear All Filters" />
         </div>
 
         <!-- Pagination and Controls -->
         <div v-if="products.length > 0" class="mt-6 sm:mt-8">
           <div class="border-t border-gray-200 bg-white px-3 py-4 sm:px-6 rounded-lg space-y-4">
-            
+
             <!-- Items per page and Results Info -->
             <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
               <!-- Items per page -->
               <div class="flex items-center space-x-2">
                 <label class="text-sm font-medium text-gray-700">Show:</label>
-                <select 
-                  v-model="perPage"
-                  @change="handlePerPageChange"
-                  class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
+                <select v-model="perPage" @change="handlePerPageChange"
+                  class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                   <option :value="6">6</option>
                   <option :value="12">12</option>
                   <option :value="24">24</option>
@@ -167,7 +119,8 @@
               <!-- Results Info -->
               <div class="text-sm text-gray-700 text-center sm:text-right">
                 <span v-if="!loading">
-                  Showing <span class="font-medium">{{ startItem }}</span> to <span class="font-medium">{{ endItem }}</span> of 
+                  Showing <span class="font-medium">{{ startItem }}</span> to <span class="font-medium">{{ endItem
+                    }}</span> of
                   <span class="font-medium">{{ totalProducts }}</span> results
                 </span>
               </div>
@@ -177,72 +130,40 @@
             <div v-if="totalPages > 1">
               <!-- Mobile Pagination -->
               <div class="flex flex-1 justify-between items-center sm:hidden">
-                <BaseButton
-                  @click="goToPage(currentPage - 1)"
-                  :disabled="currentPage <= 1"
-                  variant="outline"
-                  size="sm"
-                  icon="heroicons:chevron-left"
-                  text="Prev"
-                />
-                
+                <BaseButton @click="goToPage(currentPage - 1)" :disabled="currentPage <= 1" variant="outline" size="sm"
+                  icon="heroicons:chevron-left" text="Prev" />
+
                 <span class="text-sm text-gray-700">
                   Page {{ currentPage }} of {{ totalPages }}
                 </span>
-                
-                <BaseButton
-                  @click="goToPage(currentPage + 1)"
-                  :disabled="currentPage >= totalPages"
-                  variant="outline"
-                  size="sm"
-                  text="Next"
-                >
+
+                <BaseButton @click="goToPage(currentPage + 1)" :disabled="currentPage >= totalPages" variant="outline"
+                  size="sm" text="Next">
                   <Icon name="heroicons:chevron-right" class="h-4 w-4 ml-1" />
                 </BaseButton>
               </div>
-              
+
               <!-- Desktop Pagination -->
               <div class="hidden sm:flex sm:justify-center">
                 <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
                   <!-- Previous button -->
-                  <BaseButton
-                    @click="goToPage(currentPage - 1)"
-                    :disabled="currentPage <= 1"
-                    variant="outline"
-                    size="sm"
-                    icon="heroicons:chevron-left"
-                    rounded="none"
-                    class="rounded-l-md"
-                  />
+                  <BaseButton @click="goToPage(currentPage - 1)" :disabled="currentPage <= 1" variant="outline"
+                    size="sm" icon="heroicons:chevron-left" rounded="none" class="rounded-l-md" />
 
                   <!-- Page numbers -->
                   <template v-for="page in visiblePages" :key="page">
-                    <BaseButton
-                      v-if="page !== '...'"
-                      @click="goToPage(page)"
-                      :variant="page === currentPage ? 'primary' : 'outline'"
-                      size="sm"
-                      :text="page.toString()"
-                      rounded="none"
-                    />
-                    <span
-                      v-else
-                      class="relative inline-flex items-center px-3 lg:px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0"
-                    >
+                    <BaseButton v-if="page !== '...'" @click="goToPage(page)"
+                      :variant="page === currentPage ? 'primary' : 'outline'" size="sm" :text="page.toString()"
+                      rounded="none" />
+                    <span v-else
+                      class="relative inline-flex items-center px-3 lg:px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
                       ...
                     </span>
                   </template>
 
                   <!-- Next button -->
-                  <BaseButton
-                    @click="goToPage(currentPage + 1)"
-                    :disabled="currentPage >= totalPages"
-                    variant="outline"
-                    size="sm"
-                    icon="heroicons:chevron-right"
-                    rounded="none"
-                    class="rounded-r-md"
-                  />
+                  <BaseButton @click="goToPage(currentPage + 1)" :disabled="currentPage >= totalPages" variant="outline"
+                    size="sm" icon="heroicons:chevron-right" rounded="none" class="rounded-r-md" />
                 </nav>
               </div>
             </div>
@@ -256,7 +177,7 @@
 <script setup>
 const route = useRoute()
 const router = useRouter()
-const { getProducts, getCategories, getProductAttributes, getAttributeTerms } = useWooCommerce()
+const { getProducts, getProductAttributes, getAttributeTerms, categories, fetchCategories } = useWooCommerce()
 
 // SEO
 useHead({
@@ -268,7 +189,6 @@ useHead({
 
 // Data
 const products = ref([])
-const categories = ref([])
 const attributes = ref([])
 const totalProducts = ref(0)
 const currentPage = ref(1)
@@ -387,7 +307,7 @@ const visiblePages = computed(() => {
   const pages = []
   const total = totalPages.value
   const current = currentPage.value
-  
+
   if (total <= 7) {
     // Show all pages if 7 or fewer
     for (let i = 1; i <= total; i++) {
@@ -396,29 +316,29 @@ const visiblePages = computed(() => {
   } else {
     // Always show first page
     pages.push(1)
-    
+
     if (current > 4) {
       pages.push('...')
     }
-    
+
     // Show pages around current page
     const start = Math.max(2, current - 1)
     const end = Math.min(total - 1, current + 1)
-    
+
     for (let i = start; i <= end; i++) {
       pages.push(i)
     }
-    
+
     if (current < total - 3) {
       pages.push('...')
     }
-    
+
     // Always show last page
     if (total > 1) {
       pages.push(total)
     }
   }
-  
+
   return pages
 })
 
@@ -490,18 +410,18 @@ const isMobile = ref(false)
 
 const getGridClasses = () => {
   const baseClasses = 'grid gap-4 sm:gap-6'
-  
+
   if (viewMode.value === 'list') {
     return `${baseClasses} grid-cols-1`
   }
-  
+
   switch (gridSize.value) {
     case 1:
       return `${baseClasses} grid-cols-1`
     case 2:
       // On mobile, show 2 columns immediately if user selected 2
       // On desktop, use responsive classes for better breakpoint handling
-      return isMobile.value 
+      return isMobile.value
         ? `${baseClasses} grid-cols-2`
         : `${baseClasses} grid-cols-1 sm:grid-cols-2`
     case 3:
@@ -518,13 +438,13 @@ const fetchProducts = async (resetPage = true) => {
     if (resetPage) {
       currentPage.value = 1
     }
-    
+
     loading.value = true
 
     // Get actual products
     const response = await getProducts(searchParams.value)
     products.value = response
-    
+
     // For pagination, we need to estimate total count
     // WooCommerce API might not always provide exact totals
     if (response.length < perPage.value) {
@@ -538,7 +458,7 @@ const fetchProducts = async (resetPage = true) => {
         currentPage.value * perPage.value + 1
       )
     }
-    
+
     totalPages.value = Math.ceil(totalProducts.value / perPage.value)
 
   } catch (error) {
@@ -551,21 +471,12 @@ const fetchProducts = async (resetPage = true) => {
   }
 }
 
-const fetchCategories = async () => {
-  try {
-    categories.value = await getCategories({ 
-      per_page: 100,
-      hide_empty: true
-    })
-  } catch (error) {
-    console.error('Error fetching categories:', error)
-  }
-}
+
 
 const fetchAttributes = async () => {
   try {
     const attrs = await getProductAttributes()
-    
+
     // Fetch terms for each attribute
     for (const attr of attrs) {
       try {
@@ -577,7 +488,7 @@ const fetchAttributes = async () => {
         attr.terms = []
       }
     }
-    
+
     attributes.value = attrs
   } catch (error) {
     console.error('Error fetching attributes:', error)
@@ -618,10 +529,10 @@ const updateURL = () => {
   if (searchQuery.value) {
     query.q = searchQuery.value
   }
-  
-  router.push({ 
-    path: '/search', 
-    query 
+
+  router.push({
+    path: '/search',
+    query
   })
 }
 
@@ -638,11 +549,11 @@ const handleResize = () => {
   if (resizeTimeout) {
     clearTimeout(resizeTimeout)
   }
-  
+
   resizeTimeout = setTimeout(() => {
     const currentIsMobile = window.innerWidth < 1024 // lg breakpoint
     isMobile.value = currentIsMobile
-    
+
     if (currentIsMobile) {
       // On mobile, limit to max 2 columns
       // If user had 3 or 4 columns selected, change to 2
@@ -659,14 +570,14 @@ const handleResize = () => {
 onMounted(() => {
   // Load preferences from localStorage first
   loadPreferences()
-  
+
   // Initial screen size detection and grid size validation
   isMobile.value = window.innerWidth < 1024
   handleResize()
-  
+
   // Add resize listener
   window.addEventListener('resize', handleResize)
-  
+
   fetchProducts()
   fetchCategories()
   fetchAttributes()

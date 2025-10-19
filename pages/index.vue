@@ -11,16 +11,12 @@
             Discover amazing products at unbeatable prices
           </p>
           <div class="space-x-4">
-            <NuxtLink 
-              to="/search" 
-              class="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold text-lg transition-colors duration-200"
-            >
+            <NuxtLink to="/search"
+              class="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold text-lg transition-colors duration-200">
               Shop Now
             </NuxtLink>
-            <NuxtLink 
-              to="/categories" 
-              class="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg font-semibold text-lg transition-colors duration-200"
-            >
+            <NuxtLink to="/categories"
+              class="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg font-semibold text-lg transition-colors duration-200">
               Browse Categories
             </NuxtLink>
           </div>
@@ -47,11 +43,7 @@
         </div>
 
         <div v-else-if="featuredProducts.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <ProductCard 
-            v-for="product in featuredProducts" 
-            :key="product.id" 
-            :product="product" 
-          />
+          <ProductCard v-for="product in featuredProducts" :key="product.id" :product="product" />
         </div>
 
         <div v-else class="text-center py-12">
@@ -78,12 +70,8 @@
         </div>
 
         <div v-else-if="categories.length > 0" class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <NuxtLink 
-            v-for="category in categories.slice(0, 8)" 
-            :key="category.id"
-            :to="`/category/${category.slug}`"
-            class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow duration-300"
-          >
+          <NuxtLink v-for="category in categories.slice(0, 8)" :key="category.id" :to="`/category/${category.slug}`"
+            class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow duration-300">
             <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Icon name="heroicons:tag" class="h-8 w-8 text-blue-600" />
             </div>
@@ -93,10 +81,8 @@
         </div>
 
         <div class="text-center mt-8">
-          <NuxtLink 
-            to="/categories" 
-            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
-          >
+          <NuxtLink to="/categories"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
             View All Categories
           </NuxtLink>
         </div>
@@ -122,18 +108,12 @@
         </div>
 
         <div v-else-if="latestProducts.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <ProductCard 
-            v-for="product in latestProducts" 
-            :key="product.id" 
-            :product="product" 
-          />
+          <ProductCard v-for="product in latestProducts" :key="product.id" :product="product" />
         </div>
 
         <div class="text-center mt-8">
-          <NuxtLink 
-            to="/search" 
-            class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
-          >
+          <NuxtLink to="/search"
+            class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
             View All Products
           </NuxtLink>
         </div>
@@ -151,24 +131,22 @@ useHead({
   ]
 })
 
-const { getProducts, getCategories } = useWooCommerce()
+const { getProducts, categories, categoriesLoading, fetchCategories } = useWooCommerce()
 
 // Data
 const featuredProducts = ref([])
 const latestProducts = ref([])
-const categories = ref([])
 
 // Loading states
 const featuredLoading = ref(true)
 const latestLoading = ref(true)
-const categoriesLoading = ref(true)
 
 // Fetch data
 const fetchFeaturedProducts = async () => {
   try {
     featuredLoading.value = true
-    const products = await getProducts({ 
-      featured: true, 
+    const products = await getProducts({
+      featured: true,
       per_page: 8,
       status: 'publish'
     })
@@ -184,8 +162,8 @@ const fetchFeaturedProducts = async () => {
 const fetchLatestProducts = async () => {
   try {
     latestLoading.value = true
-    const products = await getProducts({ 
-      orderby: 'date', 
+    const products = await getProducts({
+      orderby: 'date',
       order: 'desc',
       per_page: 8,
       status: 'publish'
@@ -199,28 +177,7 @@ const fetchLatestProducts = async () => {
   }
 }
 
-const fetchCategories = async () => {
-  try {
-    categoriesLoading.value = true
-    const cats = await getCategories({ 
-      per_page: 8,
-      hide_empty: true,
-      parent: 0 // Only top-level categories
-    })
-    categories.value = cats
-  } catch (error) {
-    console.error('Error fetching categories:', error)
-    // Fallback to mock data
-    categories.value = [
-      { id: 1, name: 'Electronics', slug: 'electronics', count: 25 },
-      { id: 2, name: 'Clothing', slug: 'clothing', count: 50 },
-      { id: 3, name: 'Books', slug: 'books', count: 30 },
-      { id: 4, name: 'Home & Garden', slug: 'home-garden', count: 40 }
-    ]
-  } finally {
-    categoriesLoading.value = false
-  }
-}
+
 
 // Initialize data on mount
 onMounted(() => {
