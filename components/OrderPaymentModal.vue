@@ -298,7 +298,7 @@ const saveCardForLater = async () => {
   isSavingCard.value = true
 
   try {
-    const newCardId = await saveNewCard('temp_save')
+    const newCardId = await saveNewCard('card_save')
     isNewCardSaved.value = true
     selectedPaymentMethodId.value = newCardId // This enables the Pay button
     errorMessage.value = '' // Clear any previous errors
@@ -356,7 +356,7 @@ const loadSavedPaymentMethods = async () => {
         try {
           savedPaymentMethods.value = JSON.parse(savedMethods.value)
 
-          // Auto-select default card - EXACT COPY FROM CHECKOUT
+          // Auto-select default card
           const defaultCard = savedPaymentMethods.value.find(method => method.is_default)
           if (defaultCard) {
             selectedPaymentMethodId.value = defaultCard.id
@@ -504,7 +504,7 @@ const saveNewCard = async (transactionId) => {
 
       await updateCustomer(customerId, { meta_data: updatedMeta })
     }
-    
+
     return newMethod.id
   } catch (error) {
     console.error('Error saving payment method:', error)
@@ -536,14 +536,14 @@ watch(() => props.isOpen, async (isOpen) => {
   }
 })
 
-// Watch for saved payment methods changes to auto-select - EXACT COPY FROM CHECKOUT
+// Watch for saved payment methods changes to auto-select
 watch(savedPaymentMethods, (newMethods) => {
   if (newMethods.length === 0 && !selectedPaymentMethodId.value) {
     selectedPaymentMethodId.value = 'new'
   }
 }, { immediate: true })
 
-// Reset card saved state when switching payment methods - EXACT COPY FROM CHECKOUT
+// Reset card saved state when switching payment methods
 watch(selectedPaymentMethodId, (newId, oldId) => {
   if (newId !== 'new') {
     isNewCardSaved.value = false

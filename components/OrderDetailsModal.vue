@@ -82,14 +82,7 @@
                         <span>{{ formatDate(order.date_modified) }}</span>
                       </div>
 
-                      <!-- Debug refund data -->
-                      <div class="text-xs text-gray-400 mt-2 p-2 bg-gray-50 rounded">
-                        <p>Debug - Refund fields:</p>
-                        <p>refunds: {{ order.refunds ? order.refunds.length + ' items' : 'null' }}</p>
-                        <p>refund_total: {{ order.refund_total || 'null' }}</p>
-                        <p>total_refunded: {{ order.total_refunded || 'null' }}</p>
-                        <p>order total: {{ order.total }}</p>
-                      </div>
+
 
                       <div v-if="order.refunds && order.refunds.length > 0" class="mt-3">
                         <p class="text-sm font-medium text-gray-700 mb-2">Refund Details:</p>
