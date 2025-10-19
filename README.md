@@ -59,6 +59,8 @@ cd front-end
 npm install
 ```
 
+**Note**: This project uses Node.js 22.20.0 as specified in `mise.toml`. If you're using mise, it will automatically use the correct version. Otherwise, ensure you have Node.js 22.20.0 or compatible version installed.
+
 ### 2. Environment Configuration
 
 Copy the example environment file:
@@ -70,11 +72,12 @@ cp .env.example .env
 Update `.env` with your WordPress/WooCommerce details:
 
 ```env
-# Nuxt 4.x uses NUXT_PUBLIC_ prefix for public runtime config
-NUXT_PUBLIC_WOOCOMMERCE_URL=https://your-wordpress-site.com
-NUXT_PUBLIC_WOOCOMMERCE_KEY=ck_your_consumer_key_here
-NUXT_PUBLIC_WOOCOMMERCE_SECRET=cs_your_consumer_secret_here
-NUXT_PUBLIC_WORDPRESS_URL=https://your-wordpress-site.com
+# Public URL (exposed to client-side)
+NUXT_PUBLIC_SITE_URL=https://your-wordpress-site.com
+
+# Private API credentials (server-side only)
+NUXT_WOOCOMMERCE_KEY=ck_your_consumer_key_here
+NUXT_WOOCOMMERCE_SECRET=cs_your_consumer_secret_here
 ```
 
 ### 3. WordPress/WooCommerce Setup
@@ -104,6 +107,15 @@ npm run generate
 ```
 
 The generated files will be in the `dist/` directory, ready for deployment to any static hosting service.
+
+## Runtime Configuration
+
+This project uses Nuxt's runtime configuration for secure API key management:
+
+- **Public Config**: `NUXT_PUBLIC_SITE_URL` - WordPress/WooCommerce base URL (exposed to client-side)
+- **Private Config**: `NUXT_WOOCOMMERCE_KEY` and `NUXT_WOOCOMMERCE_SECRET` - API credentials (server-side only)
+
+The configuration automatically maps environment variables to runtime config in `nuxt.config.ts`.
 
 ## Key Pages
 
@@ -176,7 +188,16 @@ npm run generate
 ```
 
 ### Environment Variables
-Set the same environment variables in your hosting platform as in your local `.env` file.
+Set the same environment variables in your hosting platform as in your local `.env` file:
+
+```env
+NUXT_PUBLIC_SITE_URL=https://your-wordpress-site.com
+NUXT_WOOCOMMERCE_KEY=ck_your_consumer_key_here
+NUXT_WOOCOMMERCE_SECRET=cs_your_consumer_secret_here
+```
+
+### Node.js Version
+This project uses Node.js 22.20.0 as specified in `mise.toml`. Ensure your deployment environment uses a compatible Node.js version.
 
 ## WordPress/WooCommerce Configuration
 

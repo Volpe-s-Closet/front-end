@@ -7,6 +7,7 @@ This document provides step-by-step instructions for configuring your WordPress 
 - WordPress site with admin access
 - WooCommerce plugin installed and activated
 - SSL certificate (HTTPS) recommended for production
+- Node.js 22.20.0 or compatible version (as specified in `mise.toml`)
 
 ## 1. WooCommerce REST API Setup
 
@@ -145,16 +146,35 @@ function custom_user_registration($request) {
 
 ## 5. Environment Configuration
 
+### Runtime Configuration Structure
+
+This Nuxt project uses a secure runtime configuration approach that separates public and private environment variables:
+
+- **Public variables** (prefixed with `NUXT_PUBLIC_`): Exposed to client-side code
+- **Private variables** (no prefix): Only available on server-side
+
+This ensures sensitive API credentials are never exposed to the browser.
+
 Create a `.env` file in your Nuxt project root:
 
 ```env
-# Nuxt 4.x uses NUXT_PUBLIC_ prefix for public runtime config
-NUXT_PUBLIC_WOOCOMMERCE_URL=https://your-wordpress-site.com
-NUXT_PUBLIC_WOOCOMMERCE_KEY=ck_your_consumer_key_here
-NUXT_PUBLIC_WOOCOMMERCE_SECRET=cs_your_consumer_secret_here
-NUXT_PUBLIC_WORDPRESS_URL=https://your-wordpress-site.com
-NUXT_PUBLIC_JWT_SECRET=your-jwt-secret-key
+# Public URL (exposed to client-side)
+NUXT_PUBLIC_SITE_URL=https://your-wordpress-site.com
+
+# Private API credentials (server-side only)
+NUXT_WOOCOMMERCE_KEY=ck_your_consumer_key_here
+NUXT_WOOCOMMERCE_SECRET=cs_your_consumer_secret_here
 ```
+
+### Environment Variable Security
+
+The new configuration uses Nuxt's runtime config for better security:
+
+- **`NUXT_PUBLIC_SITE_URL`**: WordPress/WooCommerce base URL - exposed to client-side for API calls
+- **`NUXT_WOOCOMMERCE_KEY`**: Consumer key - kept server-side only for security
+- **`NUXT_WOOCOMMERCE_SECRET`**: Consumer secret - kept server-side only for security
+
+This ensures sensitive API credentials are never exposed to the client-side code.
 
 ## 6. Testing the Setup
 
@@ -164,8 +184,10 @@ You can test your WooCommerce API using curl:
 ```bash
 curl -X GET \
   'https://your-site.com/wp-json/wc/v3/products' \
-  -u 'consumer_key:consumer_secret'
+  -u 'your_consumer_key:your_consumer_secret'
 ```
+
+Replace `your_consumer_key` and `your_consumer_secret` with the values from your WooCommerce REST API settings.
 
 ### Test JWT Authentication
 ```bash
