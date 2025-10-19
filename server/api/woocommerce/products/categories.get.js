@@ -9,8 +9,6 @@ export default defineEventHandler(async (event) => {
     const queryString = new URLSearchParams(query).toString()
     const url = `${siteUrl}/wp-json/wc/v3/products/categories${queryString ? '?' + queryString : ''}`
     
-    console.log('Fetching categories from:', url)
-    
     const response = await $fetch(url, {
       headers: {
         'Authorization': `Basic ${credentials}`,

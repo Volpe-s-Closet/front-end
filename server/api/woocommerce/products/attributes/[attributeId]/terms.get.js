@@ -2,17 +2,8 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const attributeId = getRouterParam(event, 'attributeId')
   
-  const { woocommerceKey, woocommerceSecret } = config
-  const { siteUrl } = config.public
-  
-  if (!woocommerceKey || !woocommerceSecret || !siteUrl) {
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'WooCommerce API credentials not configured'
-    })
-  }
-  
-  const credentials = Buffer.from(`${woocommerceKey}:${woocommerceSecret}`).toString('base64')
+  const { woocommerceKey, woocommerceSecret, siteUrl } = validateWooCommerceConfig(config)
+  const credentials = createWooCommerceAuth(woocommerceKey, woocommerceSecret)
   
   try {
     const response = await $fetch(`${siteUrl}/wp-json/wc/v3/products/attributes/${attributeId}/terms`, {

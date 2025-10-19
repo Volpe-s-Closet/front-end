@@ -246,7 +246,6 @@ const hasFilters = computed(() => {
 // Methods
 const fetchOrders = async () => {
   if (!user.value || !user.value.id) {
-    console.warn('No user or user ID available for fetching orders')
     loading.value = false
     return
   }
@@ -318,7 +317,6 @@ const cancelOrder = async (orderId) => {
   if (confirm('Are you sure you want to cancel this order?')) {
     try {
       // Implement order cancellation logic
-      console.log('Cancelling order:', orderId)
       // You would call a WooCommerce API endpoint to cancel the order
     } catch (error) {
       console.error('Error cancelling order:', error)

@@ -29,18 +29,13 @@ export const useAuth = () => {
       try {
         const storedToken = localStorage.getItem('auth_token')
         const storedUser = localStorage.getItem('user_data')
-        
-        console.log('Initializing auth - Token:', !!storedToken, 'User:', !!storedUser)
-        
+
         if (storedToken && storedUser) {
           const userData = JSON.parse(storedUser)
           token.value = storedToken
           user.value = userData
-          console.log('Auth initialized successfully')
-        } else {
-          console.log('No stored auth data found')
         }
-        
+
         isInitialized.value = true
       } catch (error) {
         console.error('Error initializing auth:', error)
@@ -52,21 +47,13 @@ export const useAuth = () => {
 
   // Save auth data
   const saveAuth = (authToken, userData) => {
-    console.log('saveAuth called with:', { token: !!authToken, userData })
-    
     token.value = authToken
     user.value = userData
-    
+
     if (process.client) {
       try {
         localStorage.setItem('auth_token', authToken)
         localStorage.setItem('user_data', JSON.stringify(userData))
-        console.log('Auth data saved to localStorage')
-        
-        // Verify it was saved
-        const savedToken = localStorage.getItem('auth_token')
-        const savedUser = localStorage.getItem('user_data')
-        console.log('Verification - Token saved:', !!savedToken, 'User saved:', !!savedUser)
       } catch (error) {
         console.error('Error saving auth data:', error)
       }
@@ -75,16 +62,13 @@ export const useAuth = () => {
 
   // Clear auth data
   const clearAuth = () => {
-    console.log('clearAuth called')
-    
     token.value = null
     user.value = null
-    
+
     if (process.client) {
       try {
         localStorage.removeItem('auth_token')
         localStorage.removeItem('user_data')
-        console.log('Auth data cleared from localStorage')
       } catch (error) {
         console.error('Error clearing auth data:', error)
       }
@@ -103,12 +87,10 @@ export const useAuth = () => {
         }
       })
 
-      console.log('JWT Login response:', response)
-
       if (response.token) {
         // Handle different response structures
         let userData = response.user_data || response.data || response.user || null
-        
+
         // If no user data in response, create basic user object
         if (!userData) {
           userData = {
@@ -119,7 +101,6 @@ export const useAuth = () => {
           }
         }
 
-        console.log('Saving auth data - Token:', !!response.token, 'User:', userData)
         saveAuth(response.token, userData)
         return { success: true, user: userData }
       } else {
@@ -160,13 +141,13 @@ export const useAuth = () => {
     } catch (error) {
       console.error('Registration error:', error)
       let errorMessage = 'Registration failed. Please try again.'
-      
+
       if (error.data?.message) {
         errorMessage = error.data.message
       } else if (error.message) {
         errorMessage = error.message
       }
-      
+
       return { success: false, error: errorMessage }
     }
   }
@@ -211,7 +192,7 @@ export const useAuth = () => {
     try {
       const { updateCustomer } = useWooCommerce()
       const updatedUser = await updateCustomer(user.value.id, profileData)
-      
+
       // Update local user data
       user.value = { ...user.value, ...updatedUser }
       if (process.client) {
@@ -231,7 +212,7 @@ export const useAuth = () => {
 
     try {
       const config = useRuntimeConfig()
-      
+
       const response = await $fetch(`${config.public.siteUrl}/wp-json/wp/v2/users/${user.value.id}`, {
         method: 'POST',
         headers: {
