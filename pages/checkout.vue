@@ -277,21 +277,26 @@ const saveNewPaymentMethod = async () => {
     const customer = await loadCustomerProfile(user.value)
     const customerId = customer?.id || user.value.id
 
-    const metaData = customer?.meta_data || []
-    const existingIndex = metaData.findIndex(meta => meta.key === 'payment_methods')
+    // Only proceed if we have a valid customer ID
+    if (customerId && customerId !== 'null' && customerId !== null) {
+      const metaData = customer?.meta_data || []
+      const existingIndex = metaData.findIndex(meta => meta.key === 'payment_methods')
 
-    const paymentMethodsData = {
-      key: 'payment_methods',
-      value: JSON.stringify(savedPaymentMethods.value)
-    }
+      const paymentMethodsData = {
+        key: 'payment_methods',
+        value: JSON.stringify(savedPaymentMethods.value)
+      }
 
-    if (existingIndex !== -1) {
-      metaData[existingIndex] = paymentMethodsData
+      if (existingIndex !== -1) {
+        metaData[existingIndex] = paymentMethodsData
+      } else {
+        metaData.push(paymentMethodsData)
+      }
+
+      await updateCustomer(customerId, { meta_data: metaData })
     } else {
-      metaData.push(paymentMethodsData)
+      console.warn('Cannot save payment method: invalid customer ID')
     }
-
-    await updateCustomer(customerId, { meta_data: metaData })
   } catch (error) {
     console.error('Error saving payment method:', error)
   }
@@ -378,15 +383,30 @@ const placeOrder = async () => {
       ]
     }
 
+    // Add customer ID to order if user is authenticated
+    if (isAuthenticated.value && user.value) {
+      try {
+        const customer = await loadCustomerProfile(user.value)
+        const customerId = customer?.id || user.value.id
+        
+        if (customerId && customerId !== 'null' && customerId !== null) {
+          orderData.customer_id = customerId
+        }
+      } catch (error) {
+        console.warn('Could not determine customer ID for order:', error)
+      }
+    }
+
     const order = await createOrder(orderData)
 
-    if (isAuthenticated.value && user.value) {
+    // Save addresses for future use (only if we have a valid customer ID)
+    if (isAuthenticated.value && user.value && orderData.customer_id) {
       try {
         const addressUpdateData = {
           billing: checkoutData.value.billing,
           shipping: sameAsShipping.value ? checkoutData.value.billing : checkoutData.value.shipping
         }
-        await updateCustomer(user.value.id, addressUpdateData)
+        await updateCustomer(orderData.customer_id, addressUpdateData)
       } catch (addressError) {
         console.warn('Could not save addresses for future use:', addressError)
       }

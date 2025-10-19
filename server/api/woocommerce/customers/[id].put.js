@@ -4,10 +4,10 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   
   // Handle null/undefined customer ID
-  if (!id || id === 'null' || id === 'undefined') {
+  if (!id || id === 'null' || id === 'undefined' || id === '') {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Invalid customer ID'
+      statusMessage: 'Invalid customer ID - customer ID is required and cannot be null'
     })
   }
   

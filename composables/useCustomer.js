@@ -55,6 +55,11 @@ export const useCustomer = () => {
     }
 
     const updateCustomer = async (customerId, customerData) => {
+        // Validate customer ID before making the API call
+        if (!customerId || customerId === 'null' || customerId === 'undefined' || customerId === null) {
+            throw new Error('Invalid customer ID provided for update')
+        }
+        
         return await apiCall(`customers/${customerId}`, {
             method: 'PUT',
             body: customerData
