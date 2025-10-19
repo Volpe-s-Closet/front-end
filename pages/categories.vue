@@ -1,32 +1,26 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-white">
     <!-- Hero Section -->
-    <section class="relative bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
-      <!-- Background Pattern -->
-      <div class="absolute inset-0 bg-pattern opacity-20"></div>
-
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <section class="relative bg-white border-b border-gray-100">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="text-center">
-          <div class="inline-flex items-center justify-center w-20 h-20 bg-white/10 backdrop-blur-sm rounded-full mb-8">
-            <Icon name="heroicons:squares-2x2" class="h-10 w-10 text-white" />
+          <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-50 rounded-full mb-6">
+            <Icon name="heroicons:squares-2x2" class="h-8 w-8 text-gray-600" />
           </div>
-          <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight">
-            Explore
-            <span class="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Categories
-            </span>
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+            Product Categories
           </h1>
-          <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Discover our complete collection of product categories tailored to your needs
+          <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            Browse our organized collection to find exactly what you're looking for
           </p>
 
           <!-- Search Categories -->
           <div ref="searchContainer" class="max-w-md mx-auto">
             <div class="relative">
               <input v-model="searchQuery" type="text" placeholder="Search categories..."
-                class="w-full pl-12 pr-4 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white placeholder-gray-300 focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200">
+                class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-full text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm">
               <Icon name="heroicons:magnifying-glass"
-                class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300" />
+                class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             </div>
           </div>
         </div>
@@ -37,12 +31,9 @@
     <section ref="categoriesSection" class="py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Section Header -->
-        <div class="text-center mb-16" v-if="!searchQuery">
-          <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
-            <Icon name="heroicons:rectangle-stack" class="h-8 w-8 text-blue-600" />
-          </div>
-          <h2 class="text-4xl font-bold text-gray-900 mb-4">All Categories</h2>
-          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        <div class="text-center mb-12" v-if="!searchQuery">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">All Categories</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
             Browse through our comprehensive selection of product categories
           </p>
         </div>
@@ -58,59 +49,55 @@
         </div>
 
         <!-- Loading State -->
-        <div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          <div v-for="i in 12" :key="i" class="bg-gray-100 rounded-2xl overflow-hidden animate-pulse">
-            <div class="bg-gray-300 h-48"></div>
+        <div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div v-for="i in 12" :key="i"
+            class="bg-white rounded-xl border border-gray-200 overflow-hidden animate-pulse">
+            <div class="bg-gray-100 h-48"></div>
             <div class="p-6">
-              <div class="bg-gray-300 h-4 rounded mb-3"></div>
-              <div class="bg-gray-300 h-3 rounded mb-4 w-2/3"></div>
-              <div class="bg-gray-300 h-8 rounded"></div>
+              <div class="bg-gray-200 h-4 rounded mb-3"></div>
+              <div class="bg-gray-200 h-3 rounded mb-4 w-2/3"></div>
+              <div class="bg-gray-200 h-8 rounded"></div>
             </div>
           </div>
         </div>
 
         <!-- Categories Grid -->
         <div v-else-if="filteredCategories.length > 0"
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           <NuxtLink v-for="category in filteredCategories" :key="category.id" :to="`/category/${category.slug}`"
-            class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 overflow-hidden cursor-pointer block">
+            class="group bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden cursor-pointer block">
             <!-- Category Image -->
-            <div class="relative h-48 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
+            <div class="relative h-48 bg-gray-50">
               <img v-if="category.image?.src" :src="category.image.src" :alt="category.name"
-                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
               <div v-else class="flex items-center justify-center h-full">
                 <Icon name="heroicons:tag"
-                  class="h-16 w-16 text-blue-400 group-hover:text-blue-600 transition-colors duration-300" />
+                  class="h-12 w-12 text-gray-400 group-hover:text-gray-600 transition-colors duration-300" />
               </div>
 
               <!-- Product count badge -->
               <div
-                class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-gray-700 px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
-                {{ category.count }} {{ category.count === 1 ? 'product' : 'products' }}
-              </div>
-
-              <!-- Gradient overlay -->
-              <div
-                class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                class="absolute top-3 right-3 bg-white text-gray-700 px-2 py-1 rounded-full text-xs font-medium shadow-sm border border-gray-200">
+                {{ category.count }}
               </div>
             </div>
 
             <!-- Category Info -->
-            <div class="p-6">
-              <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-200">
+            <div class="p-5">
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">
                 {{ category.name }}
               </h3>
 
-              <p v-if="category.description" class="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+              <p v-if="category.description" class="text-gray-600 text-sm mb-4 line-clamp-2">
                 {{ stripHtml(category.description) }}
               </p>
 
               <!-- Subcategories -->
               <div v-if="category.children?.length > 0" class="mb-4">
-                <p class="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">Subcategories</p>
-                <div class="flex flex-wrap gap-2">
+                <p class="text-xs font-medium text-gray-500 mb-2">Subcategories</p>
+                <div class="flex flex-wrap gap-1">
                   <span v-for="child in category.children.slice(0, 3)" :key="child.id"
-                    class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-full font-medium">
+                    class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded font-medium">
                     {{ child.name }}
                   </span>
                   <span v-if="category.children.length > 3" class="text-xs text-gray-500 px-2 py-1">
@@ -120,29 +107,29 @@
               </div>
 
               <!-- Action Indicator -->
-              <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                <span class="text-blue-600 font-semibold group-hover:text-blue-700 transition-colors duration-200">
-                  Browse Products
+              <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                <span class="text-gray-700 font-medium text-sm">
+                  {{ category.count }} {{ category.count === 1 ? 'product' : 'products' }}
                 </span>
                 <Icon name="heroicons:arrow-right"
-                  class="h-5 w-5 text-blue-600 group-hover:translate-x-1 transition-all duration-200" />
+                  class="h-4 w-4 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-1 transition-all duration-200" />
               </div>
             </div>
           </NuxtLink>
         </div>
 
         <!-- No Results -->
-        <div v-else class="text-center py-20">
-          <div class="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-6">
-            <Icon name="heroicons:folder-open" class="h-10 w-10 text-gray-400" />
+        <div v-else class="text-center py-16">
+          <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+            <Icon name="heroicons:folder-open" class="h-8 w-8 text-gray-400" />
           </div>
-          <h3 class="text-2xl font-bold text-gray-900 mb-4">No categories found</h3>
-          <p class="text-gray-600 text-lg mb-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">No categories found</h3>
+          <p class="text-gray-600 mb-6">
             <span v-if="searchQuery">Try adjusting your search terms or browse all categories.</span>
             <span v-else>No categories are available at the moment.</span>
           </p>
           <button v-if="searchQuery" @click="searchQuery = ''"
-            class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full font-semibold transition-colors duration-200">
+            class="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200">
             Clear Search
           </button>
         </div>
@@ -150,31 +137,27 @@
     </section>
 
     <!-- Popular Categories Section -->
-    <section v-if="!searchQuery && popularCategories.length > 0"
-      class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+    <section v-if="!searchQuery && popularCategories.length > 0" class="py-16 bg-gray-50 border-t border-gray-100">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <div class="inline-flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-6">
-            <Icon name="heroicons:fire" class="h-8 w-8 text-orange-600" />
-          </div>
-          <h2 class="text-4xl font-bold text-gray-900 mb-4">Popular Categories</h2>
-          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">Popular Categories</h2>
+          <p class="text-gray-600">
             Most browsed categories by our customers
           </p>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           <NuxtLink v-for="category in popularCategories" :key="category.id" :to="`/category/${category.slug}`"
-            class="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 text-center cursor-pointer block">
+            class="group bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-300 p-4 text-center cursor-pointer block">
             <div
-              class="w-16 h-16 bg-gradient-to-br from-orange-100 to-red-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-              <Icon name="heroicons:tag" class="h-8 w-8 text-orange-600" />
+              class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-gray-200 transition-colors duration-300">
+              <Icon name="heroicons:tag" class="h-6 w-6 text-gray-600" />
             </div>
-            <h3 class="font-bold text-gray-900 text-sm mb-2 group-hover:text-orange-600 transition-colors duration-200">
+            <h3 class="font-semibold text-gray-900 text-sm mb-1">
               {{ category.name }}
             </h3>
-            <p class="text-xs text-gray-600 font-medium">
-              {{ category.count }} {{ category.count === 1 ? 'product' : 'products' }}
+            <p class="text-xs text-gray-500">
+              {{ category.count }}
             </p>
           </NuxtLink>
         </div>
