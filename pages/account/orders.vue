@@ -80,7 +80,7 @@
 
           <!-- Order Actions -->
           <div class="border-t pt-4 mt-4 flex flex-col sm:flex-row gap-3">
-            <BaseButton :to="`/account/orders/${order.id}`" text="View Details" size="sm" />
+            <BaseButton @click="openOrderDetails(order.id)" text="View Details" size="sm" />
 
             <BaseButton v-if="order.status === 'completed'" @click="reorderItems(order)"
               :loading="reorderingOrderId === order.id" :disabled="reorderingOrderId === order.id" text="Reorder"
@@ -133,6 +133,14 @@
         </nav>
       </div>
     </div>
+
+    <!-- Order Details Modal -->
+    <OrderDetailsModal 
+      :is-open="showOrderModal" 
+      :order-id="selectedOrderId"
+      @close="closeOrderModal"
+      @reorder="handleReorder"
+    />
   </NuxtLayout>
 </template>
 
@@ -171,6 +179,10 @@ const currentPage = ref(1)
 const ordersPerPage = 10
 const processingOrderId = ref(null)
 const reorderingOrderId = ref(null)
+
+// Modal state
+const showOrderModal = ref(false)
+const selectedOrderId = ref(null)
 
 // Computed
 const filteredOrders = computed(() => {
@@ -234,6 +246,23 @@ const clearFilters = () => {
   statusFilter.value = ''
   dateFilter.value = ''
   currentPage.value = 1
+}
+
+// Modal methods
+const openOrderDetails = (orderId) => {
+  selectedOrderId.value = orderId
+  showOrderModal.value = true
+}
+
+const closeOrderModal = () => {
+  showOrderModal.value = false
+  selectedOrderId.value = null
+}
+
+const handleReorder = () => {
+  // The modal will handle the reorder and navigation
+  // We just need to close the modal
+  closeOrderModal()
 }
 
 // Reset to first page when filters change

@@ -25,8 +25,9 @@ export const useCustomer = () => {
         })
     }
 
-    const getOrder = async (orderId) => {
-        return await apiCall(`orders/${orderId}`)
+    const getOrder = async (orderId, customerId = null) => {
+        const query = customerId ? { customer_id: customerId } : {}
+        return await apiCall(`orders/${orderId}`, { query })
     }
 
     const createOrder = async (orderData) => {
