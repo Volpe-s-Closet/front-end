@@ -2,7 +2,11 @@
 nixPkgs = ["nodejs_22", "npm-9_x"]
 
 [phases.install]
-cmds = ["npm ci"]
+cmds = [
+  "rm -rf node_modules package-lock.json",
+  "npm install",
+  "npm rebuild"
+]
 
 [phases.build]
 cmds = ["npm run build"]
