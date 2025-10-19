@@ -44,6 +44,41 @@
           <div v-if="currentStep === 1" class="bg-white rounded-lg shadow-sm p-6">
             <h2 class="text-xl font-semibold mb-6">Contact Information</h2>
             
+            <!-- Authentication-dependent notifications -->
+            <template v-if="isMounted">
+              <!-- Loading indicator for auto-filling addresses -->
+              <div v-if="isLoadingUserData" class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                <div class="flex items-center">
+                  <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                  <span class="text-sm text-blue-700">Loading your saved addresses...</span>
+                </div>
+              </div>
+
+              <!-- Success message when addresses are auto-filled -->
+              <div v-else-if="isAuthenticated && checkoutData.billing.address_1" class="mb-4 p-3 bg-green-50 border border-green-200 rounded-md">
+                <div class="flex items-center">
+                  <Icon name="heroicons:check-circle" class="h-4 w-4 text-green-600 mr-2" />
+                  <span class="text-sm text-green-700">Your saved addresses have been loaded automatically</span>
+                </div>
+              </div>
+
+              <!-- Login prompt for non-authenticated users -->
+              <div v-else-if="!isAuthenticated" class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <Icon name="heroicons:information-circle" class="h-4 w-4 text-blue-600 mr-2" />
+                    <span class="text-sm text-blue-700">Have an account? Log in to auto-fill your addresses</span>
+                  </div>
+                  <NuxtLink 
+                    to="/login?redirect=/checkout" 
+                    class="text-sm font-medium text-blue-600 hover:text-blue-500"
+                  >
+                    Log In
+                  </NuxtLink>
+                </div>
+              </div>
+            </template>
+            
             <form @submit.prevent="proceedToPayment" class="space-y-4">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -155,7 +190,6 @@
                   <option value="US">United States</option>
                   <option value="CA">Canada</option>
                   <option value="GB">United Kingdom</option>
-                  <!-- Add more countries as needed -->
                 </select>
               </div>
 
@@ -173,8 +207,107 @@
 
               <div v-if="!sameAsShipping" class="space-y-4">
                 <h3 class="text-lg font-semibold mt-6 mb-4">Shipping Address</h3>
-                <!-- Repeat shipping address fields similar to billing -->
-                <!-- For brevity, I'll skip the full implementation here -->
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                    <input
+                      v-model="checkoutData.shipping.first_name"
+                      type="text"
+                      required
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                    <input
+                      v-model="checkoutData.shipping.last_name"
+                      type="text"
+                      required
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Company (Optional)</label>
+                  <input
+                    v-model="checkoutData.shipping.company"
+                    type="text"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                  <input
+                    v-model="checkoutData.shipping.phone"
+                    type="tel"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 1 *</label>
+                  <input
+                    v-model="checkoutData.shipping.address_1"
+                    type="text"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 2</label>
+                  <input
+                    v-model="checkoutData.shipping.address_2"
+                    type="text"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                    <input
+                      v-model="checkoutData.shipping.city"
+                      type="text"
+                      required
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">State *</label>
+                    <input
+                      v-model="checkoutData.shipping.state"
+                      type="text"
+                      required
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">ZIP Code *</label>
+                    <input
+                      v-model="checkoutData.shipping.postcode"
+                      type="text"
+                      required
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Country *</label>
+                  <select
+                    v-model="checkoutData.shipping.country"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="GB">United Kingdom</option>
+                  </select>
+                </div>
               </div>
 
               <BaseButton
@@ -224,36 +357,6 @@
                 </div>
               </div>
 
-              <!-- Credit Card Fields (show only if stripe is selected) -->
-              <div v-if="checkoutData.payment_method === 'stripe'" class="space-y-4">
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Card Number</label>
-                  <input
-                    type="text"
-                    placeholder="1234 5678 9012 3456"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Expiry Date</label>
-                    <input
-                      type="text"
-                      placeholder="MM/YY"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">CVV</label>
-                    <input
-                      type="text"
-                      placeholder="123"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                  </div>
-                </div>
-              </div>
-
               <div class="flex space-x-4">
                 <BaseButton
                   @click="currentStep = 1"
@@ -277,14 +380,12 @@
             <h2 class="text-xl font-semibold mb-6">Review Your Order</h2>
             
             <div class="space-y-6">
-              <!-- Contact Info Review -->
               <div>
                 <h3 class="font-medium mb-2">Contact Information</h3>
                 <p class="text-gray-600">{{ checkoutData.billing.email }}</p>
                 <p class="text-gray-600">{{ checkoutData.billing.phone }}</p>
               </div>
 
-              <!-- Address Review -->
               <div>
                 <h3 class="font-medium mb-2">Billing Address</h3>
                 <p class="text-gray-600">
@@ -296,7 +397,6 @@
                 </p>
               </div>
 
-              <!-- Payment Method Review -->
               <div>
                 <h3 class="font-medium mb-2">Payment Method</h3>
                 <p class="text-gray-600">{{ getPaymentMethodName(checkoutData.payment_method) }}</p>
@@ -328,50 +428,66 @@
         <div class="bg-white rounded-lg shadow-sm p-6 h-fit sticky top-8">
           <h2 class="text-xl font-semibold mb-6">Order Summary</h2>
           
-          <!-- Cart Items -->
-          <div class="space-y-4 mb-6">
-            <div 
-              v-for="item in cartItems" 
-              :key="`${item.id}-${JSON.stringify(item.variation)}`"
-              class="flex items-center space-x-3"
-            >
-              <img 
-                :src="getCartItemImage(item)" 
-                :alt="item.name"
-                class="w-16 h-16 object-cover rounded"
-                @error="handleImageError"
+          <template v-if="isMounted">
+            <div class="space-y-4 mb-6">
+              <div 
+                v-for="item in cartItems" 
+                :key="`${item.id}-${JSON.stringify(item.variation)}`"
+                class="flex items-center space-x-3"
               >
-              <div class="flex-1">
-                <h4 class="font-medium">{{ item.name }}</h4>
-                <p class="text-gray-600 text-sm">Qty: {{ item.quantity }}</p>
-              </div>
-              <div class="text-right">
-                <p class="font-medium">{{ formatPrice(item.price * item.quantity) }}</p>
+                <img 
+                  :src="getCartItemImage(item)" 
+                  :alt="item.name"
+                  class="w-16 h-16 object-cover rounded"
+                  @error="handleImageError"
+                >
+                <div class="flex-1">
+                  <h4 class="font-medium">{{ item.name }}</h4>
+                  <p class="text-gray-600 text-sm">Qty: {{ item.quantity }}</p>
+                </div>
+                <div class="text-right">
+                  <p class="font-medium">{{ formatPrice(item.price * item.quantity) }}</p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Totals -->
-          <div class="border-t pt-4 space-y-2">
-            <div class="flex justify-between">
-              <span>Subtotal</span>
-              <span>{{ formatPrice(cartSubtotal) }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span>Shipping</span>
-              <span>{{ formatPrice(shippingCost) }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span>Tax</span>
-              <span>{{ formatPrice(taxAmount) }}</span>
-            </div>
-            <div class="border-t pt-2">
-              <div class="flex justify-between text-lg font-semibold">
-                <span>Total</span>
-                <span>{{ formatPrice(orderTotal) }}</span>
+            <div class="border-t pt-4 space-y-2">
+              <div class="flex justify-between">
+                <span>Subtotal</span>
+                <span>{{ formatPrice(cartSubtotal) }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Shipping</span>
+                <span>{{ formatPrice(shippingCost) }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Tax</span>
+                <span>{{ formatPrice(taxAmount) }}</span>
+              </div>
+              <div class="border-t pt-2">
+                <div class="flex justify-between text-lg font-semibold">
+                  <span>Total</span>
+                  <span>{{ formatPrice(orderTotal) }}</span>
+                </div>
               </div>
             </div>
-          </div>
+          </template>
+
+          <template v-else>
+            <div class="space-y-4 mb-6">
+              <div class="animate-pulse">
+                <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+              </div>
+            </div>
+            <div class="border-t pt-4 space-y-2">
+              <div class="animate-pulse">
+                <div class="h-4 bg-gray-200 rounded w-full mb-2"></div>
+                <div class="h-4 bg-gray-200 rounded w-full mb-2"></div>
+                <div class="h-4 bg-gray-200 rounded w-full"></div>
+              </div>
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -380,8 +496,9 @@
 
 <script setup>
 const { cartItems, cartSubtotal, clearCart, formatPrice } = useCart()
-const { createOrder } = useCustomer()
+const { createOrder, loadCustomerProfile, updateCustomer } = useCustomer()
 const { getCartItemImage, handleImageError } = useProducts()
+const { user, isAuthenticated, initAuth } = useAuth()
 
 // SEO
 useHead({
@@ -400,6 +517,8 @@ if (process.client && (!cartItems.value || cartItems.value.length === 0)) {
 const currentStep = ref(1)
 const sameAsShipping = ref(true)
 const isPlacingOrder = ref(false)
+const isLoadingUserData = ref(false)
+const isMounted = ref(false)
 
 const checkoutData = ref({
   billing: {
@@ -421,9 +540,74 @@ const checkoutData = ref({
 })
 
 // Computed
-const shippingCost = computed(() => 10.00) // Fixed shipping for demo
-const taxAmount = computed(() => cartSubtotal.value * 0.08) // 8% tax for demo
+const shippingCost = computed(() => 10.00)
+const taxAmount = computed(() => cartSubtotal.value * 0.08)
 const orderTotal = computed(() => cartSubtotal.value + shippingCost.value + taxAmount.value)
+
+// Auto-fill addresses for logged-in users
+const autoFillAddresses = async () => {
+  if (!isAuthenticated.value || !user.value) return
+
+  try {
+    isLoadingUserData.value = true
+    
+    const customerProfile = await loadCustomerProfile(user.value)
+    
+    if (customerProfile) {
+      if (customerProfile.billing) {
+        const billing = customerProfile.billing
+        checkoutData.value.billing = {
+          first_name: billing.first_name || customerProfile.first_name || '',
+          last_name: billing.last_name || customerProfile.last_name || '',
+          email: billing.email || customerProfile.email || user.value.email || '',
+          phone: billing.phone || '',
+          company: billing.company || '',
+          address_1: billing.address_1 || '',
+          address_2: billing.address_2 || '',
+          city: billing.city || '',
+          state: billing.state || '',
+          postcode: billing.postcode || '',
+          country: billing.country || 'US'
+        }
+      } else {
+        checkoutData.value.billing.first_name = customerProfile.first_name || ''
+        checkoutData.value.billing.last_name = customerProfile.last_name || ''
+        checkoutData.value.billing.email = customerProfile.email || user.value.email || ''
+      }
+
+      if (customerProfile.shipping && Object.keys(customerProfile.shipping).length > 0) {
+        const shipping = customerProfile.shipping
+        const hasShippingData = shipping.address_1 || shipping.city || shipping.state
+        
+        if (hasShippingData) {
+          checkoutData.value.shipping = {
+            first_name: shipping.first_name || customerProfile.first_name || '',
+            last_name: shipping.last_name || customerProfile.last_name || '',
+            company: shipping.company || '',
+            phone: shipping.phone || '',
+            address_1: shipping.address_1 || '',
+            address_2: shipping.address_2 || '',
+            city: shipping.city || '',
+            state: shipping.state || '',
+            postcode: shipping.postcode || '',
+            country: shipping.country || 'US'
+          }
+          
+          const billingAddress = `${checkoutData.value.billing.address_1}${checkoutData.value.billing.city}${checkoutData.value.billing.state}`
+          const shippingAddress = `${checkoutData.value.shipping.address_1}${checkoutData.value.shipping.city}${checkoutData.value.shipping.state}`
+          
+          if (shippingAddress && billingAddress !== shippingAddress) {
+            sameAsShipping.value = false
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error auto-filling addresses:', error)
+  } finally {
+    isLoadingUserData.value = false
+  }
+}
 
 // Methods
 const proceedToPayment = () => {
@@ -447,7 +631,6 @@ const placeOrder = async () => {
   isPlacingOrder.value = true
   
   try {
-    // Prepare order data for WooCommerce
     const orderData = {
       payment_method: checkoutData.value.payment_method,
       payment_method_title: getPaymentMethodName(checkoutData.value.payment_method),
@@ -470,7 +653,18 @@ const placeOrder = async () => {
 
     const order = await createOrder(orderData)
     
-    // Clear cart and redirect to success page
+    if (isAuthenticated.value && user.value) {
+      try {
+        const addressUpdateData = {
+          billing: checkoutData.value.billing,
+          shipping: sameAsShipping.value ? checkoutData.value.billing : checkoutData.value.shipping
+        }
+        await updateCustomer(user.value.id, addressUpdateData)
+      } catch (addressError) {
+        console.warn('Could not save addresses for future use:', addressError)
+      }
+    }
+    
     clearCart()
     navigateTo(`/order-confirmation/${order.id}`)
     
@@ -486,6 +680,24 @@ const placeOrder = async () => {
 watch(sameAsShipping, (newValue) => {
   if (newValue) {
     checkoutData.value.shipping = { ...checkoutData.value.billing }
+  }
+})
+
+// Initialize auth and auto-fill addresses when component mounts
+onMounted(async () => {
+  initAuth()
+  isMounted.value = true
+  
+  await nextTick()
+  if (isAuthenticated.value) {
+    autoFillAddresses()
+  }
+})
+
+// Watch for authentication changes and auto-fill when user logs in
+watch(isAuthenticated, (newValue) => {
+  if (newValue) {
+    autoFillAddresses()
   }
 })
 </script>
