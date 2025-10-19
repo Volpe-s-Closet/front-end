@@ -60,7 +60,7 @@ cd front-end
 npm install
 ```
 
-**Note**: This project uses Node.js 22.20.0 as specified in `mise.toml`. If you're using mise, it will automatically use the correct version. Otherwise, ensure you have Node.js 22.20.0 or compatible version installed.
+**Note**: This project uses Node.js 22.20.0 as specified in `mise.toml`.
 
 ### 2. Environment Configuration
 
@@ -83,11 +83,7 @@ NUXT_WOOCOMMERCE_SECRET=cs_your_consumer_secret_here
 
 ### 3. WordPress/WooCommerce Setup
 
-Follow the detailed instructions in `WORDPRESS_SETUP.md` to:
-- Configure WooCommerce REST API
-- Set up JWT authentication
-- Enable CORS if needed
-- Configure products, categories, and settings
+Follow the detailed instructions in `WORDPRESS_SETUP.md` for complete backend configuration.
 
 ### 4. Development
 
@@ -197,16 +193,10 @@ NUXT_WOOCOMMERCE_KEY=ck_your_consumer_key_here
 NUXT_WOOCOMMERCE_SECRET=cs_your_consumer_secret_here
 ```
 
-### Node.js Version
-This project uses Node.js 22.20.0 as specified in `mise.toml`. Ensure your deployment environment uses a compatible Node.js version.
 
 ## WordPress/WooCommerce Configuration
 
-See `WORDPRESS_SETUP.md` for detailed setup instructions including:
-- WooCommerce REST API configuration
-- JWT authentication setup
-- CORS configuration
-- Security considerations
+See `WORDPRESS_SETUP.md` for complete backend setup instructions.
 
 ## Browser Support
 

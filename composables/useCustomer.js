@@ -51,7 +51,7 @@ export const useCustomer = () => {
 
     // Image utilities for orders (placeholder image)
     const getPlaceholderImage = () => {
-        const baseUrl = config.public.siteUrl || 'https://your-wordpress-site.com'
+        const baseUrl = config.public.siteUrl
         return `${baseUrl}/wp-content/plugins/woocommerce/assets/images/placeholder.png`
     }
 

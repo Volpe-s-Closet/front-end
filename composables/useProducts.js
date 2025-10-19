@@ -80,7 +80,7 @@ export const useProducts = () => {
         }
 
         // Use WooCommerce placeholder image
-        const baseUrl = config.public.siteUrl || 'https://your-wordpress-site.com'
+        const baseUrl = config.public.siteUrl
         return `${baseUrl}/wp-content/plugins/woocommerce/assets/images/placeholder.png`
     }
 
@@ -101,18 +101,18 @@ export const useProducts = () => {
         }
 
         // Fallback to WooCommerce placeholder image
-        const baseUrl = config.public.siteUrl || 'https://your-wordpress-site.com'
+        const baseUrl = config.public.siteUrl
         return `${baseUrl}/wp-content/plugins/woocommerce/assets/images/placeholder.png`
     }
 
     const handleImageError = (event) => {
         // Set WooCommerce placeholder when the main image fails to load
-        const baseUrl = config.public.siteUrl || 'https://your-wordpress-site.com'
+        const baseUrl = config.public.siteUrl
         event.target.src = `${baseUrl}/wp-content/plugins/woocommerce/assets/images/placeholder.png`
     }
 
     const getPlaceholderImage = () => {
-        const baseUrl = config.public.siteUrl || 'https://your-wordpress-site.com'
+        const baseUrl = config.public.siteUrl
         return `${baseUrl}/wp-content/plugins/woocommerce/assets/images/placeholder.png`
     }
 
