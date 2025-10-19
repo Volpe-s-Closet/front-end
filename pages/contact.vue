@@ -32,20 +32,20 @@
           </div>
           <div>
             <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
-            <select
-              id="subject"
+            <SelectBox
               v-model="form.subject"
-              required
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="">Select a subject</option>
-              <option value="general">General Inquiry</option>
-              <option value="order">Order Support</option>
-              <option value="shipping">Shipping Question</option>
-              <option value="return">Return/Exchange</option>
-              <option value="technical">Technical Issue</option>
-              <option value="other">Other</option>
-            </select>
+              :options="[
+                { value: '', label: 'Select a subject' },
+                { value: 'general', label: 'General Inquiry' },
+                { value: 'order', label: 'Order Support' },
+                { value: 'shipping', label: 'Shipping Question' },
+                { value: 'return', label: 'Return/Exchange' },
+                { value: 'technical', label: 'Technical Issue' },
+                { value: 'other', label: 'Other' }
+              ]"
+              placeholder="Select a subject"
+              button-class="w-full"
+            />
           </div>
           <div>
             <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>

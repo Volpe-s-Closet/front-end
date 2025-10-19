@@ -10,29 +10,34 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-          <select v-model="statusFilter"
-            class="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            <option value="">All Orders</option>
-            <option value="pending">Pending</option>
-            <option value="pending-payment">Pending Payment</option>
-            <option value="processing">Processing</option>
-            <option value="on-hold">On Hold</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-            <option value="refunded">Refunded</option>
-            <option value="failed">Failed</option>
-            <option value="draft">Draft</option>
-          </select>
+          <SelectBox
+            v-model="statusFilter"
+            :options="[
+              { value: '', label: 'All Orders' },
+              { value: 'pending', label: 'Pending Payment' },
+              { value: 'processing', label: 'Processing' },
+              { value: 'on-hold', label: 'On Hold' },
+              { value: 'completed', label: 'Completed' },
+              { value: 'cancelled', label: 'Cancelled' },
+              { value: 'refunded', label: 'Refunded' },
+              { value: 'failed', label: 'Failed' },
+              { value: 'draft', label: 'Draft' }
+            ]"
+            placeholder="All Orders"
+          />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
-          <select v-model="dateFilter"
-            class="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            <option value="">All Time</option>
-            <option value="30">Last 30 Days</option>
-            <option value="90">Last 3 Months</option>
-            <option value="365">Last Year</option>
-          </select>
+          <SelectBox
+            v-model="dateFilter"
+            :options="[
+              { value: '', label: 'All Time' },
+              { value: '30', label: 'Last 30 Days' },
+              { value: '90', label: 'Last 3 Months' },
+              { value: '365', label: 'Last Year' }
+            ]"
+            placeholder="All Time"
+          />
         </div>
       </div>
     </div>

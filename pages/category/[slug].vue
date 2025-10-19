@@ -79,18 +79,20 @@
           
           <div class="flex items-center space-x-4">
             <label class="text-sm font-medium text-gray-700">Sort by:</label>
-            <select 
+            <SelectBox
               v-model="sortBy"
               @change="handleSortChange"
-              class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="menu_order">Default</option>
-              <option value="popularity">Popularity</option>
-              <option value="rating">Average Rating</option>
-              <option value="date">Latest</option>
-              <option value="price">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-            </select>
+              :options="[
+                { value: 'menu_order', label: 'Default' },
+                { value: 'popularity', label: 'Popularity' },
+                { value: 'rating', label: 'Average Rating' },
+                { value: 'date', label: 'Latest' },
+                { value: 'price', label: 'Price: Low to High' },
+                { value: 'price-desc', label: 'Price: High to Low' }
+              ]"
+              placeholder="Default"
+              size="sm"
+            />
           </div>
         </div>
 

@@ -2,7 +2,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const id = getRouterParam(event, 'id')
   const query = getQuery(event)
-  
+
   // Validate order ID
   if (!id || id === 'null' || id === 'undefined') {
     throw createError({
@@ -10,10 +10,10 @@ export default defineEventHandler(async (event) => {
       statusMessage: 'Invalid order ID'
     })
   }
-  
+
   const { woocommerceKey, woocommerceSecret, siteUrl } = validateWooCommerceConfig(config)
   const credentials = createWooCommerceAuth(woocommerceKey, woocommerceSecret)
-  
+
   try {
     // Get the order
     const response = await $fetch(`${siteUrl}/wp-json/wc/v3/orders/${id}`, {
@@ -22,12 +22,12 @@ export default defineEventHandler(async (event) => {
         'Content-Type': 'application/json'
       }
     })
-    
+
     // Optional: Validate customer ownership if customer ID is provided
     if (query.customer_id && response.customer_id) {
       const customerId = parseInt(query.customer_id)
       const orderCustomerId = parseInt(response.customer_id)
-      
+
       if (customerId !== orderCustomerId) {
         throw createError({
           statusCode: 403,
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
         })
       }
     }
-    
+
     // If order is refunded, try to fetch refund details
     // If order is refunded, try to fetch refund details
     if (response.status === 'refunded') {
@@ -46,10 +46,10 @@ export default defineEventHandler(async (event) => {
             'Content-Type': 'application/json'
           }
         })
-        
+
         // Add refunds to the response
         response.refunds = refunds
-        
+
         // Calculate total refunded amount
         if (refunds && refunds.length > 0) {
           response.total_refunded = refunds.reduce((total, refund) => {
@@ -60,19 +60,19 @@ export default defineEventHandler(async (event) => {
         // Continue without refund details if fetch fails
       }
     }
-    
+
     return response
   } catch (error) {
-    
+
     // Handle createError calls
     if (error.statusCode) {
       throw error
     }
-    
+
     // Provide more detailed error information for other errors
     let statusCode = 404
     let statusMessage = 'Order not found or you do not have permission to view it'
-    
+
     if (error.status === 403) {
       statusCode = 403
       statusMessage = 'You do not have permission to view this order'
@@ -87,7 +87,7 @@ export default defineEventHandler(async (event) => {
     } else if (error.message) {
       statusMessage = error.message
     }
-    
+
     throw createError({
       statusCode,
       statusMessage

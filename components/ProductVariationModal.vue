@@ -57,20 +57,16 @@
               <label class="block text-sm font-medium text-gray-700">
                 {{ attribute.name }}
               </label>
-              <select
+              <SelectBox
                 v-model="selectedAttributes[attribute.name]"
                 @change="updateSelectedVariation"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="">Choose {{ attribute.name }}</option>
-                <option 
-                  v-for="option in attribute.options" 
-                  :key="option"
-                  :value="option"
-                >
-                  {{ option }}
-                </option>
-              </select>
+                :options="[
+                  { value: '', label: `Choose ${attribute.name}` },
+                  ...attribute.options.map(option => ({ value: option, label: option }))
+                ]"
+                :placeholder="`Choose ${attribute.name}`"
+                button-class="w-full"
+              />
             </div>
           </div>
 
