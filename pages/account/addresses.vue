@@ -81,87 +81,93 @@
     </div>
 
     <!-- Address Form Modal -->
-    <div v-if="showAddressForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" @click="closeAddressForm">
-      <div class="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto" @click.stop>
-        <div class="p-6">
-          <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-semibold">
-              {{ editingAddress === 'billing' ? 'Edit Billing Address' : 'Edit Shipping Address' }}
-            </h3>
-            <BaseButton @click="closeAddressForm" variant="ghost" size="sm" icon="heroicons:x-mark" />
+    <div v-if="showAddressForm" class="fixed inset-0 z-50 overflow-y-auto">
+      <!-- Backdrop -->
+      <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="closeAddressForm"></div>
+
+      <!-- Modal -->
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div class="relative bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-lg font-semibold">
+                {{ editingAddress === 'billing' ? 'Edit Billing Address' : 'Edit Shipping Address' }}
+              </h3>
+              <BaseButton @click="closeAddressForm" variant="ghost" size="sm" icon="heroicons:x-mark" />
+            </div>
+
+            <form @submit.prevent="saveAddress" class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                  <input v-model="addressForm.first_name" type="text" required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                  <input v-model="addressForm.last_name" type="text" required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Company</label>
+                <input v-model="addressForm.company" type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 1 *</label>
+                <input v-model="addressForm.address_1" type="text" required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 2</label>
+                <input v-model="addressForm.address_2" type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                  <input v-model="addressForm.city" type="text" required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">State/Province *</label>
+                  <input v-model="addressForm.state" type="text" required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Postal Code *</label>
+                  <input v-model="addressForm.postcode" type="text" required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Country *</label>
+                <SelectBox v-model="addressForm.country" :options="[
+                  { value: '', label: 'Select Country' },
+                  ...countries.map(country => ({ value: country.code, label: country.name }))
+                ]" placeholder="Select Country" button-class="w-full" />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Phone{{ editingAddress === 'billing' ? ' *' : ' (Optional)' }}
+                </label>
+                <input v-model="addressForm.phone" type="tel" :required="editingAddress === 'billing'"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              </div>
+
+              <div class="flex space-x-4 pt-4">
+                <BaseButton action="save" :loading="saving" :disabled="saving" text="Save Address" />
+                <BaseButton action="cancel" @click="closeAddressForm" />
+              </div>
+            </form>
           </div>
-
-          <form @submit.prevent="saveAddress" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
-                <input v-model="addressForm.first_name" type="text" required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
-                <input v-model="addressForm.last_name" type="text" required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Company</label>
-              <input v-model="addressForm.company" type="text"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 1 *</label>
-              <input v-model="addressForm.address_1" type="text" required
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 2</label>
-              <input v-model="addressForm.address_2" type="text"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
-                <input v-model="addressForm.city" type="text" required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">State/Province *</label>
-                <input v-model="addressForm.state" type="text" required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Postal Code *</label>
-                <input v-model="addressForm.postcode" type="text" required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Country *</label>
-              <SelectBox v-model="addressForm.country" :options="[
-                { value: '', label: 'Select Country' },
-                ...countries.map(country => ({ value: country.code, label: country.name }))
-              ]" placeholder="Select Country" button-class="w-full" />
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                Phone{{ editingAddress === 'billing' ? ' *' : ' (Optional)' }}
-              </label>
-              <input v-model="addressForm.phone" type="tel" :required="editingAddress === 'billing'"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            </div>
-
-            <div class="flex space-x-4 pt-4">
-              <BaseButton action="save" :loading="saving" :disabled="saving" text="Save Address" />
-              <BaseButton action="cancel" @click="closeAddressForm" />
-            </div>
-          </form>
         </div>
       </div>
     </div>

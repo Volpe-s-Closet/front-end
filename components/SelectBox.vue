@@ -1,7 +1,7 @@
 <template>
   <div class="relative" ref="dropdownRef" @click.stop>
     <!-- Trigger Button -->
-    <button @click.stop="toggleDropdown" :disabled="disabled" :class="[
+    <button type="button" @click.stop="toggleDropdown" :disabled="disabled" :class="[
       'flex items-center justify-between bg-gray-100 rounded-lg px-3 py-2 font-medium text-gray-900 transition-colors',
       size === 'xs' ? 'text-xs sm:text-sm' : 'text-sm',
       disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200',
@@ -26,7 +26,7 @@
       menuClass
     ]">
       <div class="py-1">
-        <button v-for="option in options" :key="option.value" @click.stop="selectOption(option)" :class="[
+        <button type="button" v-for="option in options" :key="option.value" @click.stop="selectOption(option)" :class="[
           'flex items-center w-full px-3 py-2 text-sm text-left transition-colors whitespace-nowrap',
           modelValue === option.value ? 'bg-blue-50 text-blue-700' : 'text-gray-700',
           option.danger ? 'text-red-600 hover:bg-red-50' : 'hover:bg-gray-50'
