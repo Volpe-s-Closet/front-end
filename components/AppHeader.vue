@@ -86,7 +86,7 @@
 <script setup>
 const { cartItemCount, toggleCart } = useCart()
 const { isAuthenticated, logout } = useAuth()
-const { categories, fetchCategories, getCategoriesForDropdown } = useWooCommerce()
+const { categories, fetchCategories, getCategoriesForDropdown } = useCategories()
 
 const searchQuery = ref('')
 const showMobileMenu = ref(false)

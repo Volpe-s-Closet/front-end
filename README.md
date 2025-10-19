@@ -30,7 +30,8 @@ A modern, responsive ecommerce frontend built with Nuxt 3, Tailwind CSS, and int
 │   ├── CartSidebar.vue
 │   └── ProductFilters.vue
 ├── composables/          # Vue composables
-│   ├── useWooCommerce.js # WooCommerce API integration
+│   ├── useProducts.js    # Product & order management
+│   ├── useCategories.js  # Category management
 │   ├── useCart.js        # Shopping cart management
 │   └── useAuth.js        # Authentication
 ├── layouts/              # Page layouts

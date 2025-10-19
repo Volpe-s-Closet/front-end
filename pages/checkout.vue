@@ -380,8 +380,7 @@
 
 <script setup>
 const { cartItems, cartSubtotal, clearCart, formatPrice } = useCart()
-const { createOrder } = useWooCommerce()
-const { getCartItemImage, handleImageError } = useProductImage()
+const { createOrder, getCartItemImage, handleImageError } = useProducts()
 
 // SEO
 useHead({

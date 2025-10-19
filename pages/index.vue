@@ -131,7 +131,8 @@ useHead({
   ]
 })
 
-const { getProducts, categories, categoriesLoading, fetchCategories } = useWooCommerce()
+const { getProducts } = useProducts()
+const { categories, categoriesLoading, fetchCategories } = useCategories()
 
 // Data
 const featuredProducts = ref([])

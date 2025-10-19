@@ -209,7 +209,7 @@ const isSearching = ref(false)
 const selectedIndex = ref(-1) // -1 means no selection, 0+ means result index
 
 // Get WooCommerce products for search
-const { getProducts } = useWooCommerce()
+const { getProducts } = useProducts()
 
 // Debounced search function
 let searchTimeout = null

@@ -142,7 +142,7 @@ const allImages = computed(() => {
   return allCollectedImages.length > 0 ? allCollectedImages : productImages
 })
 
-const { getPlaceholderImage, handleImageError } = useProductImage()
+const { getPlaceholderImage, handleImageError } = useProducts()
 
 const currentImage = computed(() => {
   return allImages.value[currentImageIndex.value]?.src || getPlaceholderImage()
@@ -208,7 +208,7 @@ const fetchVariations = async () => {
   
   try {
     isLoadingVariations.value = true
-    const { getProductVariations } = useWooCommerce()
+    const { getProductVariations } = useProducts()
     const variations = await getProductVariations(props.product.id)
     
 

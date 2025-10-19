@@ -152,8 +152,7 @@ const props = defineProps({
 const emit = defineEmits(['close', 'added-to-cart'])
 
 const { addToCart, openCart, formatPrice } = useCart()
-const { getProductImage, handleImageError } = useProductImage()
-const { getProductVariations } = useWooCommerce()
+const { getProductImage, handleImageError, getProductVariations } = useProducts()
 
 // Reactive state
 const selectedAttributes = ref({})

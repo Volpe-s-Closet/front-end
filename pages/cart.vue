@@ -214,9 +214,7 @@ const {
   formatPrice 
 } = useCart()
 
-const { getCartItemImage, getProductImage, handleImageError } = useProductImage()
-
-const { getProducts } = useWooCommerce()
+const { getProducts, getCartItemImage, getProductImage, handleImageError } = useProducts()
 
 // SEO
 useHead({

@@ -141,7 +141,8 @@
 
 <script setup>
 const route = useRoute()
-const { getProducts, getCategories, getCategory, getProductAttributes, getAttributeTerms } = useWooCommerce()
+const { getProducts, getProductAttributes, getAttributeTerms } = useProducts()
+const { getCategories, getCategory } = useCategories()
 
 // SEO
 const category = ref(null)

@@ -238,7 +238,7 @@ const {
   getProductReviews, 
   getRelatedProducts, 
   getProducts 
-} = useWooCommerce()
+} = useProducts()
 const { addToCart: addItemToCart, openCart } = useCart()
 const { formatPrice } = useCurrency()
 

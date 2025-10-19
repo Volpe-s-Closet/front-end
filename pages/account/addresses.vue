@@ -235,7 +235,7 @@ definePageMeta({
 })
 
 const { user } = useAuth()
-const { getCustomer, updateCustomer } = useWooCommerce()
+const { getCustomer, updateCustomer } = useProducts()
 
 // SEO
 useHead({

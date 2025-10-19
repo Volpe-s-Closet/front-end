@@ -223,7 +223,7 @@ definePageMeta({
 })
 
 const { user, updateUserProfile, getUserProfile } = useAuth()
-const { getOrders } = useWooCommerce()
+const { getOrders } = useProducts()
 const { formatPrice } = useCurrency()
 
 // SEO

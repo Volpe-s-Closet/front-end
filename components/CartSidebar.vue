@@ -146,5 +146,5 @@ const {
   formatPrice 
 } = useCart()
 
-const { getCartItemImage, handleImageError } = useProductImage()
+const { getCartItemImage, handleImageError } = useProducts()
 </script>

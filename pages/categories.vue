@@ -105,7 +105,7 @@
 </template>
 
 <script setup>
-const { categories, categoriesLoading, fetchCategories } = useWooCommerce()
+const { categories, categoriesLoading, fetchCategories } = useCategories()
 
 // SEO
 useHead({

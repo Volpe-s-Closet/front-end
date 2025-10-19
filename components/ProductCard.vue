@@ -286,7 +286,7 @@ const props = defineProps({
 })
 
 const { addToCart } = useCart()
-const { getProductImage, handleImageError } = useProductImage()
+const { getProductImage, handleImageError } = useProducts()
 const { formatPrice } = useCurrency()
 const isAdding = ref(false)
 const isVariationModalOpen = ref(false)

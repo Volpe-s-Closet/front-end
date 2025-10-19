@@ -73,7 +73,7 @@ const props = defineProps({
 
 const emit = defineEmits(['close'])
 
-const { categories, fetchCategories } = useWooCommerce()
+const { categories, fetchCategories } = useCategories()
 const categoriesExpanded = ref(false)
 
 const toggleCategoriesExpanded = () => {
