@@ -6,7 +6,7 @@
         <!-- Hero Content -->
         <div class="text-center mb-12">
           <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
-            Discover Excellence
+           Hola mundo
           </h1>
           <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Curated collection of premium products designed to elevate your lifestyle
