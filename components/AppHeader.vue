@@ -133,9 +133,6 @@ const accountMenuItems = [
   }
 ]
 
-
-
-
 const handleSearch = (query) => {
   if (query && query.trim()) {
     searchQuery.value = query
@@ -147,7 +144,6 @@ const handleSearch = (query) => {
 const clearSearch = () => {
   searchQuery.value = ''
 }
-
 
 const toggleMobileMenu = () => {
   showMobileMenu.value = !showMobileMenu.value

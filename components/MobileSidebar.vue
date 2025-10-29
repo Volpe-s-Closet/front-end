@@ -83,12 +83,40 @@
             </div>
           </div>
 
-          <!-- Promos Link -->
-          <NuxtLink to="/promos"
-            class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-            @click="$emit('close')">
-            Promos
-          </NuxtLink>
+          <!-- Promos Section -->
+          <div class="space-y-2">
+            <!-- Promos Header -->
+            <button @click="togglePromosExpanded"
+              class="flex items-center justify-between w-full px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
+              <div class="flex items-center">
+                Promos
+              </div>
+              <ClientOnly>
+                <Icon :name="promosExpanded ? 'heroicons:chevron-up' : 'heroicons:chevron-down'"
+                  class="h-4 w-4 text-gray-400" />
+                <template #fallback>
+                  <div class="h-4 w-4 bg-gray-200 rounded"></div>
+                </template>
+              </ClientOnly>
+            </button>
+
+            <!-- Promos Dropdown -->
+            <div v-if="promosExpanded" class="ml-8 space-y-1">
+              <NuxtLink :to="promosCategory ? `/category/${promosCategory.slug}` : '/'"
+                class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+                @click="$emit('close')">
+                All Promos
+              </NuxtLink>
+
+              <template v-if="promosCategory && promosCategory.children" v-for="subcategory in promosCategory.children" :key="subcategory.id">
+                <NuxtLink :to="`/category/${subcategory.slug}`"
+                  class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+                  @click="$emit('close')">
+                  {{ subcategory.name }}
+                </NuxtLink>
+              </template>
+            </div>
+          </div>
 
           <!-- Blog Link -->
           <NuxtLink to="/blog"
@@ -124,6 +152,7 @@ const emit = defineEmits(['close'])
 const { categories, fetchCategories } = useCategories()
 const bagsExpanded = ref(false)
 const accessoriesExpanded = ref(false)
+const promosExpanded = ref(false)
 
 // Get specific categories by slug
 const bagsCategory = computed(() => {
@@ -134,12 +163,20 @@ const accessoriesCategory = computed(() => {
   return categories.value.find(cat => cat.slug === 'accesorios')
 })
 
+const promosCategory = computed(() => {
+  return categories.value.find(cat => cat.slug === 'promos')
+})
+
 const toggleBagsExpanded = () => {
   bagsExpanded.value = !bagsExpanded.value
 }
 
 const toggleAccessoriesExpanded = () => {
   accessoriesExpanded.value = !accessoriesExpanded.value
+}
+
+const togglePromosExpanded = () => {
+  promosExpanded.value = !promosExpanded.value
 }
 
 // Close sidebar when clicking outside or pressing escape

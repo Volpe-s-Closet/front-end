@@ -33,7 +33,7 @@ export const useCategories = () => {
             // Default params to get main categories (exclude uncategorized)
             const defaultParams = {
                 per_page: 100,
-                hide_empty: true,
+                hide_empty: false, // Include empty categories for megamenu
                 exclude: 15, // Usually the "Uncategorized" category ID
                 orderby: 'name',
                 order: 'asc',
