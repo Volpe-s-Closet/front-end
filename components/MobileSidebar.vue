@@ -134,6 +134,21 @@
         </div>
       </nav>
 
+      <!-- Language Switcher (Mobile only) -->
+      <div class="p-4 border-t border-gray-200 mt-auto">
+        <div class="mb-2">
+          <span class="text-sm font-medium text-gray-700">Language</span>
+        </div>
+        <SelectBox
+          v-model="selectedLanguage"
+          :options="languages"
+          @change="handleLanguageChange"
+          size="sm"
+          position="left"
+          button-class="w-full justify-between"
+          flag-only
+        />
+      </div>
 
     </div>
   </Transition>
@@ -150,9 +165,11 @@ const props = defineProps({
 const emit = defineEmits(['close'])
 
 const { categories, fetchCategories } = useCategories()
+const { currentLanguage, languages, setLanguage } = useLanguage()
 const bagsExpanded = ref(false)
 const accessoriesExpanded = ref(false)
 const promosExpanded = ref(false)
+const selectedLanguage = ref(currentLanguage.value)
 
 // Get specific categories by slug
 const bagsCategory = computed(() => {
@@ -177,6 +194,11 @@ const toggleAccessoriesExpanded = () => {
 
 const togglePromosExpanded = () => {
   promosExpanded.value = !promosExpanded.value
+}
+
+const handleLanguageChange = (option) => {
+  setLanguage(option.value)
+  selectedLanguage.value = option.value
 }
 
 // Close sidebar when clicking outside or pressing escape

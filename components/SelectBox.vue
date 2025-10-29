@@ -8,11 +8,17 @@
       buttonClass
     ]">
       <div class="flex items-center space-x-2">
-        <Icon v-if="selectedOption.icon" :name="selectedOption.icon" class="h-4 w-4 text-gray-600" />
-        <span v-if="!hideLabel" :class="size === 'xs' ? 'hidden xs:inline' : ''">
+        <!-- Flag emoji for language switcher -->
+        <span v-if="flagOnly && selectedOption.flag" class="text-lg">
+          {{ selectedOption.flag }}
+        </span>
+        <!-- Regular icon -->
+        <Icon v-else-if="selectedOption.icon" :name="selectedOption.icon" class="h-4 w-4 text-gray-600" />
+        <!-- Label text -->
+        <span v-if="!hideLabel && !flagOnly" :class="size === 'xs' ? 'hidden xs:inline' : ''">
           {{ selectedOption.label }}
         </span>
-        <span v-if="size === 'xs' && hideLabel" class="xs:hidden">
+        <span v-if="size === 'xs' && hideLabel && !flagOnly" class="xs:hidden">
           {{ placeholder }}
         </span>
       </div>
@@ -31,7 +37,12 @@
           modelValue === option.value ? 'bg-blue-50 text-blue-700' : 'text-gray-700',
           option.danger ? 'text-red-600 hover:bg-red-50' : 'hover:bg-gray-50'
         ]">
-          <Icon v-if="option.icon" :name="option.icon" :class="[
+          <!-- Flag emoji for language options -->
+          <span v-if="flagOnly && option.flag" class="text-lg mr-3">
+            {{ option.flag }}
+          </span>
+          <!-- Regular icon -->
+          <Icon v-else-if="option.icon" :name="option.icon" :class="[
             'h-4 w-4 mr-3',
             option.danger ? 'text-red-500' : 'text-gray-500'
           ]" />
@@ -87,6 +98,12 @@ const props = defineProps({
 
   // Hide the selected label on mobile
   hideLabel: {
+    type: Boolean,
+    default: false
+  },
+
+  // Show only flag in button (for language switcher)
+  flagOnly: {
     type: Boolean,
     default: false
   },

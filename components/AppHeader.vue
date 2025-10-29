@@ -67,6 +67,12 @@
 
         <!-- Right side actions -->
         <div class="flex items-center">
+          <!-- Language Switcher (Desktop only) -->
+          <div class="hidden md:block mr-2">
+            <SelectBox v-model="selectedLanguage" :options="languages" @change="handleLanguageChange" size="sm"
+              position="right" button-class="!bg-transparent hover:!bg-gray-100 !border-0 !px-2 !py-1" flag-only />
+          </div>
+
           <!-- Search Button (Desktop only) -->
           <BaseButton @click="toggleSearchModal" variant="ghost" size="lg" icon="heroicons:magnifying-glass"
             custom-padding="px-3 py-2" class="hidden md:inline-flex text-gray-700 hover:text-gray-900" />
@@ -129,10 +135,12 @@
 const { cartItemCount, toggleCart } = useCart()
 const { isAuthenticated, logout } = useAuth()
 const { fetchCategories } = useCategories()
+const { currentLanguage, languages, setLanguage } = useLanguage()
 
 const searchQuery = ref('')
 const showMobileMenu = ref(false)
 const showSearchModal = ref(false)
+const selectedLanguage = ref(currentLanguage.value)
 
 // Account dropdown menu items
 const accountMenuItems = [
@@ -185,6 +193,11 @@ const closeSearchModal = () => {
 const handleAccountAction = () => {
   // Actions are already defined in the menu items
   // This handler is just for additional logic if needed
+}
+
+const handleLanguageChange = (option) => {
+  setLanguage(option.value)
+  selectedLanguage.value = option.value
 }
 
 // Fetch categories on component mount
