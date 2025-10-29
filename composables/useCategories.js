@@ -31,9 +31,10 @@ export const useCategories = () => {
             categoriesError.value = null
 
             // Default params to get main categories (exclude uncategorized)
+            // By default, hide empty categories unless explicitly overridden
             const defaultParams = {
                 per_page: 100,
-                hide_empty: false, // Include empty categories for megamenu
+                hide_empty: true,
                 exclude: 15, // Usually the "Uncategorized" category ID
                 orderby: 'name',
                 order: 'asc',
@@ -103,6 +104,22 @@ export const useCategories = () => {
         return categories.value.filter(cat => cat.parent === 0)
     }
 
+    // Fetch categories including empty ones (useful for megamenu)
+    const fetchCategoriesIncludingEmpty = async (params = {}) => {
+        return await fetchCategories({
+            hide_empty: false,
+            ...params
+        })
+    }
+
+    // Fetch only categories with products (default behavior)
+    const fetchCategoriesWithProducts = async (params = {}) => {
+        return await fetchCategories({
+            hide_empty: true,
+            ...params
+        })
+    }
+
     return {
         // Categories (API calls)
         getCategories,
@@ -113,6 +130,8 @@ export const useCategories = () => {
         categoriesLoading: readonly(categoriesLoading),
         categoriesError: readonly(categoriesError),
         fetchCategories,
+        fetchCategoriesIncludingEmpty,
+        fetchCategoriesWithProducts,
         getCategoriesForDropdown,
         getCategoryBySlug,
         getCategoryById,

@@ -40,17 +40,21 @@
                 :to="mainCategory ? `/category/${mainCategory.slug}` : '/'"
                 class="block text-lg font-semibold text-gray-900 hover:text-blue-600 mb-4 transition-colors"
                 @click="closeMenu"
+                @mouseenter="clearHoveredCategory"
               >
                 All {{ label }}
               </NuxtLink>
 
               <!-- Subcategories -->
-              <div v-if="subcategories && subcategories.length > 0" class="space-y-2">
+              <div 
+                v-if="subcategories && subcategories.length > 0" 
+                class="space-y-2"
+                @mouseleave="clearHoveredCategory"
+              >
                 <div
                   v-for="subcategory in subcategories"
                   :key="subcategory.id"
                   @mouseenter="setHoveredCategory(subcategory)"
-                  @mouseleave="clearHoveredCategory"
                 >
                   <NuxtLink
                     :to="`/category/${subcategory.slug}`"
@@ -105,7 +109,7 @@ const props = defineProps({
   }
 })
 
-const { categories, fetchCategories } = useCategories()
+const { categories, fetchCategoriesIncludingEmpty } = useCategories()
 
 const isOpen = ref(false)
 const hoveredCategory = ref(null)
@@ -129,7 +133,7 @@ const subcategories = computed(() => {
 // Ensure categories are fetched when component mounts
 onMounted(() => {
   if (categories.value.length === 0) {
-    fetchCategories()
+    fetchCategoriesIncludingEmpty()
   }
 })
 
