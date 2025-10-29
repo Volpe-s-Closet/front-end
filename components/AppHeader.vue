@@ -13,14 +13,31 @@
   <header class="bg-white shadow-sm border-b sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
-        <!-- Mobile menu button (left side on mobile) -->
-        <BaseButton @click="toggleMobileMenu" variant="ghost" size="sm" icon="heroicons:bars-3"
-          custom-padding="px-3 py-2" class="md:hidden text-gray-700 hover:text-gray-900" />
+        <!-- Left side (Mobile: Search + Menu, Desktop: Logo) -->
+        <div class="flex items-center">
+          <!-- Mobile Search Button -->
+          <BaseButton @click="toggleSearchModal" variant="ghost" size="sm" icon="heroicons:magnifying-glass"
+            custom-padding="px-3 py-2" class="md:hidden text-gray-700 hover:text-gray-900" />
 
-        <!-- Logo -->
-        <div class="flex-shrink-0">
-          <NuxtLink to="/" class="text-2xl font-bold text-gray-900">
-            Store
+          <!-- Mobile menu button -->
+          <BaseButton @click="toggleMobileMenu" variant="ghost" size="sm" icon="heroicons:bars-3"
+            custom-padding="px-3 py-2" class="md:hidden text-gray-700 hover:text-gray-900" />
+
+          <!-- Logo (Desktop) -->
+          <div class="hidden md:block flex-shrink-0">
+            <NuxtLink to="/" class="flex items-center">
+              <img
+                src="https://admin.volpescloset.com/wp-content/uploads/2025/06/Screenshot-From-2025-06-15-12-15-13.png"
+                alt="Volpe's Closet Logo" class="h-10 w-auto" />
+            </NuxtLink>
+          </div>
+        </div>
+
+        <!-- Center Logo (Mobile) -->
+        <div class="md:hidden flex-shrink-0">
+          <NuxtLink to="/" class="flex items-center">
+            <img src="https://admin.volpescloset.com/wp-content/uploads/2025/06/Screenshot-From-2025-06-15-12-15-13.png"
+              alt="Volpe's Closet Logo" class="h-8 w-auto" />
           </NuxtLink>
         </div>
 
@@ -50,9 +67,9 @@
 
         <!-- Right side actions -->
         <div class="flex items-center">
-          <!-- Search Button -->
+          <!-- Search Button (Desktop only) -->
           <BaseButton @click="toggleSearchModal" variant="ghost" size="lg" icon="heroicons:magnifying-glass"
-            custom-padding="px-3 py-2" class="text-gray-700 hover:text-gray-900" />
+            custom-padding="px-3 py-2" class="hidden md:inline-flex text-gray-700 hover:text-gray-900" />
 
           <!-- Cart -->
           <ClientOnly>
