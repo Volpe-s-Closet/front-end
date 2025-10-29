@@ -36,12 +36,14 @@
           <MegaMenu label="Promos" category-slug="promos" />
 
           <!-- Blog Link -->
-          <NuxtLink to="/blog" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+          <NuxtLink to="/blog"
+            class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
             Blog
           </NuxtLink>
 
           <!-- About Us Link -->
-          <NuxtLink to="/about" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+          <NuxtLink to="/about"
+            class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
             About Us
           </NuxtLink>
         </nav>
@@ -67,10 +69,11 @@
           <ClientOnly>
             <div v-if="isAuthenticated">
               <DropDown :items="accountMenuItems" @item-click="handleAccountAction" trigger-icon="heroicons:user-circle"
-                trigger-label="Account" button-class="!bg-transparent hover:!bg-gray-100 !px-2 !py-2" position="right"
-                size="sm" hide-label hide-chevron />
+                trigger-label="Account" button-class="!bg-transparent hover:!bg-gray-100 !px-3 !py-2" position="right"
+                size="lg" hide-label hide-chevron />
             </div>
-            <NuxtLink v-else to="/login" class="text-gray-700 hover:text-gray-900">
+            <NuxtLink v-else to="/login"
+              class="inline-flex items-center justify-center px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
               <ClientOnly>
                 <Icon name="heroicons:user-circle" class="h-6 w-6" />
                 <template #fallback>
@@ -79,7 +82,8 @@
               </ClientOnly>
             </NuxtLink>
             <template #fallback>
-              <NuxtLink to="/login" class="text-gray-700 hover:text-gray-900">
+              <NuxtLink to="/login"
+                class="inline-flex items-center justify-center px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
                 <div class="h-6 w-6 bg-gray-200 rounded-full"></div>
               </NuxtLink>
             </template>

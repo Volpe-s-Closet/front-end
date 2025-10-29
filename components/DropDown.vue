@@ -3,11 +3,14 @@
     <!-- Trigger Button -->
     <button @click="toggleDropdown" :disabled="disabled" :class="[
       'flex items-center space-x-2 bg-gray-100 rounded-lg px-3 py-2 font-medium text-gray-900 transition-colors',
-      size === 'xs' ? 'text-xs sm:text-sm' : 'text-sm',
+      size === 'xs' ? 'text-xs sm:text-sm' : size === 'lg' ? 'text-base' : 'text-sm',
       disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200',
       buttonClass
     ]">
-      <Icon v-if="triggerIcon" :name="triggerIcon" class="h-6 w-6 text-gray-600" />
+      <Icon v-if="triggerIcon" :name="triggerIcon" :class="[
+        'text-gray-600',
+        size === 'lg' ? 'h-6 w-6' : 'h-5 w-5'
+      ]" />
       <span v-if="!hideLabel" :class="size === 'xs' ? 'hidden xs:inline' : ''">
         {{ triggerLabel }}
       </span>
@@ -76,7 +79,7 @@ const props = defineProps({
   size: {
     type: String,
     default: 'sm',
-    validator: (value) => ['xs', 'sm'].includes(value)
+    validator: (value) => ['xs', 'sm', 'lg'].includes(value)
   },
 
   // Dropdown position
