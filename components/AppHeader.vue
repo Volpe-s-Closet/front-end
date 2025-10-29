@@ -34,6 +34,16 @@
 
           <!-- Promos Mega Menu -->
           <MegaMenu label="Promos" category-slug="promos" />
+
+          <!-- Blog Link -->
+          <NuxtLink to="/blog" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+            Blog
+          </NuxtLink>
+
+          <!-- About Us Link -->
+          <NuxtLink to="/about" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+            About Us
+          </NuxtLink>
         </nav>
 
         <!-- Right side actions -->

@@ -1,12 +1,23 @@
 <template>
   <div class="min-h-screen bg-white">
+    <!-- Hero Video Section -->
+    <section class="relative w-full bg-black">
+      <div class="flex justify-center">
+        <video autoplay loop muted playsinline class="w-full max-w-[1920px] h-auto object-cover" poster="">
+          <source src="https://admin.volpescloset.com/wp-content/uploads/2025/10/6661930-uhd_4096_2160_25fps.mp4"
+            type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </section>
+
     <!-- Hero Section with Featured Products Slider -->
     <section class="relative bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <!-- Hero Content -->
         <div class="text-center mb-12">
           <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
-           Hola mundo
+            Hola mundo
           </h1>
           <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Curated collection of premium products designed to elevate your lifestyle
@@ -234,8 +245,7 @@
               </div>
 
               <!-- Post Title -->
-              <h3
-                class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+              <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
                 <NuxtLink :to="`/blog/${post.slug}`" v-html="post.title.rendered"></NuxtLink>
               </h3>
 
@@ -434,4 +444,3 @@ onUnmounted(() => {
   stopAutoSlide()
 })
 </script>
-
