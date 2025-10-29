@@ -45,10 +45,13 @@ export const useCategories = () => {
             // Organize categories with their children for hierarchical structure
             const categoryMap = new Map()
             const rootCategories = []
+            const allCategoriesWithChildren = []
 
             // First pass: create map of all categories
             allCategories.forEach(cat => {
-                categoryMap.set(cat.id, { ...cat, children: [] })
+                const categoryWithChildren = { ...cat, children: [] }
+                categoryMap.set(cat.id, categoryWithChildren)
+                allCategoriesWithChildren.push(categoryWithChildren)
             })
 
             // Second pass: organize parent-child relationships
@@ -63,7 +66,8 @@ export const useCategories = () => {
                 }
             })
 
-            categories.value = rootCategories
+            // Store all categories (including subcategories) so we can find them by slug
+            categories.value = allCategoriesWithChildren
 
             return categories.value
         } catch (err) {
@@ -84,7 +88,7 @@ export const useCategories = () => {
         }))
     }
 
-    // Get category by slug
+    // Get category by slug - searches through all categories including nested ones
     const getCategoryBySlug = (slug) => {
         return categories.value.find(cat => cat.slug === slug)
     }
@@ -92,6 +96,11 @@ export const useCategories = () => {
     // Get category by ID
     const getCategoryById = (id) => {
         return categories.value.find(cat => cat.id === id)
+    }
+
+    // Get only root categories (parent === 0)
+    const getRootCategories = () => {
+        return categories.value.filter(cat => cat.parent === 0)
     }
 
     return {
@@ -106,6 +115,7 @@ export const useCategories = () => {
         fetchCategories,
         getCategoriesForDropdown,
         getCategoryBySlug,
-        getCategoryById
+        getCategoryById,
+        getRootCategories
     }
 }

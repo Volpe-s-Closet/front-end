@@ -26,17 +26,14 @@
 
         <!-- Navigation (Desktop) -->
         <nav class="hidden md:flex space-x-8">
-          <div class="relative">
-            <DropDown :items="categoryDropdownItems" trigger-label="Categories"
-              button-class="!bg-transparent hover:!bg-gray-100 !px-3 !py-2 !text-gray-700 hover:!text-gray-900 !text-sm !font-medium"
-              position="left" @item-click="handleCategoryClick" />
-          </div>
-          <NuxtLink to="/search" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-            All Products
-          </NuxtLink>
-          <NuxtLink to="/blog" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-            Blog
-          </NuxtLink>
+          <!-- Bags Mega Menu -->
+          <MegaMenu label="Bags" category-slug="bolsos" />
+
+          <!-- Accessories Mega Menu -->
+          <MegaMenu label="Accessories" category-slug="accesorios" />
+
+          <!-- Promos Mega Menu -->
+          <MegaMenu label="Promos" category-slug="promos" />
         </nav>
 
         <!-- Right side actions -->
@@ -100,7 +97,7 @@
 <script setup>
 const { cartItemCount, toggleCart } = useCart()
 const { isAuthenticated, logout } = useAuth()
-const { categories, fetchCategories, getCategoriesForDropdown } = useCategories()
+const { fetchCategories } = useCategories()
 
 const searchQuery = ref('')
 const showMobileMenu = ref(false)
@@ -126,20 +123,6 @@ const accountMenuItems = [
   }
 ]
 
-// Categories dropdown items
-const categoryDropdownItems = computed(() => {
-  const items = getCategoriesForDropdown()
-
-  // Add "All Categories" link at the top
-  return [
-    {
-      label: 'All Categories',
-      action: () => navigateTo('/categories')
-    },
-    ...(items.length > 0 ? [{ label: '', divider: true }] : []),
-    ...items
-  ]
-})
 
 
 
@@ -154,7 +137,6 @@ const handleSearch = (query) => {
 const clearSearch = () => {
   searchQuery.value = ''
 }
-
 
 
 const toggleMobileMenu = () => {
@@ -174,11 +156,6 @@ const closeSearchModal = () => {
 }
 
 const handleAccountAction = () => {
-  // Actions are already defined in the menu items
-  // This handler is just for additional logic if needed
-}
-
-const handleCategoryClick = (item) => {
   // Actions are already defined in the menu items
   // This handler is just for additional logic if needed
 }

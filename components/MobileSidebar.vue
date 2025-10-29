@@ -10,21 +10,19 @@
           class="text-gray-500 hover:text-gray-700" />
       </div>
 
-
-
       <!-- Navigation Links -->
       <nav class="p-4">
         <div class="space-y-2">
-          <!-- Categories Section -->
+          <!-- Bags Section -->
           <div class="space-y-2">
-            <!-- Categories Header -->
-            <button @click="toggleCategoriesExpanded"
+            <!-- Bags Header -->
+            <button @click="toggleBagsExpanded"
               class="flex items-center justify-between w-full px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
               <div class="flex items-center">
-                Categories
+                Bags
               </div>
               <ClientOnly>
-                <Icon :name="categoriesExpanded ? 'heroicons:chevron-up' : 'heroicons:chevron-down'"
+                <Icon :name="bagsExpanded ? 'heroicons:chevron-up' : 'heroicons:chevron-down'"
                   class="h-4 w-4 text-gray-400" />
                 <template #fallback>
                   <div class="h-4 w-4 bg-gray-200 rounded"></div>
@@ -32,34 +30,64 @@
               </ClientOnly>
             </button>
 
-            <!-- Categories Dropdown -->
-            <div v-if="categoriesExpanded" class="ml-8 space-y-1">
-              <NuxtLink to="/categories"
+            <!-- Bags Dropdown -->
+            <div v-if="bagsExpanded" class="ml-8 space-y-1">
+              <NuxtLink :to="bagsCategory ? `/category/${bagsCategory.slug}` : '/'"
                 class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
                 @click="$emit('close')">
-                All Categories
+                All Bags
               </NuxtLink>
 
-              <template v-for="category in categories" :key="category.id">
-                <NuxtLink :to="`/category/${category.slug}`"
+              <template v-if="bagsCategory && bagsCategory.children" v-for="subcategory in bagsCategory.children" :key="subcategory.id">
+                <NuxtLink :to="`/category/${subcategory.slug}`"
                   class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
                   @click="$emit('close')">
-                  {{ category.name }}
+                  {{ subcategory.name }}
                 </NuxtLink>
               </template>
             </div>
           </div>
 
-          <NuxtLink to="/search"
-            class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-            @click="$emit('close')">
-            All Products
-          </NuxtLink>
+          <!-- Accessories Section -->
+          <div class="space-y-2">
+            <!-- Accessories Header -->
+            <button @click="toggleAccessoriesExpanded"
+              class="flex items-center justify-between w-full px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
+              <div class="flex items-center">
+                Accessories
+              </div>
+              <ClientOnly>
+                <Icon :name="accessoriesExpanded ? 'heroicons:chevron-up' : 'heroicons:chevron-down'"
+                  class="h-4 w-4 text-gray-400" />
+                <template #fallback>
+                  <div class="h-4 w-4 bg-gray-200 rounded"></div>
+                </template>
+              </ClientOnly>
+            </button>
 
-          <NuxtLink to="/blog"
+            <!-- Accessories Dropdown -->
+            <div v-if="accessoriesExpanded" class="ml-8 space-y-1">
+              <NuxtLink :to="accessoriesCategory ? `/category/${accessoriesCategory.slug}` : '/'"
+                class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+                @click="$emit('close')">
+                All Accessories
+              </NuxtLink>
+
+              <template v-if="accessoriesCategory && accessoriesCategory.children" v-for="subcategory in accessoriesCategory.children" :key="subcategory.id">
+                <NuxtLink :to="`/category/${subcategory.slug}`"
+                  class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+                  @click="$emit('close')">
+                  {{ subcategory.name }}
+                </NuxtLink>
+              </template>
+            </div>
+          </div>
+
+          <!-- Promos Link -->
+          <NuxtLink to="/promos"
             class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
             @click="$emit('close')">
-            Blog
+            Promos
           </NuxtLink>
         </div>
       </nav>
@@ -80,10 +108,24 @@ const props = defineProps({
 const emit = defineEmits(['close'])
 
 const { categories, fetchCategories } = useCategories()
-const categoriesExpanded = ref(false)
+const bagsExpanded = ref(false)
+const accessoriesExpanded = ref(false)
 
-const toggleCategoriesExpanded = () => {
-  categoriesExpanded.value = !categoriesExpanded.value
+// Get specific categories by slug
+const bagsCategory = computed(() => {
+  return categories.value.find(cat => cat.slug === 'bolsos')
+})
+
+const accessoriesCategory = computed(() => {
+  return categories.value.find(cat => cat.slug === 'accesorios')
+})
+
+const toggleBagsExpanded = () => {
+  bagsExpanded.value = !bagsExpanded.value
+}
+
+const toggleAccessoriesExpanded = () => {
+  accessoriesExpanded.value = !accessoriesExpanded.value
 }
 
 // Close sidebar when clicking outside or pressing escape
