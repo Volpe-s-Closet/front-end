@@ -1,4 +1,15 @@
 <template>
+  <!-- News Banner -->
+  <div class="bg-black text-white py-2 overflow-hidden relative">
+    <div class="animate-scroll whitespace-nowrap">
+      <span class="inline-block px-4">
+        Si estás en Tenerife, para pedidos superiores a 50 € nos desplazamos hasta un punto central de tu zona para
+        entregarte tu paquete de felicidad de forma más cómoda. Si tu pedido es de menor importe, lo hablamos por DM
+        para encontrar juntas la mejor opción de entrega
+      </span>
+    </div>
+  </div>
+
   <header class="bg-white shadow-sm border-b sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
@@ -177,3 +188,19 @@ onMounted(() => {
   fetchCategories()
 })
 </script>
+
+<style scoped>
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+</style>
