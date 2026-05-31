@@ -139,6 +139,7 @@ definePageMeta({
 })
 
 const { t } = useI18n()
+const { resolveApiError } = useApiError()
 const { user } = useAuth()
 const {
   customerOrders,
@@ -373,15 +374,16 @@ const cancelOrder = async (orderId) => {
   } catch (error) {
     console.error('Error cancelling order:', error)
 
-    // Show error message based on the error type
-    let errorMessage = t('account.orders.cancelFailed')
-
+    // Prefer the route-specific labels for the common cases the page already
+    // localizes. Fall back to the i18n key from the server (or its English
+    // statusMessage) for anything else.
+    let errorMessage
     if (error.status === 404) {
       errorMessage = t('account.orders.cancelNotFound')
     } else if (error.status === 403) {
       errorMessage = t('account.orders.cancelForbidden')
-    } else if (error.data?.message) {
-      errorMessage = error.data.message
+    } else {
+      errorMessage = resolveApiError(error, 'account.orders.cancelFailed')
     }
 
     alert(errorMessage)

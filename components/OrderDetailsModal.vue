@@ -284,6 +284,7 @@ const props = defineProps({
 const emit = defineEmits(['close', 'reorder'])
 
 const { t } = useI18n()
+const { resolveApiError } = useApiError()
 const { user } = useAuth()
 const { getOrder, getPlaceholderImage, customerData, loadCustomerProfile } = useCustomer()
 const { formatPrice } = useCurrency()
@@ -317,7 +318,7 @@ const fetchOrder = async () => {
     order.value = orderData
   } catch (err) {
     console.error('Error fetching order:', err)
-    error.value = err.statusMessage || err.message || t('orderModal.errorFallback')
+    error.value = resolveApiError(err, 'orderModal.errorFallback')
   } finally {
     loading.value = false
   }

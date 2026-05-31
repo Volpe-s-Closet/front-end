@@ -336,10 +336,22 @@ export const useAuth = () => {
         }
       })
 
-      return { success: true, data: response }
+      // The route can return { success: false, ... } for the
+      // "password change not supported via API" branch — pass the whole payload
+      // back so the caller can render its i18nKey.
+      return response.success === false
+        ? { ...response, success: false }
+        : { success: true, data: response }
     } catch (error) {
       console.error('Error changing password:', error)
-      return { success: false, error: error.data?.message || error.message || 'Failed to change password' }
+      return {
+        success: false,
+        // Surface the structured i18n key from the server when present,
+        // otherwise carry the English message forward.
+        i18nKey: error.data?.i18nKey,
+        error: error.data?.message || error.statusMessage || error.message || 'Failed to change password',
+        statusMessage: error.statusMessage
+      }
     }
   }
 

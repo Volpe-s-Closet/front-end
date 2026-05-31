@@ -1093,5 +1093,26 @@
     "totalLabel": "Totale:",
     "viewAllOrders": "Vedi tutti gli ordini",
     "continueShopping": "Continua lo shopping"
+  },
+  "errors": {
+    "generic": "Qualcosa è andato storto. Riprova.",
+    "authRequired": "Autenticazione richiesta.",
+    "authTokenInvalid": "La tua sessione è scaduta. Accedi di nuovo.",
+    "passwordIncorrect": "La password attuale non è corretta.",
+    "passwordFieldsRequired": "Password attuale, nuova password e ID utente sono obbligatori.",
+    "passwordEmailMissing": "Impossibile determinare l'email utente per la validazione della password.",
+    "passwordValidateFailed": "Validazione della password non riuscita. Riprova.",
+    "passwordChangeUnsupported": "Il cambio password non è supportato tramite API. Usa il pannello di amministrazione di WordPress.",
+    "passwordUpdated": "Password aggiornata con successo.",
+    "orderInvalidId": "ID ordine non valido.",
+    "orderNotFound": "Ordine non trovato.",
+    "orderForbidden": "Non hai il permesso di visualizzare questo ordine.",
+    "orderForbiddenGeneric": "Ordine non trovato o non hai il permesso di visualizzarlo.",
+    "orderUpdateFailed": "Aggiornamento dell'ordine non riuscito. Riprova.",
+    "paymentInfoMissing": "Informazioni di pagamento richieste mancanti.",
+    "paymentCardDeclined": "La tua carta è stata rifiutata. Prova con un metodo di pagamento diverso.",
+    "paymentInvalidCvv": "Codice di sicurezza non valido. Controlla il CVV e riprova.",
+    "paymentSuccess": "Pagamento elaborato con successo.",
+    "paymentFailed": "Elaborazione del pagamento non riuscita. Riprova."
   }
 }

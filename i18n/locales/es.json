@@ -1093,5 +1093,26 @@
     "totalLabel": "Total:",
     "viewAllOrders": "Ver todos los pedidos",
     "continueShopping": "Seguir comprando"
+  },
+  "errors": {
+    "generic": "Algo salió mal. Inténtalo de nuevo.",
+    "authRequired": "Autenticación requerida.",
+    "authTokenInvalid": "Tu sesión ha expirado. Inicia sesión de nuevo.",
+    "passwordIncorrect": "La contraseña actual no es correcta.",
+    "passwordFieldsRequired": "La contraseña actual, la nueva contraseña y el ID de usuario son obligatorios.",
+    "passwordEmailMissing": "No se pudo determinar el correo del usuario para validar la contraseña.",
+    "passwordValidateFailed": "No se pudo validar la contraseña. Inténtalo de nuevo.",
+    "passwordChangeUnsupported": "El cambio de contraseña no es compatible vía API. Usa el panel de administración de WordPress.",
+    "passwordUpdated": "Contraseña actualizada con éxito.",
+    "orderInvalidId": "ID de pedido no válido.",
+    "orderNotFound": "Pedido no encontrado.",
+    "orderForbidden": "No tienes permiso para ver este pedido.",
+    "orderForbiddenGeneric": "Pedido no encontrado o no tienes permiso para verlo.",
+    "orderUpdateFailed": "No se pudo actualizar el pedido. Inténtalo de nuevo.",
+    "paymentInfoMissing": "Faltan datos de pago obligatorios.",
+    "paymentCardDeclined": "Tu tarjeta fue rechazada. Prueba con otro método de pago.",
+    "paymentInvalidCvv": "Código de seguridad no válido. Revisa el CVV e inténtalo de nuevo.",
+    "paymentSuccess": "Pago procesado correctamente.",
+    "paymentFailed": "El procesamiento del pago falló. Inténtalo de nuevo."
   }
 }

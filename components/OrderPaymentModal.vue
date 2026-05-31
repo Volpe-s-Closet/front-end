@@ -208,6 +208,7 @@ const props = defineProps({
 const emit = defineEmits(['close', 'payment-success'])
 
 const { t } = useI18n()
+const { resolveApiError } = useApiError()
 const { user, isAuthenticated } = useAuth()
 const { formatPrice } = useCurrency()
 const { loadCustomerProfile, updateCustomer } = useCustomer()
@@ -451,12 +452,17 @@ const processPayment = async () => {
       emit('payment-success', response)
       closeModal()
     } else {
-      throw new Error(response.message || 'Payment failed')
+      // Soft-failure shape from the payments route: throw an Error that carries
+      // the i18n key forward into the catch block so resolveApiError can pick it
+      // up.
+      const failure = new Error(response.message || 'Payment failed')
+      failure.data = { i18nKey: response.i18nKey, message: response.message }
+      throw failure
     }
 
   } catch (error) {
     console.error('Payment error:', error)
-    errorMessage.value = error.message || t('orderPaymentModal.failed')
+    errorMessage.value = resolveApiError(error, 'orderPaymentModal.failed')
   } finally {
     isProcessing.value = false
   }

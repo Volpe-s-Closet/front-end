@@ -110,6 +110,7 @@ definePageMeta({
 })
 
 const { t } = useI18n()
+const { resolveApiError } = useApiError()
 const { user, changePassword: authChangePassword } = useAuth()
 
 useHead({
@@ -205,16 +206,16 @@ const changePassword = async () => {
     } else {
       // Handle the case where API validation succeeds but password change isn't supported
       if (result.current_password_valid && result.redirect_url) {
-        errorMessage.value = `${result.error} Click here to change your password in WordPress admin.`
-        // You could also show a button to redirect to WordPress admin
+        const baseMsg = resolveApiError(result, 'account.password.errors.failed')
+        errorMessage.value = `${baseMsg} (${result.redirect_url})`
       } else {
-        errorMessage.value = result.error
+        errorMessage.value = resolveApiError(result, 'account.password.errors.failed')
       }
     }
 
   } catch (error) {
     console.error('Error changing password:', error)
-    errorMessage.value = t('account.password.errors.failed')
+    errorMessage.value = resolveApiError(error, 'account.password.errors.failed')
   } finally {
     updating.value = false
   }

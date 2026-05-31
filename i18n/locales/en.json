@@ -1093,5 +1093,26 @@
     "totalLabel": "Total:",
     "viewAllOrders": "View All Orders",
     "continueShopping": "Continue Shopping"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "authRequired": "Authentication required.",
+    "authTokenInvalid": "Your session has expired. Please log in again.",
+    "passwordIncorrect": "Current password is incorrect.",
+    "passwordFieldsRequired": "Current password, new password, and user ID are required.",
+    "passwordEmailMissing": "Unable to determine user email for password validation.",
+    "passwordValidateFailed": "Failed to validate password. Please try again.",
+    "passwordChangeUnsupported": "Password change is not supported via API. Please use the WordPress admin panel.",
+    "passwordUpdated": "Password updated successfully.",
+    "orderInvalidId": "Invalid order ID.",
+    "orderNotFound": "Order not found.",
+    "orderForbidden": "You do not have permission to view this order.",
+    "orderForbiddenGeneric": "Order not found or you do not have permission to view it.",
+    "orderUpdateFailed": "Failed to update the order. Please try again.",
+    "paymentInfoMissing": "Missing required payment information.",
+    "paymentCardDeclined": "Your card was declined. Please try a different payment method.",
+    "paymentInvalidCvv": "Invalid security code. Please check your CVV and try again.",
+    "paymentSuccess": "Payment processed successfully.",
+    "paymentFailed": "Payment processing failed. Please try again."
   }
 }
