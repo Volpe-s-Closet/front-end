@@ -10,6 +10,67 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss'
   ],
 
+  icon: {
+    clientBundle: {
+      icons: [
+        'heroicons:arrow-down',
+        'heroicons:arrow-left',
+        'heroicons:arrow-path',
+        'heroicons:arrow-right',
+        'heroicons:arrow-right-on-rectangle',
+        'heroicons:arrow-up',
+        'heroicons:arrow-uturn-left',
+        'heroicons:bars-3',
+        'heroicons:check',
+        'heroicons:check-circle',
+        'heroicons:chevron-down',
+        'heroicons:chevron-left',
+        'heroicons:chevron-right',
+        'heroicons:clock',
+        'heroicons:cog-6-tooth',
+        'heroicons:credit-card',
+        'heroicons:currency-dollar',
+        'heroicons:document',
+        'heroicons:document-text',
+        'heroicons:envelope',
+        'heroicons:exclamation-circle',
+        'heroicons:exclamation-triangle',
+        'heroicons:fire',
+        'heroicons:folder-open',
+        'heroicons:funnel',
+        'heroicons:heart',
+        'heroicons:information-circle',
+        'heroicons:list-bullet',
+        'heroicons:lock-closed',
+        'heroicons:magnifying-glass',
+        'heroicons:map-pin',
+        'heroicons:minus',
+        'heroicons:pause-circle',
+        'heroicons:phone',
+        'heroicons:photo',
+        'heroicons:plus',
+        'heroicons:plus-circle',
+        'heroicons:share',
+        'heroicons:shield-check',
+        'heroicons:shopping-bag',
+        'heroicons:squares-2x2',
+        'heroicons:squares-plus',
+        'heroicons:star',
+        'heroicons:star-solid',
+        'heroicons:stop',
+        'heroicons:tag',
+        'heroicons:trash',
+        'heroicons:truck',
+        'heroicons:user',
+        'heroicons:user-circle',
+        'heroicons:users',
+        'heroicons:view-columns',
+        'heroicons:x-circle',
+        'heroicons:x-mark'
+      ]
+    }
+  },
+
   runtimeConfig: {
     // Private keys (only available on server-side)
     woocommerceKey: '', // NUXT_WOOCOMMERCE_KEY
