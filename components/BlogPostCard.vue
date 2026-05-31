@@ -33,7 +33,7 @@
       <!-- Read More -->
       <NuxtLink :to="`/blog/${post.slug}`"
         class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
-        Read More
+        {{ $t('common.readMore') }}
         <Icon name="heroicons:arrow-right" class="ml-1 h-4 w-4" />
       </NuxtLink>
     </div>

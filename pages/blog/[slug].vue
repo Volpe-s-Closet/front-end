@@ -20,11 +20,11 @@
     <div v-else-if="error" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
         <Icon name="heroicons:exclamation-triangle" class="mx-auto h-12 w-12 text-red-400 mb-4" />
-        <h1 class="text-2xl font-bold text-red-900 mb-2">Post Not Found</h1>
-        <p class="text-red-600 mb-6">The blog post you're looking for doesn't exist or has been removed.</p>
+        <h1 class="text-2xl font-bold text-red-900 mb-2">{{ $t('blog.post.notFoundTitle') }}</h1>
+        <p class="text-red-600 mb-6">{{ $t('blog.post.notFoundHint') }}</p>
         <NuxtLink to="/blog" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
           <Icon name="heroicons:arrow-left" class="mr-2 h-4 w-4" />
-          Back to Blog
+          {{ $t('blog.post.backToBlog') }}
         </NuxtLink>
       </div>
     </div>
@@ -35,7 +35,7 @@
       <div class="mb-8">
         <NuxtLink to="/blog" class="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
           <Icon name="heroicons:arrow-left" class="mr-2 h-4 w-4" />
-          Back to Blog
+          {{ $t('blog.post.backToBlog') }}
         </NuxtLink>
       </div>
 
@@ -73,7 +73,7 @@
               <!-- Tags -->
               <div v-if="post._embedded && post._embedded['wp:term'] && post._embedded['wp:term'][1]" 
                 class="flex flex-wrap gap-2">
-                <span class="text-sm text-gray-500">Tags:</span>
+                <span class="text-sm text-gray-500">{{ $t('blog.post.tags') }}</span>
                 <NuxtLink v-for="tag in post._embedded['wp:term'][1]" :key="tag.id"
                   :to="`/blog/tag/${tag.slug}`"
                   class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 transition-colors">
@@ -83,7 +83,7 @@
 
               <!-- Share Buttons -->
               <div class="flex items-center space-x-2">
-                <span class="text-sm text-gray-500">Share:</span>
+                <span class="text-sm text-gray-500">{{ $t('blog.post.share') }}</span>
                 <button @click="shareOnTwitter" 
                   class="p-2 text-gray-400 hover:text-blue-400 transition-colors">
                   <Icon name="heroicons:share" class="h-5 w-5" />
@@ -96,7 +96,7 @@
 
       <!-- Related Posts -->
       <div v-if="relatedPosts.length > 0" class="mt-16">
-        <h2 class="text-2xl font-bold text-gray-900 mb-8">Related Posts</h2>
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">{{ $t('blog.post.related') }}</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <BlogPostCard v-for="relatedPost in relatedPosts" :key="relatedPost.id" 
             :post="relatedPost" size="small" />

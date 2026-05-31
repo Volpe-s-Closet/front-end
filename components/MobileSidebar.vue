@@ -13,7 +13,7 @@
     >
       <!-- Header -->
       <div class="flex items-center justify-between p-4 border-b border-gray-200">
-        <h2 class="text-lg font-semibold text-gray-900">Menu</h2>
+        <h2 class="text-lg font-semibold text-gray-900">{{ $t('common.menu') }}</h2>
         <BaseButton
           @click="$emit('close')"
           variant="ghost"
@@ -65,7 +65,7 @@
                       class="absolute left-0 top-1.5 bottom-1.5 w-0.5 rounded-full bg-gray-900 origin-top scale-y-0 transition-transform duration-200 group-hover/item:scale-y-100"
                     />
                     <span class="transition-transform duration-200 group-hover/item:translate-x-0.5">
-                      All {{ section.label }}
+                      {{ $t('mobileSidebar.all', { category: section.label }) }}
                     </span>
                   </NuxtLink>
 
@@ -94,7 +94,7 @@
             class="group/link flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
             @click="$emit('close')"
           >
-            <span class="transition-transform duration-200 group-hover/link:translate-x-0.5">Blog</span>
+            <span class="transition-transform duration-200 group-hover/link:translate-x-0.5">{{ $t('header.nav.blog') }}</span>
           </NuxtLink>
 
           <!-- About Us Link -->
@@ -103,7 +103,7 @@
             class="group/link flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
             @click="$emit('close')"
           >
-            <span class="transition-transform duration-200 group-hover/link:translate-x-0.5">About Us</span>
+            <span class="transition-transform duration-200 group-hover/link:translate-x-0.5">{{ $t('header.nav.aboutUs') }}</span>
           </NuxtLink>
         </div>
       </nav>
@@ -111,7 +111,7 @@
       <!-- Language Switcher (Mobile only) -->
       <div class="p-4 border-t border-gray-200">
         <div class="mb-2">
-          <span class="text-sm font-medium text-gray-700">Language</span>
+          <span class="text-sm font-medium text-gray-700">{{ $t('common.language') }}</span>
         </div>
         <SelectBox
           v-model="selectedLanguage"
@@ -139,14 +139,21 @@ const emit = defineEmits(['close'])
 
 const { categories, fetchCategories } = useCategories()
 const { currentLanguage, languages, setLanguage } = useLanguage()
+const { t } = useI18n()
 const selectedLanguage = ref(currentLanguage.value)
 
+watch(currentLanguage, (val) => {
+  selectedLanguage.value = val
+})
+
 // Single source of truth for the category sections rendered in the sidebar.
-const sections = [
-  { slug: 'bolsos', label: 'Bags' },
-  { slug: 'accesorios', label: 'Accessories' },
-  { slug: 'promos', label: 'Promos' }
-]
+// Labels are translated so the section headers and the "All ..." links pick up
+// the active locale automatically.
+const sections = computed(() => [
+  { slug: 'bolsos', label: t('header.nav.bags') },
+  { slug: 'accesorios', label: t('header.nav.accessories') },
+  { slug: 'promos', label: t('header.nav.promos') }
+])
 
 const expanded = ref({})
 

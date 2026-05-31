@@ -9,7 +9,7 @@
         <!-- Header -->
         <div class="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
           <h2 class="text-xl font-bold text-gray-900">
-            Complete Payment for Order #{{ order?.number }}
+            {{ $t('orderPaymentModal.title', { number: order?.number }) }}
           </h2>
           <button @click="closeModal" class="text-gray-400 hover:text-gray-600">
             <Icon name="heroicons:x-mark" class="h-6 w-6" />
@@ -20,11 +20,11 @@
         <div class="p-6 border-b bg-gray-50">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-600">Amount Due</p>
+              <p class="text-sm text-gray-600">{{ $t('orderPaymentModal.amountDue') }}</p>
               <p class="text-2xl font-bold text-gray-900">{{ formatPrice(order?.total) }}</p>
             </div>
             <div class="text-right">
-              <p class="text-sm text-gray-600">Order Date</p>
+              <p class="text-sm text-gray-600">{{ $t('orderPaymentModal.orderDate') }}</p>
               <p class="text-sm font-medium">{{ formatDate(order?.date_created) }}</p>
             </div>
           </div>
@@ -37,14 +37,14 @@
             <div class="p-4 bg-blue-50 border border-blue-200 rounded-md">
               <div class="flex items-center">
                 <Icon name="heroicons:credit-card" class="h-5 w-5 text-blue-600 mr-2" />
-                <span class="text-sm text-blue-700 font-medium">Secure Payment</span>
+                <span class="text-sm text-blue-700 font-medium">{{ $t('orderPaymentModal.secureTitle') }}</span>
               </div>
-              <p class="text-sm text-blue-600 mt-1">Your payment information is encrypted and secure.</p>
+              <p class="text-sm text-blue-600 mt-1">{{ $t('orderPaymentModal.secureNote') }}</p>
             </div>
 
             <!-- Saved Payment Methods -->
             <div v-if="savedPaymentMethods.length > 0">
-              <label class="block text-sm font-medium text-gray-700 mb-3">Saved Payment Methods</label>
+              <label class="block text-sm font-medium text-gray-700 mb-3">{{ $t('orderPaymentModal.savedMethods') }}</label>
               <div class="space-y-3 mb-6">
                 <div v-for="method in savedPaymentMethods" :key="method.id"
                   class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors cursor-pointer"
@@ -58,15 +58,15 @@
                       <div>
                         <div class="flex items-center space-x-2">
                           <span class="font-medium text-gray-900">
-                            {{ method.card_type }} ending in {{ method.last4 }}
+                            {{ $t('checkout.payment.endingIn', { cardType: method.card_type, last4: method.last4 }) }}
                           </span>
                           <span v-if="method.is_default"
                             class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                            Default
+                            {{ $t('checkout.payment.default') }}
                           </span>
                         </div>
                         <p class="text-sm text-gray-600">
-                          Expires {{ method.exp_month }}/{{ method.exp_year }}
+                          {{ $t('checkout.payment.expires', { month: method.exp_month, year: method.exp_year }) }}
                         </p>
                       </div>
                     </div>
@@ -84,7 +84,7 @@
                     class="text-blue-600 focus:ring-blue-500">
                   <div class="ml-3 flex items-center space-x-3">
                     <Icon name="heroicons:plus-circle" class="h-8 w-8 text-blue-600" />
-                    <span class="font-medium text-gray-900">Use New Card</span>
+                    <span class="font-medium text-gray-900">{{ $t('orderPaymentModal.useNewCard') }}</span>
                   </div>
                 </label>
               </div>
@@ -93,7 +93,7 @@
             <!-- Available Payment Gateways -->
             <div v-if="availablePaymentGateways.length > 0">
               <label class="block text-sm font-medium text-gray-700 mb-3">
-                {{ savedPaymentMethods.length > 0 ? 'Payment Processor' : 'Choose Payment Method' }}
+                {{ savedPaymentMethods.length > 0 ? $t('orderPaymentModal.paymentProcessor') : $t('orderPaymentModal.choosePaymentMethod') }}
               </label>
               <div class="space-y-3 mb-6">
                 <div v-for="gateway in availablePaymentGateways" :key="gateway.id"
@@ -121,17 +121,17 @@
 
             <!-- New Card Form -->
             <div v-if="!savedPaymentMethods.length || selectedPaymentMethodId === 'new'" class="space-y-4">
-              <h3 class="text-lg font-medium text-gray-900">Payment Details</h3>
+              <h3 class="text-lg font-medium text-gray-900">{{ $t('orderPaymentModal.paymentDetails') }}</h3>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Cardholder Name</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('checkout.payment.cardholderName') }}</label>
                 <input v-model="newCardForm.billing_name" type="text" required
                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="John Doe">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Card Number</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('checkout.payment.cardNumber') }}</label>
                 <input v-model="newCardForm.card_number" type="text" required
                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="1234 5678 9012 3456" maxlength="19" @input="formatCardNumber">
@@ -139,13 +139,13 @@
 
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Expiry Date</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('checkout.payment.expiryDate') }}</label>
                   <input v-model="newCardForm.expiry" type="text" required
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="MM/YY" maxlength="5" @input="formatExpiry">
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">CVV</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('checkout.payment.cvv') }}</label>
                   <input v-model="newCardForm.cvv" type="text" required
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="123" maxlength="4">
@@ -156,17 +156,17 @@
                 <input v-model="newCardForm.save_card" type="checkbox" id="save-card"
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                 <label for="save-card" class="ml-2 block text-sm text-gray-700">
-                  Save this card for future purchases
+                  {{ $t('orderPaymentModal.saveForFuture') }}
                 </label>
               </div>
 
               <!-- Save Card Button -->
               <div v-if="canSaveCard" class="flex items-center justify-between">
                 <BaseButton v-if="!isNewCardSaved" @click="saveCardForLater" :loading="isSavingCard"
-                  :disabled="!canSaveNewCard" variant="secondary" text="Save Card" icon="heroicons:credit-card" />
+                  :disabled="!canSaveNewCard" variant="secondary" :text="$t('orderPaymentModal.saveCard')" icon="heroicons:credit-card" />
                 <div v-else class="flex items-center text-green-600">
                   <Icon name="heroicons:check-circle" class="h-5 w-5 mr-2" />
-                  <span class="text-sm font-medium">Card saved successfully</span>
+                  <span class="text-sm font-medium">{{ $t('orderPaymentModal.cardSaved') }}</span>
                 </div>
               </div>
             </div>
@@ -183,8 +183,8 @@
 
             <!-- Submit Button -->
             <div class="flex justify-end space-x-3 pt-4 border-t">
-              <BaseButton @click="closeModal" text="Cancel" variant="outline" :disabled="isProcessing" />
-              <BaseButton type="submit" :loading="isProcessing" :disabled="!isPaymentValid" text="Pay" />
+              <BaseButton @click="closeModal" :text="$t('orderPaymentModal.cancel')" variant="outline" :disabled="isProcessing" />
+              <BaseButton type="submit" :loading="isProcessing" :disabled="!isPaymentValid" :text="$t('orderPaymentModal.pay')" />
             </div>
           </form>
         </div>
@@ -207,6 +207,7 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'payment-success'])
 
+const { t } = useI18n()
 const { user, isAuthenticated } = useAuth()
 const { formatPrice } = useCurrency()
 const { loadCustomerProfile, updateCustomer } = useCustomer()
@@ -291,7 +292,7 @@ const saveCardForLater = async () => {
   )
 
   if (existingCard) {
-    errorMessage.value = 'This card is already saved. Please select it from your saved cards or use a different card.'
+    errorMessage.value = t('orderPaymentModal.duplicateCard')
     return
   }
 
@@ -304,7 +305,7 @@ const saveCardForLater = async () => {
     errorMessage.value = '' // Clear any previous errors
   } catch (error) {
     console.error('Error saving card:', error)
-    errorMessage.value = 'Failed to save card. Please try again.'
+    errorMessage.value = t('orderPaymentModal.saveFailed')
   } finally {
     isSavingCard.value = false
   }
@@ -455,7 +456,7 @@ const processPayment = async () => {
 
   } catch (error) {
     console.error('Payment error:', error)
-    errorMessage.value = error.message || 'Payment failed. Please try again.'
+    errorMessage.value = error.message || t('orderPaymentModal.failed')
   } finally {
     isProcessing.value = false
   }

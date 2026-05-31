@@ -7,8 +7,33 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/icon',
     '@nuxt/test-utils',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/i18n'
   ],
+
+  i18n: {
+    // Spanish is the default locale; UI is currently being developed in English,
+    // so English remains a fully translated locale alongside Italian.
+    locales: [
+      { code: 'es', iso: 'es-ES', name: 'Español', flag: '🇪🇸', file: 'es.json' },
+      { code: 'en', iso: 'en-GB', name: 'English', flag: '🇬🇧', file: 'en.json' },
+      { code: 'it', iso: 'it-IT', name: 'Italiano', flag: '🇮🇹', file: 'it.json' }
+    ],
+    defaultLocale: 'es',
+    // Keep URLs clean. The user picks a language via the existing SelectBox in
+    // the header / mobile sidebar; preference is persisted in the cookie below.
+    strategy: 'no_prefix',
+    lazy: true,
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+      fallbackLocale: 'es'
+    },
+    bundle: {
+      optimizeTranslationDirective: false
+    }
+  },
 
   icon: {
     clientBundle: {

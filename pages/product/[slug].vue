@@ -5,9 +5,9 @@
     </div>
 
     <div v-else-if="error" class="text-center py-16">
-      <h1 class="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h1>
-      <p class="text-gray-600 mb-8">The product you're looking for doesn't exist.</p>
-      <BaseButton to="/" text="Back to Home" size="lg" />
+      <h1 class="text-2xl font-bold text-gray-900 mb-4">{{ $t('product.notFound') }}</h1>
+      <p class="text-gray-600 mb-8">{{ $t('product.notFoundHint') }}</p>
+      <BaseButton to="/" :text="$t('product.backToHome')" size="lg" />
     </div>
 
     <div v-else-if="product">
@@ -17,7 +17,7 @@
           <nav class="text-sm">
             <ol class="flex items-center space-x-2">
               <li>
-                <NuxtLink to="/" class="text-gray-600 hover:text-gray-900">Home</NuxtLink>
+                <NuxtLink to="/" class="text-gray-600 hover:text-gray-900">{{ $t('product.breadcrumbHome') }}</NuxtLink>
               </li>
               <li class="text-gray-400">/</li>
               <li v-if="product.categories && product.categories[0]">
@@ -54,7 +54,7 @@
                         {{ i <= Math.floor(product.average_rating) ? '★' : '☆' }}
                       </span>
                     </div>
-                    <span class="text-sm text-gray-600">({{ product.rating_count }} reviews)</span>
+                    <span class="text-sm text-gray-600">{{ $t('product.reviews', { count: product.rating_count }) }}</span>
                   </div>
 
                   <!-- Price -->
@@ -69,7 +69,7 @@
                     </span>
                     <span v-if="(selectedVariation?.sale_price || product.sale_price)"
                       class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">
-                      Sale!
+                      {{ $t('product.saleBadge') }}
                     </span>
                   </div>
                 </div>
@@ -84,16 +84,16 @@
                   <div v-for="attribute in productAttributes" :key="attribute.name" class="space-y-2">
                     <label class="text-sm font-semibold text-gray-900">{{ attribute.name }}:</label>
                     <SelectBox v-model="selectedAttributes[attribute.name]" @change="updateSelectedVariation" :options="[
-                      { value: '', label: `Choose ${attribute.name}` },
+                      { value: '', label: $t('product.chooseAttribute', { attribute: attribute.name }) },
                       ...attribute.options.map(option => ({ value: option, label: option }))
-                    ]" :placeholder="`Choose ${attribute.name}`" button-class="w-full" />
+                    ]" :placeholder="$t('product.chooseAttribute', { attribute: attribute.name })" button-class="w-full" />
                   </div>
                 </div>
 
                 <!-- Stock & Quantity -->
                 <div class="space-y-4 border-b pb-6">
                   <div class="flex items-center justify-between">
-                    <span class="text-sm font-semibold text-gray-900">Availability:</span>
+                    <span class="text-sm font-semibold text-gray-900">{{ $t('product.availability') }}</span>
                     <div class="flex items-center space-x-2">
                       <div :class="isInStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
                         class="px-3 py-1 rounded-full text-sm font-medium">
@@ -101,13 +101,13 @@
                       </div>
                       <span v-if="(selectedVariation?.stock_quantity ?? product.stock_quantity)"
                         class="text-sm text-gray-500">
-                        ({{ selectedVariation?.stock_quantity ?? product.stock_quantity }} left)
+                        {{ $t('product.stockLeft', { count: selectedVariation?.stock_quantity ?? product.stock_quantity }) }}
                       </span>
                     </div>
                   </div>
 
                   <div class="flex items-center space-x-4">
-                    <label for="quantity" class="text-sm font-semibold text-gray-900">Quantity:</label>
+                    <label for="quantity" class="text-sm font-semibold text-gray-900">{{ $t('product.quantity') }}</label>
                     <input id="quantity" v-model.number="quantity" type="number" min="1"
                       :max="selectedVariation?.stock_quantity || product.stock_quantity || 999"
                       class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" />
@@ -118,17 +118,17 @@
                 <BaseButton action="add" :product="product" :quantity="quantity" :variation="selectedAttributes"
                   @click="addToCart" :disabled="!isInStock || (hasVariations && !selectedVariation)" full-width
                   size="lg" :text="!isInStock ? getStockStatusText :
-                    (hasVariations && !selectedVariation) ? 'Select Options' : 'Add to Cart'"
+                    (hasVariations && !selectedVariation) ? $t('product.selectOptionsBtn') : $t('product.addToCart')"
                   class="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-6 rounded-lg transition-colors" />
 
                 <!-- Product Meta -->
                 <div class="space-y-3 text-sm">
                   <div v-if="selectedVariation?.sku || product.sku" class="flex justify-between">
-                    <span class="text-gray-600">SKU:</span>
+                    <span class="text-gray-600">{{ $t('product.sku') }}</span>
                     <span class="font-medium text-gray-900">{{ selectedVariation?.sku || product.sku }}</span>
                   </div>
                   <div v-if="product.categories && product.categories.length" class="flex justify-between">
-                    <span class="text-gray-600">Categories:</span>
+                    <span class="text-gray-600">{{ $t('product.categoriesLabel') }}</span>
                     <div class="flex flex-wrap gap-2">
                       <NuxtLink v-for="category in product.categories" :key="category.id"
                         :to="`/category/${category.slug}`" class="text-gray-900 hover:text-gray-700 font-medium">
@@ -137,7 +137,7 @@
                     </div>
                   </div>
                   <div v-if="product.tags && product.tags.length" class="flex justify-between">
-                    <span class="text-gray-600">Tags:</span>
+                    <span class="text-gray-600">{{ $t('product.tagsLabel') }}</span>
                     <div class="flex flex-wrap gap-2">
                       <span v-for="tag in product.tags" :key="tag.id"
                         class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
@@ -164,7 +164,7 @@
                   ? 'border-gray-900 text-gray-900'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               ]">
-                Description
+                {{ $t('product.tabDescription') }}
               </button>
               <button @click="activeTab = 'reviews'" :class="[
                 'py-4 px-1 border-b-2 font-medium text-sm transition-colors',
@@ -172,7 +172,7 @@
                   ? 'border-gray-900 text-gray-900'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               ]">
-                Reviews ({{ reviews?.length || 0 }})
+                {{ $t('product.tabReviews', { count: reviews?.length || 0 }) }}
               </button>
             </nav>
           </div>
@@ -182,7 +182,7 @@
             <!-- Description Tab -->
             <div v-if="activeTab === 'description'" class="prose prose-lg max-w-none">
               <div v-if="product.description" v-html="product.description"></div>
-              <p v-else class="text-gray-500">No description available.</p>
+              <p v-else class="text-gray-500">{{ $t('product.noDescription') }}</p>
             </div>
 
             <!-- Reviews Tab -->
@@ -201,7 +201,7 @@
           <div class="grid grid-cols-1 xl:grid-cols-2 gap-12">
             <!-- Related Products -->
             <div v-if="relatedProducts && relatedProducts.length > 0">
-              <h2 class="text-xl font-bold text-gray-900 mb-6">You might also like</h2>
+              <h2 class="text-xl font-bold text-gray-900 mb-6">{{ $t('product.youMightLike') }}</h2>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <ProductCard v-for="relatedProduct in relatedProducts" :key="relatedProduct.id"
                   :product="relatedProduct" />
@@ -210,7 +210,7 @@
 
             <!-- Products from Same Category -->
             <div v-if="categoryProducts && categoryProducts.length > 0">
-              <h2 class="text-xl font-bold text-gray-900 mb-6">More from {{ product.categories[0]?.name }}</h2>
+              <h2 class="text-xl font-bold text-gray-900 mb-6">{{ $t('product.moreFrom', { category: product.categories[0]?.name }) }}</h2>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <ProductCard v-for="categoryProduct in categoryProducts" :key="categoryProduct.id"
                   :product="categoryProduct" />
@@ -225,6 +225,7 @@
 
 <script setup>
 const route = useRoute()
+const { t } = useI18n()
 const {
   getProduct,
   getProductVariations,
@@ -320,13 +321,13 @@ const getStockStatusText = computed(() => {
   const stockStatus = selectedVariation.value?.stock_status ?? product.value?.stock_status
   switch (stockStatus) {
     case 'instock':
-      return 'In Stock'
+      return t('product.inStock')
     case 'outofstock':
-      return 'Out of Stock'
+      return t('product.outOfStock')
     case 'onbackorder':
-      return 'On Backorder'
+      return t('product.onBackorder')
     default:
-      return 'Unknown'
+      return t('product.stockUnknown')
   }
 })
 
@@ -384,19 +385,19 @@ const handleCommentAdded = () => {
 
 // Set page meta
 useHead({
-  title: computed(() => product.value ? product.value.name : 'Product Not Found'),
+  title: computed(() => product.value ? product.value.name : t('product.notFound')),
   meta: [
     {
       name: 'description',
-      content: computed(() => product.value?.short_description || 'Product page')
+      content: computed(() => product.value?.short_description || '')
     },
     {
       property: 'og:title',
-      content: computed(() => product.value?.name || 'Product')
+      content: computed(() => product.value?.name || '')
     },
     {
       property: 'og:description',
-      content: computed(() => product.value?.short_description || 'Product page')
+      content: computed(() => product.value?.short_description || '')
     },
     {
       property: 'og:image',

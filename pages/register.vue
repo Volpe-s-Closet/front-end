@@ -3,22 +3,22 @@
     <div class="max-w-md w-full space-y-8">
       <div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Create your account
+          {{ $t('auth.register.title') }}
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600">
-          Or
+          {{ $t('auth.register.or') }}
           <NuxtLink to="/login" class="font-medium text-blue-600 hover:text-blue-500">
-            sign in to your existing account
+            {{ $t('auth.register.signInExisting') }}
           </NuxtLink>
         </p>
       </div>
-      
+
       <form @submit.prevent="handleRegister" class="mt-8 space-y-6">
         <div class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="first-name" class="block text-sm font-medium text-gray-700 mb-2">
-                First Name *
+                {{ $t('auth.register.firstName') }} *
               </label>
               <input
                 id="first-name"
@@ -27,12 +27,12 @@
                 type="text"
                 required
                 class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="First Name"
+                :placeholder="$t('auth.register.firstName')"
               >
             </div>
             <div>
               <label for="last-name" class="block text-sm font-medium text-gray-700 mb-2">
-                Last Name *
+                {{ $t('auth.register.lastName') }} *
               </label>
               <input
                 id="last-name"
@@ -41,14 +41,14 @@
                 type="text"
                 required
                 class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Last Name"
+                :placeholder="$t('auth.register.lastName')"
               >
             </div>
           </div>
-          
+
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-              Email Address *
+              {{ $t('auth.register.email') }} *
             </label>
             <input
               id="email"
@@ -58,13 +58,13 @@
               autocomplete="email"
               required
               class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-              placeholder="Email address"
+              :placeholder="$t('auth.register.email')"
             >
           </div>
-          
+
           <div>
             <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
-              Username *
+              {{ $t('auth.register.username') }} *
             </label>
             <input
               id="username"
@@ -73,13 +73,13 @@
               type="text"
               required
               class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-              placeholder="Username"
+              :placeholder="$t('auth.register.username')"
             >
           </div>
-          
+
           <div>
             <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-              Password *
+              {{ $t('auth.register.password') }} *
             </label>
             <input
               id="password"
@@ -89,13 +89,13 @@
               autocomplete="new-password"
               required
               class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-              placeholder="Password"
+              :placeholder="$t('auth.register.password')"
             >
           </div>
-          
+
           <div>
             <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-2">
-              Confirm Password *
+              {{ $t('auth.register.confirmPassword') }} *
             </label>
             <input
               id="confirm-password"
@@ -105,7 +105,7 @@
               autocomplete="new-password"
               required
               class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-              placeholder="Confirm Password"
+              :placeholder="$t('auth.register.confirmPassword')"
             >
           </div>
         </div>
@@ -120,10 +120,10 @@
             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
           >
           <label for="agree-terms" class="ml-2 block text-sm text-gray-900">
-            I agree to the 
-            <a href="#" class="text-blue-600 hover:text-blue-500">Terms of Service</a>
-            and 
-            <a href="#" class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
+            {{ $t('auth.register.agreeIntro') }}
+            <NuxtLink to="/terms" class="text-blue-600 hover:text-blue-500">{{ $t('auth.register.termsOfService') }}</NuxtLink>
+            {{ $t('auth.register.and') }}
+            <NuxtLink to="/privacy" class="text-blue-600 hover:text-blue-500">{{ $t('auth.register.privacyPolicy') }}</NuxtLink>
           </label>
         </div>
 
@@ -149,16 +149,16 @@
           <BaseButton
             action="submit"
             :loading="loading"
-            text="Create Account"
+            :text="$t('auth.register.submit')"
             full-width
           />
         </div>
 
         <div class="text-center">
           <p class="text-sm text-gray-600">
-            Already have an account?
+            {{ $t('auth.register.haveAccount') }}
             <NuxtLink to="/login" class="font-medium text-blue-600 hover:text-blue-500">
-              Sign in here
+              {{ $t('auth.register.signInHere') }}
             </NuxtLink>
           </p>
         </div>
@@ -172,17 +172,13 @@ definePageMeta({
   middleware: 'guest'
 })
 
+const { t } = useI18n()
 const { register } = useAuth()
 
-// SEO
 useHead({
-  title: 'Register - Your Store',
-  meta: [
-    { name: 'description', content: 'Create a new account to start shopping and track your orders.' }
-  ]
+  title: () => t('auth.register.title')
 })
 
-// Data
 const registerForm = ref({
   firstName: '',
   lastName: '',
@@ -197,25 +193,22 @@ const loading = ref(false)
 const error = ref('')
 const success = ref('')
 
-// Methods
 const handleRegister = async () => {
-  // Reset messages
   error.value = ''
   success.value = ''
 
-  // Validation
   if (registerForm.value.password !== registerForm.value.confirmPassword) {
-    error.value = 'Passwords do not match'
+    error.value = t('auth.register.errors.passwordsMismatch')
     return
   }
 
   if (registerForm.value.password.length < 6) {
-    error.value = 'Password must be at least 6 characters long'
+    error.value = t('auth.register.errors.passwordTooShort')
     return
   }
 
   if (!registerForm.value.agreeTerms) {
-    error.value = 'You must agree to the Terms of Service and Privacy Policy'
+    error.value = t('auth.register.errors.agreeTerms')
     return
   }
 
@@ -232,10 +225,9 @@ const handleRegister = async () => {
     }
 
     const result = await register(userData)
-    
+
     if (result.success) {
-      success.value = 'Account created successfully! Please check your email to verify your account, then you can sign in.'
-      // Reset form
+      success.value = t('auth.register.success')
       registerForm.value = {
         firstName: '',
         lastName: '',
@@ -245,16 +237,15 @@ const handleRegister = async () => {
         confirmPassword: '',
         agreeTerms: false
       }
-      
-      // Redirect to login after a delay
+
       setTimeout(() => {
         navigateTo('/login')
       }, 3000)
     } else {
-      error.value = result.error || 'Registration failed. Please try again.'
+      error.value = result.error || t('auth.register.errors.failed')
     }
   } catch (err) {
-    error.value = 'An unexpected error occurred. Please try again.'
+    error.value = t('auth.register.errors.unexpected')
     console.error('Registration error:', err)
   } finally {
     loading.value = false

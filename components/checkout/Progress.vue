@@ -6,7 +6,7 @@
           class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
           1
         </div>
-        <span class="ml-2 text-sm font-medium text-gray-900">Information</span>
+        <span class="ml-2 text-sm font-medium text-gray-900">{{ $t('checkout.steps.information') }}</span>
       </div>
       <div class="w-16 h-0.5 bg-gray-300"></div>
       <div class="flex items-center">
@@ -17,7 +17,7 @@
           2
         </div>
         <span class="ml-2 text-sm font-medium" :class="currentStep >= 2 ? 'text-gray-900' : 'text-gray-500'">
-          Payment
+          {{ $t('checkout.steps.payment') }}
         </span>
       </div>
       <div class="w-16 h-0.5 bg-gray-300"></div>
@@ -29,7 +29,7 @@
           3
         </div>
         <span class="ml-2 text-sm font-medium" :class="currentStep >= 3 ? 'text-gray-900' : 'text-gray-500'">
-          Review
+          {{ $t('checkout.steps.review') }}
         </span>
       </div>
     </div>

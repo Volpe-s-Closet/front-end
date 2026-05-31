@@ -37,16 +37,13 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
 const { cartItems, cartSubtotal, clearCart } = useCart()
 const { createOrder, loadCustomerProfile, updateCustomer } = useCustomer()
 const { user, isAuthenticated, initAuth } = useAuth()
 
-// SEO
 useHead({
-  title: 'Checkout - Your Store',
-  meta: [
-    { name: 'description', content: 'Complete your purchase securely.' }
-  ]
+  title: () => t('checkout.secureCheckout')
 })
 
 // Redirect if cart is empty
@@ -324,7 +321,7 @@ const saveCardForCheckout = async () => {
   )
 
   if (existingCard) {
-    alert('This card is already saved. Please select it from your saved cards or use a different card.')
+    alert(t('checkout.payment.duplicateCard'))
     return
   }
 
@@ -344,7 +341,7 @@ const saveCardForCheckout = async () => {
     }
   } catch (error) {
     console.error('Error saving card for checkout:', error)
-    alert('Failed to save card. Please try again.')
+    alert(t('checkout.payment.saveFailed'))
   } finally {
     isSavingCard.value = false
   }
@@ -352,7 +349,7 @@ const saveCardForCheckout = async () => {
 
 const getPaymentMethodName = (method) => {
   const methods = {
-    stripe: 'Credit Card',
+    stripe: t('checkout.review.creditCard'),
     paypal: 'PayPal',
     cod: 'Cash on Delivery'
   }
@@ -417,7 +414,7 @@ const placeOrder = async () => {
 
   } catch (error) {
     console.error('Error placing order:', error)
-    alert('There was an error placing your order. Please try again.')
+    alert(t('checkout.errors.placeOrder'))
   } finally {
     isPlacingOrder.value = false
   }

@@ -22,10 +22,10 @@
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-semibold flex items-center">
             <Icon name="heroicons:credit-card" class="h-5 w-5 mr-2 text-blue-600" />
-            Billing Address
+            {{ $t('account.addresses.billing') }}
           </h2>
           <BaseButton @click="editAddress('billing')" variant="link" size="sm"
-            :text="addresses.billing && hasAddressData(addresses.billing) ? 'Edit' : 'Add'" />
+            :text="addresses.billing && hasAddressData(addresses.billing) ? $t('account.addresses.edit') : $t('account.addresses.add')" />
         </div>
 
         <div v-if="addresses.billing && hasAddressData(addresses.billing)" class="space-y-2">
@@ -40,7 +40,7 @@
 
         <div v-else class="text-center py-8 text-gray-500">
           <Icon name="heroicons:map-pin" class="h-12 w-12 mx-auto mb-2 text-gray-300" />
-          <p>No billing address added</p>
+          <p>{{ $t('account.addresses.noBilling') }}</p>
         </div>
       </div>
 
@@ -49,10 +49,10 @@
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-semibold flex items-center">
             <Icon name="heroicons:truck" class="h-5 w-5 mr-2 text-green-600" />
-            Shipping Address
+            {{ $t('account.addresses.shipping') }}
           </h2>
           <BaseButton @click="editAddress('shipping')" variant="link" size="sm"
-            :text="addresses.shipping && hasAddressData(addresses.shipping) ? 'Edit' : 'Add'" />
+            :text="addresses.shipping && hasAddressData(addresses.shipping) ? $t('account.addresses.edit') : $t('account.addresses.add')" />
         </div>
 
         <div v-if="addresses.shipping && hasAddressData(addresses.shipping)" class="space-y-2">
@@ -67,14 +67,14 @@
 
         <div v-else class="text-center py-8 text-gray-500">
           <Icon name="heroicons:map-pin" class="h-12 w-12 mx-auto mb-2 text-gray-300" />
-          <p>No shipping address added</p>
+          <p>{{ $t('account.addresses.noShipping') }}</p>
         </div>
 
         <div v-if="addresses.billing && hasAddressData(addresses.billing)" class="mt-4 pt-4 border-t">
           <label class="flex items-center">
             <input type="checkbox" v-model="sameAsBilling" @change="copyBillingToShipping"
               class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-            <span class="ml-2 text-sm text-gray-700">Same as billing address</span>
+            <span class="ml-2 text-sm text-gray-700">{{ $t('account.addresses.sameAsBilling') }}</span>
           </label>
         </div>
       </div>
@@ -91,7 +91,7 @@
           <div class="p-6">
             <div class="flex items-center justify-between mb-6">
               <h3 class="text-lg font-semibold">
-                {{ editingAddress === 'billing' ? 'Edit Billing Address' : 'Edit Shipping Address' }}
+                {{ editingAddress === 'billing' ? $t('account.addresses.editBilling') : $t('account.addresses.editShipping') }}
               </h3>
               <BaseButton @click="closeAddressForm" variant="ghost" size="sm" icon="heroicons:x-mark" />
             </div>
@@ -99,71 +99,71 @@
             <form @submit.prevent="saveAddress" class="space-y-4">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.addresses.form.firstName') }} *</label>
                   <input v-model="addressForm.first_name" type="text" required
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.addresses.form.lastName') }} *</label>
                   <input v-model="addressForm.last_name" type="text" required
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Company</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.addresses.form.company') }}</label>
                 <input v-model="addressForm.company" type="text"
                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 1 *</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.addresses.form.address1') }} *</label>
                 <input v-model="addressForm.address_1" type="text" required
                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 2</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.addresses.form.address2') }}</label>
                 <input v-model="addressForm.address_2" type="text"
                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.addresses.form.city') }} *</label>
                   <input v-model="addressForm.city" type="text" required
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">State/Province *</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.addresses.form.state') }} *</label>
                   <input v-model="addressForm.state" type="text" required
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Postal Code *</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.addresses.form.postcode') }} *</label>
                   <input v-model="addressForm.postcode" type="text" required
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Country *</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.addresses.form.country') }} *</label>
                 <SelectBox v-model="addressForm.country" :options="[
-                  { value: '', label: 'Select Country' },
+                  { value: '', label: $t('account.addresses.form.selectCountry') },
                   ...countries.map(country => ({ value: country.code, label: country.name }))
-                ]" placeholder="Select Country" button-class="w-full" />
+                ]" :placeholder="$t('account.addresses.form.selectCountry')" button-class="w-full" />
               </div>
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Phone{{ editingAddress === 'billing' ? ' *' : ' (Optional)' }}
+                  {{ editingAddress === 'billing' ? $t('account.addresses.form.phoneRequired') : $t('account.addresses.form.phoneOptional') }}
                 </label>
                 <input v-model="addressForm.phone" type="tel" :required="editingAddress === 'billing'"
                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               </div>
 
               <div class="flex space-x-4 pt-4">
-                <BaseButton action="save" :loading="saving" :disabled="saving" text="Save Address" />
+                <BaseButton action="save" :loading="saving" :disabled="saving" :text="$t('account.addresses.form.save')" />
                 <BaseButton action="cancel" @click="closeAddressForm" />
               </div>
             </form>
@@ -179,6 +179,7 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { t } = useI18n()
 const { user } = useAuth()
 const {
   displayCustomer,
@@ -188,11 +189,10 @@ const {
   findCustomerProfile
 } = useCustomer()
 
-// SEO
 useHead({
-  title: 'My Addresses - Your Store',
+  title: () => t('account.addresses.metaTitle'),
   meta: [
-    { name: 'description', content: 'Manage your billing and shipping addresses.' }
+    { name: 'description', content: () => t('account.addresses.metaDescription') }
   ]
 })
 
@@ -249,17 +249,13 @@ const fetchAddresses = async () => {
   }
 
   try {
-    // Use the same customer loading logic as other pages
     const customer = await loadCustomerProfile(user.value)
-
-
 
     if (customer) {
       addresses.value = {
         billing: customer.billing || {},
         shipping: customer.shipping || {}
       }
-
     } else {
       console.warn('No customer data found')
       addresses.value = {
@@ -269,7 +265,7 @@ const fetchAddresses = async () => {
     }
   } catch (error) {
     console.error('Error fetching addresses:', error)
-    errorMessage.value = 'Failed to load addresses'
+    errorMessage.value = t('account.addresses.messages.loadFailed')
   }
 }
 
@@ -325,7 +321,7 @@ const closeAddressForm = () => {
 
 const saveAddress = async () => {
   if (!user.value) {
-    errorMessage.value = 'User not authenticated'
+    errorMessage.value = t('account.addresses.messages.userNotAuth')
     return
   }
 
@@ -350,12 +346,14 @@ const saveAddress = async () => {
     // Update local addresses
     addresses.value[editingAddress.value] = { ...addressForm.value }
 
-    successMessage.value = `${editingAddress.value === 'billing' ? 'Billing' : 'Shipping'} address updated successfully!`
+    successMessage.value = editingAddress.value === 'billing'
+      ? t('account.addresses.messages.billingUpdated')
+      : t('account.addresses.messages.shippingUpdated')
     closeAddressForm()
 
   } catch (error) {
     console.error('Error saving address:', error)
-    errorMessage.value = 'Failed to save address. Please try again.'
+    errorMessage.value = t('account.addresses.messages.saveFailed')
   } finally {
     saving.value = false
   }
@@ -363,7 +361,7 @@ const saveAddress = async () => {
 
 const copyBillingToShipping = async () => {
   if (!user.value) {
-    errorMessage.value = 'User not authenticated'
+    errorMessage.value = t('account.addresses.messages.userNotAuth')
     sameAsBilling.value = false
     return
   }
@@ -384,10 +382,10 @@ const copyBillingToShipping = async () => {
 
       // Save to server
       await updateCustomer(customerId, { shipping: billingCopy })
-      successMessage.value = 'Shipping address updated to match billing address!'
+      successMessage.value = t('account.addresses.messages.shippingMatched')
     } catch (error) {
       console.error('Error copying address:', error)
-      errorMessage.value = 'Failed to update shipping address'
+      errorMessage.value = t('account.addresses.messages.copyFailed')
       sameAsBilling.value = false
     }
   }

@@ -1,25 +1,24 @@
 <template>
     <div class="bg-white rounded-lg shadow-sm p-6">
-        <h2 class="text-xl font-semibold mb-6">Payment Information</h2>
+        <h2 class="text-xl font-semibold mb-6">{{ $t('checkout.payment.title') }}</h2>
 
         <form @submit.prevent="$emit('proceed')" class="space-y-6">
             <!-- Payment Method Notice -->
             <div class="p-4 bg-blue-50 border border-blue-200 rounded-md">
                 <div class="flex items-center">
                     <Icon name="heroicons:credit-card" class="h-5 w-5 text-blue-600 mr-2" />
-                    <span class="text-sm text-blue-700 font-medium">Credit Card Payment Only</span>
+                    <span class="text-sm text-blue-700 font-medium">{{ $t('checkout.payment.creditCardOnly') }}</span>
                 </div>
-                <p class="text-sm text-blue-600 mt-1">For security and convenience, we only accept credit card payments.
-                </p>
+                <p class="text-sm text-blue-600 mt-1">{{ $t('checkout.payment.creditCardOnlyHint') }}</p>
             </div>
 
             <!-- Saved Payment Methods -->
             <div v-if="savedPaymentMethods.length > 0">
                 <div class="flex items-center justify-between mb-3">
-                    <label class="block text-sm font-medium text-gray-700">Saved Payment Methods</label>
+                    <label class="block text-sm font-medium text-gray-700">{{ $t('checkout.payment.savedMethods') }}</label>
                     <NuxtLink to="/account/payment-methods" class="text-sm text-blue-600 hover:text-blue-500"
                         target="_blank">
-                        Manage Cards
+                        {{ $t('checkout.payment.manageCards') }}
                     </NuxtLink>
                 </div>
                 <div class="space-y-3 mb-6">
@@ -35,15 +34,15 @@
                                 <div>
                                     <div class="flex items-center space-x-2">
                                         <span class="font-medium text-gray-900">
-                                            {{ method.card_type }} ending in {{ method.last4 }}
+                                            {{ $t('checkout.payment.endingIn', { cardType: method.card_type, last4: method.last4 }) }}
                                         </span>
                                         <span v-if="method.is_default"
                                             class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                                            Default
+                                            {{ $t('checkout.payment.default') }}
                                         </span>
                                     </div>
                                     <p class="text-sm text-gray-600">
-                                        Expires {{ method.exp_month }}/{{ method.exp_year }}
+                                        {{ $t('checkout.payment.expires', { month: method.exp_month, year: method.exp_year }) }}
                                     </p>
                                     <p v-if="method.billing_name" class="text-sm text-gray-600">
                                         {{ method.billing_name }}
@@ -63,7 +62,7 @@
                             class="text-blue-600 focus:ring-blue-500">
                         <div class="ml-3 flex items-center space-x-3">
                             <Icon name="heroicons:plus-circle" class="h-8 w-8 text-blue-600" />
-                            <span class="font-medium text-gray-900">Add New Card</span>
+                            <span class="font-medium text-gray-900">{{ $t('checkout.payment.addNewCard') }}</span>
                         </div>
                     </label>
                 </div>
@@ -72,7 +71,7 @@
             <!-- Available Payment Gateways -->
             <div v-if="availablePaymentGateways.length > 0">
                 <label class="block text-sm font-medium text-gray-700 mb-3">
-                    {{ savedPaymentMethods.length > 0 ? 'Payment Processor' : 'Choose Payment Method' }}
+                    {{ savedPaymentMethods.length > 0 ? $t('checkout.payment.paymentProcessor') : $t('checkout.payment.choosePaymentMethod') }}
                 </label>
                 <div class="space-y-3 mb-6">
                     <div v-for="gateway in availablePaymentGateways" :key="gateway.id"
@@ -108,8 +107,8 @@
             <div v-if="!hasPaymentMethods && isMounted">
                 <div class="text-center py-6 border-2 border-dashed border-gray-300 rounded-lg">
                     <Icon name="heroicons:exclamation-triangle" class="h-12 w-12 text-yellow-400 mx-auto mb-3" />
-                    <h3 class="text-lg font-medium text-gray-900 mb-2">No Payment Methods Available</h3>
-                    <p class="text-gray-600 mb-4">Please contact support to complete your order.</p>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">{{ $t('checkout.payment.noMethods') }}</h3>
+                    <p class="text-gray-600 mb-4">{{ $t('checkout.payment.noMethodsHint') }}</p>
                 </div>
             </div>
 
@@ -125,8 +124,8 @@
             </div>
 
             <div class="flex space-x-4">
-                <BaseButton @click="$emit('back')" variant="secondary" text="Back" full-width size="lg" />
-                <BaseButton action="submit" text="Review Order" full-width size="lg"
+                <BaseButton @click="$emit('back')" variant="secondary" :text="$t('common.back')" full-width size="lg" />
+                <BaseButton action="submit" :text="$t('checkout.payment.reviewOrder')" full-width size="lg"
                     :disabled="!isPaymentMethodValid" />
             </div>
         </form>

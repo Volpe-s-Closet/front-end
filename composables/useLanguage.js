@@ -1,45 +1,36 @@
+// Bridges the existing language switcher UI (SelectBox in AppHeader and
+// MobileSidebar) with the @nuxtjs/i18n module. The component public API stays
+// the same — `currentLanguage`, `languages`, `setLanguage` — but the source of
+// truth is now vue-i18n / Nuxt i18n.
 export const useLanguage = () => {
-  const currentLanguage = ref('en-GB')
+  const { locale, locales, setLocale } = useI18n()
 
-  const languages = [
-    {
-      value: 'en-GB',
-      label: 'English',
-      flag: '🇬🇧'
-    },
-    {
-      value: 'it-IT',
-      label: 'Italiano',
-      flag: '🇮🇹'
-    },
-    {
-      value: 'es-ES',
-      label: 'Español',
-      flag: '🇪🇸'
-    }
-  ]
+  // Build the {value, label, flag} options the SelectBox expects from the
+  // locales declared in nuxt.config.ts.
+  const languages = computed(() =>
+    (unref(locales) || []).map((l) => ({
+      value: l.code,
+      label: l.name || l.code,
+      flag: l.flag || ''
+    }))
+  )
 
-  const setLanguage = (languageCode) => {
-    currentLanguage.value = languageCode
-    // Here you can add logic to persist the language preference
-    // localStorage.setItem('language', languageCode)
-    // or make an API call to save user preference
-  }
+  const currentLanguage = computed(() => locale.value)
 
   const getCurrentLanguage = computed(() => {
-    return languages.find(lang => lang.value === currentLanguage.value) || languages[0]
+    return (
+      languages.value.find((lang) => lang.value === locale.value) ||
+      languages.value[0]
+    )
   })
 
-  // Initialize language from localStorage or browser preference
-  onMounted(() => {
-    // const savedLanguage = localStorage.getItem('language')
-    // if (savedLanguage && languages.some(lang => lang.value === savedLanguage)) {
-    //   currentLanguage.value = savedLanguage
-    // }
-  })
+  const setLanguage = async (languageCode) => {
+    if (!languageCode) return
+    await setLocale(languageCode)
+  }
 
   return {
-    currentLanguage: readonly(currentLanguage),
+    currentLanguage,
     languages,
     setLanguage,
     getCurrentLanguage

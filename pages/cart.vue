@@ -2,8 +2,8 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Header -->
     <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">Shopping Cart</h1>
-      <p class="text-gray-600 mt-2">Review your items before checkout</p>
+      <h1 class="text-3xl font-bold text-gray-900">{{ $t('cart.title') }}</h1>
+      <p class="text-gray-600 mt-2">{{ $t('cart.subtitle') }}</p>
     </div>
 
     <!-- Cart Content - Use ClientOnly to prevent hydration mismatch -->
@@ -11,9 +11,9 @@
       <!-- Empty Cart -->
       <div v-if="cartItems.length === 0" class="text-center py-16">
         <Icon name="heroicons:shopping-bag" class="h-24 w-24 text-gray-300 mx-auto mb-6" />
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Your cart is empty</h2>
-        <p class="text-gray-600 mb-8">Looks like you haven't added any items to your cart yet.</p>
-        <BaseButton to="/search" text="Start Shopping" size="lg" />
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ $t('cart.empty') }}</h2>
+        <p class="text-gray-600 mb-8">{{ $t('cart.emptyHint') }}</p>
+        <BaseButton to="/search" :text="$t('cart.startShopping')" size="lg" />
       </div>
 
       <!-- Cart Content -->
@@ -22,7 +22,7 @@
         <div class="lg:col-span-2">
           <div class="bg-white rounded-lg shadow-sm">
             <div class="p-6 border-b">
-              <h2 class="text-lg font-semibold">Cart Items ({{ cartItemCount }})</h2>
+              <h2 class="text-lg font-semibold">{{ $t('cart.items', { count: cartItemCount }) }}</h2>
             </div>
 
             <div class="divide-y">
@@ -64,7 +64,7 @@
 
                   <!-- Item Total -->
                   <div class="mt-2 text-right">
-                    <span class="text-sm text-gray-600">Subtotal: </span>
+                    <span class="text-sm text-gray-600">{{ $t('cart.subtotal') }} </span>
                     <span class="font-semibold">{{ formatPrice(item.price * item.quantity) }}</span>
                   </div>
                 </div>
@@ -72,7 +72,7 @@
                 <!-- Remove Button -->
                 <div class="flex-shrink-0">
                   <BaseButton action="remove" :product="item" :variation="item.variation" size="sm"
-                    title="Remove item" />
+                    :title="$t('cart.removeItem')" />
                 </div>
               </div>
             </div>
@@ -82,7 +82,7 @@
           <div class="mt-6">
             <NuxtLink to="/search" class="text-blue-600 hover:text-blue-800 font-medium flex items-center">
               <Icon name="heroicons:arrow-left" class="h-5 w-5 mr-2" />
-              Continue Shopping
+              {{ $t('cart.continueShopping') }}
             </NuxtLink>
           </div>
         </div>
@@ -90,39 +90,39 @@
         <!-- Order Summary -->
         <div class="lg:col-span-1">
           <div class="bg-white rounded-lg shadow-sm p-6 sticky top-8">
-            <h2 class="text-lg font-semibold mb-4">Order Summary</h2>
+            <h2 class="text-lg font-semibold mb-4">{{ $t('cart.summary') }}</h2>
 
             <div class="space-y-3 mb-6">
               <div class="flex justify-between">
-                <span class="text-gray-600">Subtotal</span>
+                <span class="text-gray-600">{{ $t('cart.subtotalLabel') }}</span>
                 <span class="font-medium">{{ formatPrice(cartSubtotal) }}</span>
               </div>
 
               <div class="flex justify-between">
-                <span class="text-gray-600">Shipping</span>
-                <span class="font-medium">Calculated at checkout</span>
+                <span class="text-gray-600">{{ $t('cart.shipping') }}</span>
+                <span class="font-medium">{{ $t('cart.calculatedAtCheckout') }}</span>
               </div>
 
               <div class="flex justify-between">
-                <span class="text-gray-600">Tax</span>
-                <span class="font-medium">Calculated at checkout</span>
+                <span class="text-gray-600">{{ $t('cart.tax') }}</span>
+                <span class="font-medium">{{ $t('cart.calculatedAtCheckout') }}</span>
               </div>
 
               <div class="border-t pt-3">
                 <div class="flex justify-between">
-                  <span class="text-lg font-semibold">Total</span>
+                  <span class="text-lg font-semibold">{{ $t('cart.total') }}</span>
                   <span class="text-lg font-bold">{{ formatPrice(cartTotal) }}</span>
                 </div>
               </div>
             </div>
 
             <!-- Checkout Button -->
-            <BaseButton to="/checkout" text="Proceed to Checkout" full-width size="lg" class="mb-4" />
+            <BaseButton to="/checkout" :text="$t('cart.proceedToCheckout')" full-width size="lg" class="mb-4" />
 
             <!-- Security Badge -->
             <div class="text-center text-sm text-gray-600">
               <Icon name="heroicons:lock-closed" class="h-4 w-4 inline mr-1" />
-              Secure checkout with SSL encryption
+              {{ $t('cart.secureCheckout') }}
             </div>
 
             <!-- Clear Cart -->
@@ -131,7 +131,7 @@
 
           <!-- Recommended Products -->
           <div v-if="recommendedProducts.length > 0" class="mt-8 bg-white rounded-lg shadow-sm p-6">
-            <h3 class="text-lg font-semibold mb-4">You might also like</h3>
+            <h3 class="text-lg font-semibold mb-4">{{ $t('cart.youMightAlsoLike') }}</h3>
             <div class="space-y-4">
               <div v-for="product in recommendedProducts.slice(0, 3)" :key="product.id"
                 class="flex items-center space-x-3">
@@ -142,7 +142,7 @@
                   <p class="text-gray-600 text-sm">{{ formatPrice(product.price) }}</p>
                   <button @click="hasVariations(product) ? openVariationModal(product) : addToCart(product, 1)"
                     class="text-blue-600 hover:text-blue-800 text-xs font-medium mt-1">
-                    {{ hasVariations(product) ? 'Select Options' : 'Add to Cart' }}
+                    {{ hasVariations(product) ? $t('common.selectOptions') : $t('common.addToCart') }}
                   </button>
                 </div>
               </div>
@@ -176,6 +176,7 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
 const {
   cartItems,
   cartItemCount,
@@ -190,12 +191,8 @@ const {
 
 const { getProducts, getCartItemImage, getProductImage, handleImageError } = useProducts()
 
-// SEO
 useHead({
-  title: 'Shopping Cart - Your Store',
-  meta: [
-    { name: 'description', content: 'Review your cart items before checkout.' }
-  ]
+  title: () => t('cart.title')
 })
 
 // Data
@@ -206,7 +203,7 @@ const selectedProduct = ref(null)
 
 // Methods
 const confirmClearCart = () => {
-  if (confirm('Are you sure you want to clear your cart? This action cannot be undone.')) {
+  if (confirm(t('cart.confirmClear'))) {
     clearCart()
   }
 }

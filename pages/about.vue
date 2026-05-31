@@ -5,10 +5,10 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="text-center">
           <h1 class="text-4xl font-bold text-gray-900 sm:text-5xl md:text-6xl">
-            About Us
+            {{ $t('about.title') }}
           </h1>
           <p class="mt-6 max-w-2xl mx-auto text-xl text-gray-600">
-            Discover the story behind our passion for bringing you the finest bags and accessories
+            {{ $t('about.heroSubtitle') }}
           </p>
         </div>
       </div>
@@ -19,40 +19,25 @@
       <div class="bg-white rounded-lg shadow-sm p-8 md:p-12">
         <!-- Our Story Section -->
         <div class="mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">{{ $t('about.ourStory') }}</h2>
           <div class="prose prose-lg text-gray-600 max-w-none">
-            <p class="mb-6">
-              Founded with a passion for quality and style, our store has been dedicated to bringing you the finest 
-              selection of bags and accessories. What started as a small dream has grown into a trusted destination 
-              for fashion-conscious individuals who appreciate craftsmanship and attention to detail.
-            </p>
-            <p class="mb-6">
-              We believe that the right bag or accessory can transform not just your outfit, but your entire day. 
-              That's why we carefully curate each piece in our collection, ensuring that every item meets our high 
-              standards for quality, durability, and style.
-            </p>
+            <p class="mb-6">{{ $t('about.ourStoryParagraph1') }}</p>
+            <p class="mb-6">{{ $t('about.ourStoryParagraph2') }}</p>
           </div>
         </div>
 
         <!-- Our Mission Section -->
         <div class="mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">{{ $t('about.ourMission') }}</h2>
           <div class="prose prose-lg text-gray-600 max-w-none">
-            <p class="mb-6">
-              Our mission is simple: to provide our customers with exceptional products that combine functionality 
-              with fashion. We're committed to offering a diverse range of bags and accessories that cater to 
-              different lifestyles, preferences, and budgets.
-            </p>
-            <p class="mb-6">
-              We strive to create a shopping experience that's not just about purchasing products, but about 
-              discovering pieces that truly resonate with your personal style and enhance your daily life.
-            </p>
+            <p class="mb-6">{{ $t('about.ourMissionParagraph1') }}</p>
+            <p class="mb-6">{{ $t('about.ourMissionParagraph2') }}</p>
           </div>
         </div>
 
         <!-- What Makes Us Different Section -->
         <div class="mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-6">What Makes Us Different</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">{{ $t('about.different') }}</h2>
           <div class="grid md:grid-cols-2 gap-8">
             <div class="space-y-6">
               <div class="flex items-start">
@@ -62,10 +47,8 @@
                   </div>
                 </div>
                 <div class="ml-4">
-                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Curated Selection</h3>
-                  <p class="text-gray-600">
-                    Every product is hand-picked for its quality, design, and functionality.
-                  </p>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $t('about.features.curated.title') }}</h3>
+                  <p class="text-gray-600">{{ $t('about.features.curated.description') }}</p>
                 </div>
               </div>
 
@@ -76,10 +59,8 @@
                   </div>
                 </div>
                 <div class="ml-4">
-                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Quality Guarantee</h3>
-                  <p class="text-gray-600">
-                    We stand behind every product with our commitment to quality and customer satisfaction.
-                  </p>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $t('about.features.quality.title') }}</h3>
+                  <p class="text-gray-600">{{ $t('about.features.quality.description') }}</p>
                 </div>
               </div>
             </div>
@@ -92,10 +73,8 @@
                   </div>
                 </div>
                 <div class="ml-4">
-                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Personal Service</h3>
-                  <p class="text-gray-600">
-                    Our team is dedicated to providing personalized assistance and expert advice.
-                  </p>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $t('about.features.service.title') }}</h3>
+                  <p class="text-gray-600">{{ $t('about.features.service.description') }}</p>
                 </div>
               </div>
 
@@ -106,10 +85,8 @@
                   </div>
                 </div>
                 <div class="ml-4">
-                  <h3 class="text-lg font-semibold text-gray-900 mb-2">Local Delivery</h3>
-                  <p class="text-gray-600">
-                    Special delivery service in Tenerife for orders over €50 with convenient pickup points.
-                  </p>
+                  <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $t('about.features.delivery.title') }}</h3>
+                  <p class="text-gray-600">{{ $t('about.features.delivery.description') }}</p>
                 </div>
               </div>
             </div>
@@ -118,24 +95,21 @@
 
         <!-- Contact Section -->
         <div class="border-t border-gray-200 pt-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-6">Get in Touch</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">{{ $t('about.getInTouch') }}</h2>
           <div class="prose prose-lg text-gray-600 max-w-none">
-            <p class="mb-6">
-              We'd love to hear from you! Whether you have questions about our products, need styling advice, 
-              or want to share your feedback, don't hesitate to reach out.
-            </p>
+            <p class="mb-6">{{ $t('about.getInTouchParagraph') }}</p>
             <div class="flex flex-col sm:flex-row gap-4">
-              <NuxtLink 
-                to="/contact" 
+              <NuxtLink
+                to="/contact"
                 class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors"
               >
-                Contact Us
+                {{ $t('about.contactUs') }}
               </NuxtLink>
-              <NuxtLink 
-                to="/faq" 
+              <NuxtLink
+                to="/faq"
                 class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
               >
-                View FAQ
+                {{ $t('about.viewFaq') }}
               </NuxtLink>
             </div>
           </div>
@@ -146,26 +120,15 @@
 </template>
 
 <script setup>
-// SEO Meta
+const { t } = useI18n()
+
 useHead({
-  title: 'About Us - Store',
+  title: () => t('about.metaTitle'),
   meta: [
-    {
-      name: 'description',
-      content: 'Learn about our story, mission, and commitment to bringing you the finest bags and accessories. Discover what makes us different and why quality matters to us.'
-    },
-    {
-      property: 'og:title',
-      content: 'About Us - Store'
-    },
-    {
-      property: 'og:description',
-      content: 'Learn about our story, mission, and commitment to bringing you the finest bags and accessories.'
-    },
-    {
-      property: 'og:type',
-      content: 'website'
-    }
+    { name: 'description', content: () => t('about.metaDescription') },
+    { property: 'og:title', content: () => t('about.metaTitle') },
+    { property: 'og:description', content: () => t('about.metaDescription') },
+    { property: 'og:type', content: 'website' }
   ]
 })
 </script>

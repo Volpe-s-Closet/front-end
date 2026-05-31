@@ -8,12 +8,12 @@
         @click="openImageGallery">
       <div v-if="product.featured"
         class="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 text-xs font-semibold rounded">
-        Featured
+        {{ $t('product.featuredBadge') }}
       </div>
       <div v-if="product.on_sale"
         class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs font-semibold rounded"
         :class="{ 'top-8': product.featured }">
-        Sale
+        {{ $t('product.saleSmall') }}
       </div>
       <!-- Zoom icon overlay -->
       <div
@@ -73,9 +73,8 @@
           ]" />
         </div>
         <span class="text-sm text-gray-600 ml-2">
-          <span v-if="product.rating_count > 0">{{ product.average_rating || 0 }} ({{ product.rating_count }}
-            reviews)</span>
-          <span v-else class="text-gray-400">No reviews yet</span>
+          <span v-if="product.rating_count > 0">{{ product.average_rating || 0 }} {{ $t('product.reviews', { count: product.rating_count }) }}</span>
+          <span v-else class="text-gray-400">{{ $t('product.noReviews') }}</span>
         </span>
       </div>
 
@@ -102,10 +101,10 @@
         v-html="product.short_description"></p>
       <p v-else-if="product.description" class="text-gray-600 text-sm mb-4 overflow-hidden text-ellipsis line-clamp-2"
         v-html="product.description"></p>
-      <p v-else class="text-gray-500 text-sm mb-4 italic">No description available</p>
+      <p v-else class="text-gray-500 text-sm mb-4 italic">{{ $t('product.noDescription') }}</p>
 
       <div v-if="product.stock_status !== 'instock'" class="mt-2">
-        <span class="text-red-600 text-sm font-medium">Out of Stock</span>
+        <span class="text-red-600 text-sm font-medium">{{ $t('product.outOfStock') }}</span>
       </div>
     </NuxtLink>
 
@@ -125,12 +124,12 @@
           @error="handleImageError" @click="openImageGallery">
         <div v-if="product.featured"
           class="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 text-xs font-semibold rounded">
-          Featured
+          {{ $t('product.featuredBadge') }}
         </div>
         <div v-if="product.on_sale"
           class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs font-semibold rounded"
           :class="{ 'top-8': product.featured }">
-          Sale
+          {{ $t('product.saleSmall') }}
         </div>
         <!-- Zoom icon overlay -->
         <div
@@ -193,9 +192,8 @@
                 ]" />
               </div>
               <span class="text-sm text-gray-600 ml-2">
-                <span v-if="product.rating_count > 0">{{ product.average_rating || 0 }} ({{ product.rating_count }}
-                  reviews)</span>
-                <span v-else class="text-gray-400">No reviews yet</span>
+                <span v-if="product.rating_count > 0">{{ product.average_rating || 0 }} {{ $t('product.reviews', { count: product.rating_count }) }}</span>
+                <span v-else class="text-gray-400">{{ $t('product.noReviews') }}</span>
               </span>
             </div>
 
@@ -222,10 +220,10 @@
               v-html="product.short_description"></p>
             <p v-else-if="product.description" class="text-gray-600 mb-4 overflow-hidden text-ellipsis line-clamp-3"
               v-html="product.description"></p>
-            <p v-else class="text-gray-500 mb-4 italic">No description available</p>
+            <p v-else class="text-gray-500 mb-4 italic">{{ $t('product.noDescription') }}</p>
 
             <div v-if="product.stock_status !== 'instock'" class="mb-4">
-              <span class="text-red-600 font-medium">Out of Stock</span>
+              <span class="text-red-600 font-medium">{{ $t('product.outOfStock') }}</span>
             </div>
           </div>
         </div>

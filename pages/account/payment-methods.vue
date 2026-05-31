@@ -17,7 +17,7 @@
 
     <!-- Add New Payment Method Button -->
     <div class="mb-6">
-      <BaseButton @click="showAddPaymentForm = true" icon="heroicons:plus" text="Add Payment Method" />
+      <BaseButton @click="showAddPaymentForm = true" icon="heroicons:plus" :text="$t('account.paymentMethods.addMethod')" />
     </div>
 
     <!-- Payment Methods List -->
@@ -42,15 +42,15 @@
             <div>
               <div class="flex items-center space-x-2">
                 <h3 class="font-medium text-gray-900">
-                  {{ method.card_type }} ending in {{ method.last4 }}
+                  {{ $t('account.paymentMethods.endingIn', { cardType: method.card_type, last4: method.last4 }) }}
                 </h3>
                 <span v-if="method.is_default"
                   class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                  Default
+                  {{ $t('account.paymentMethods.default') }}
                 </span>
               </div>
               <p class="text-sm text-gray-600">
-                Expires {{ method.exp_month }}/{{ method.exp_year }}
+                {{ $t('account.paymentMethods.expires', { month: method.exp_month, year: method.exp_year }) }}
               </p>
               <p v-if="method.billing_name" class="text-sm text-gray-600">
                 {{ method.billing_name }}
@@ -61,10 +61,10 @@
           <!-- Actions -->
           <div class="flex items-center space-x-2">
             <BaseButton v-if="!method.is_default" @click="setDefaultPaymentMethod(method.id)" variant="link" size="sm"
-              text="Set as Default" />
-            <BaseButton @click="editPaymentMethod(method)" variant="link" size="sm" text="Edit"
+              :text="$t('account.paymentMethods.setDefault')" />
+            <BaseButton @click="editPaymentMethod(method)" variant="link" size="sm" :text="$t('account.paymentMethods.edit')"
               class="text-gray-600 hover:text-gray-800" />
-            <BaseButton @click="deletePaymentMethod(method.id)" variant="link" size="sm" text="Delete"
+            <BaseButton @click="deletePaymentMethod(method.id)" variant="link" size="sm" :text="$t('account.paymentMethods.delete')"
               class="text-red-600 hover:text-red-800" />
           </div>
         </div>
@@ -74,9 +74,9 @@
     <!-- No Payment Methods -->
     <div v-else class="text-center py-16">
       <Icon name="heroicons:credit-card" class="h-24 w-24 text-gray-300 mx-auto mb-6" />
-      <h2 class="text-2xl font-semibold text-gray-900 mb-4">No payment methods</h2>
-      <p class="text-gray-600 mb-8">Add a payment method to make checkout faster and easier.</p>
-      <BaseButton @click="showAddPaymentForm = true" text="Add Your First Payment Method" size="lg" />
+      <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ $t('account.paymentMethods.noneTitle') }}</h2>
+      <p class="text-gray-600 mb-8">{{ $t('account.paymentMethods.noneHint') }}</p>
+      <BaseButton @click="showAddPaymentForm = true" :text="$t('account.paymentMethods.addFirst')" size="lg" />
     </div>
 
     <!-- Payment Method Form Modal -->
@@ -86,20 +86,20 @@
         <div class="p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold">
-              {{ showEditPaymentForm ? 'Edit Payment Method' : 'Add Payment Method' }}
+              {{ showEditPaymentForm ? $t('account.paymentMethods.editTitle') : $t('account.paymentMethods.addTitle') }}
             </h3>
             <BaseButton @click="closePaymentForm" variant="ghost" size="sm" icon="heroicons:x-mark" />
           </div>
 
           <form @submit.prevent="savePaymentMethod" class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Cardholder Name *</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.paymentMethods.form.cardholderName') }} *</label>
               <input v-model="paymentForm.billing_name" type="text" required
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Card Number *</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.paymentMethods.form.cardNumber') }} *</label>
               <input v-model="paymentForm.card_number" type="text" required maxlength="19"
                 placeholder="1234 5678 9012 3456" @input="formatCardNumber"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -107,13 +107,13 @@
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Expiry Date *</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.paymentMethods.form.expiryDate') }} *</label>
                 <input v-model="paymentForm.expiry" type="text" required placeholder="MM/YY" maxlength="5"
                   @input="formatExpiry"
                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">CVV *</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.paymentMethods.form.cvv') }} *</label>
                 <input v-model="paymentForm.cvv" type="text" required maxlength="4" placeholder="123"
                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               </div>
@@ -122,12 +122,12 @@
             <div class="flex items-center">
               <input v-model="paymentForm.is_default" type="checkbox"
                 class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-              <span class="ml-2 text-sm text-gray-700">Set as default payment method</span>
+              <span class="ml-2 text-sm text-gray-700">{{ $t('account.paymentMethods.form.setDefault') }}</span>
             </div>
 
             <div class="flex space-x-4 pt-4">
               <BaseButton action="save" :loading="saving" :disabled="saving"
-                :text="`${showEditPaymentForm ? 'Update' : 'Add'} Payment Method`" />
+                :text="showEditPaymentForm ? $t('account.paymentMethods.form.updateBtn') : $t('account.paymentMethods.form.addBtn')" />
               <BaseButton action="cancel" @click="closePaymentForm" />
             </div>
           </form>
@@ -137,9 +137,8 @@
             <div class="flex">
               <Icon name="heroicons:exclamation-triangle" class="h-5 w-5 text-yellow-600 mr-2 flex-shrink-0" />
               <div class="text-sm text-yellow-800">
-                <p class="font-medium">Demo Payment System</p>
-                <p>This is a demonstration. In production, use a secure payment processor like Stripe or PayPal. Never
-                  store actual card details.</p>
+                <p class="font-medium">{{ $t('account.paymentMethods.demoTitle') }}</p>
+                <p>{{ $t('account.paymentMethods.demoNote') }}</p>
               </div>
             </div>
           </div>
@@ -154,14 +153,14 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { t } = useI18n()
 const { user } = useAuth()
 const { displayCustomer, loadCustomerProfile } = useCustomer()
 
-// SEO
 useHead({
-  title: 'Payment Methods - Your Store',
+  title: () => t('account.paymentMethods.metaTitle'),
   meta: [
-    { name: 'description', content: 'Manage your saved payment methods securely.' }
+    { name: 'description', content: () => t('account.paymentMethods.metaDescription') }
   ]
 })
 
@@ -216,7 +215,7 @@ const fetchPaymentMethods = async () => {
     }
   } catch (error) {
     console.error('Error fetching payment methods:', error)
-    errorMessage.value = 'Failed to load payment methods'
+    errorMessage.value = t('account.paymentMethods.messages.saveFailed')
     paymentMethods.value = []
   } finally {
     loading.value = false
@@ -272,7 +271,7 @@ const savePaymentMethod = async () => {
     // Validate form
     if (!paymentForm.value.billing_name || !paymentForm.value.card_number ||
       !paymentForm.value.expiry || !paymentForm.value.cvv) {
-      throw new Error('Please fill in all required fields')
+      throw new Error(t('account.paymentMethods.messages.fillRequired'))
     }
 
     // SECURITY WARNING: In a real implementation, you should:
@@ -303,7 +302,7 @@ const savePaymentMethod = async () => {
       if (index !== -1) {
         paymentMethods.value[index] = { ...paymentMethods.value[index], ...newMethod }
       }
-      successMessage.value = 'Payment method updated successfully!'
+      successMessage.value = t('account.paymentMethods.messages.updated')
     } else {
       // Add new method
       if (paymentForm.value.is_default) {
@@ -313,7 +312,7 @@ const savePaymentMethod = async () => {
         })
       }
       paymentMethods.value.push(newMethod)
-      successMessage.value = 'Payment method added successfully!'
+      successMessage.value = t('account.paymentMethods.messages.added')
     }
 
     // Save to customer meta data (in real app, use proper payment processor)
@@ -322,7 +321,7 @@ const savePaymentMethod = async () => {
 
   } catch (error) {
     console.error('Error saving payment method:', error)
-    errorMessage.value = error.message || 'Failed to save payment method. Please try again.'
+    errorMessage.value = error.message || t('account.paymentMethods.messages.saveFailed')
   } finally {
     saving.value = false
   }
@@ -374,7 +373,7 @@ const editPaymentMethod = (method) => {
 }
 
 const deletePaymentMethod = async (methodId) => {
-  if (!confirm('Are you sure you want to delete this payment method?')) return
+  if (!confirm(t('account.paymentMethods.messages.confirmDelete'))) return
 
   try {
     // Remove from local array
@@ -383,10 +382,10 @@ const deletePaymentMethod = async (methodId) => {
     // Save updated list to customer data
     await savePaymentMethodsToCustomer()
 
-    successMessage.value = 'Payment method deleted successfully!'
+    successMessage.value = t('account.paymentMethods.messages.deleted')
   } catch (error) {
     console.error('Error deleting payment method:', error)
-    errorMessage.value = 'Failed to delete payment method. Please try again.'
+    errorMessage.value = t('account.paymentMethods.messages.deleteFailed')
   }
 }
 
@@ -400,10 +399,10 @@ const setDefaultPaymentMethod = async (methodId) => {
     // Save updated list to customer data
     await savePaymentMethodsToCustomer()
 
-    successMessage.value = 'Default payment method updated!'
+    successMessage.value = t('account.paymentMethods.messages.defaultUpdated')
   } catch (error) {
     console.error('Error setting default payment method:', error)
-    errorMessage.value = 'Failed to update default payment method. Please try again.'
+    errorMessage.value = t('account.paymentMethods.messages.defaultFailed')
   }
 }
 

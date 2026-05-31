@@ -3,9 +3,7 @@
   <div class="bg-black text-white py-2 overflow-hidden relative">
     <div class="animate-scroll whitespace-nowrap">
       <span class="inline-block px-4">
-        Si estás en Tenerife, para pedidos superiores a 50 € nos desplazamos hasta un punto central de tu zona para
-        entregarte tu paquete de felicidad de forma más cómoda. Si tu pedido es de menor importe, lo hablamos por DM
-        para encontrar juntas la mejor opción de entrega
+        {{ $t('header.newsBanner') }}
       </span>
     </div>
   </div>
@@ -28,7 +26,7 @@
             <NuxtLink to="/" class="flex items-center">
               <img
                 src="https://admin.volpescloset.com/wp-content/uploads/2025/06/Screenshot-From-2025-06-15-12-15-13.png"
-                alt="Volpe's Closet Logo" class="h-10 w-auto" />
+                :alt="$t('header.logoAlt')" class="h-10 w-auto" />
             </NuxtLink>
           </div>
         </div>
@@ -37,31 +35,31 @@
         <div class="md:hidden flex-shrink-0">
           <NuxtLink to="/" class="flex items-center">
             <img src="https://admin.volpescloset.com/wp-content/uploads/2025/06/Screenshot-From-2025-06-15-12-15-13.png"
-              alt="Volpe's Closet Logo" class="h-8 w-auto" />
+              :alt="$t('header.logoAlt')" class="h-8 w-auto" />
           </NuxtLink>
         </div>
 
         <!-- Navigation (Desktop) -->
         <nav class="hidden md:flex space-x-8">
           <!-- Bags Mega Menu -->
-          <MegaMenu label="Bags" category-slug="bolsos" />
+          <MegaMenu :label="$t('header.nav.bags')" category-slug="bolsos" />
 
           <!-- Accessories Mega Menu -->
-          <MegaMenu label="Accessories" category-slug="accesorios" />
+          <MegaMenu :label="$t('header.nav.accessories')" category-slug="accesorios" />
 
           <!-- Promos Mega Menu -->
-          <MegaMenu label="Promos" category-slug="promos" />
+          <MegaMenu :label="$t('header.nav.promos')" category-slug="promos" />
 
           <!-- Blog Link -->
           <NuxtLink to="/blog"
             class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
-            Blog
+            {{ $t('header.nav.blog') }}
           </NuxtLink>
 
           <!-- About Us Link -->
           <NuxtLink to="/about"
             class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
-            About Us
+            {{ $t('header.nav.aboutUs') }}
           </NuxtLink>
         </nav>
 
@@ -92,7 +90,7 @@
           <ClientOnly>
             <div v-if="isAuthenticated">
               <DropDown :items="accountMenuItems" @item-click="handleAccountAction" trigger-icon="heroicons:user-circle"
-                trigger-label="Account" button-class="!bg-transparent hover:!bg-gray-100 !px-3 !py-2" position="right"
+                :trigger-label="$t('header.account.label')" button-class="!bg-transparent hover:!bg-gray-100 !px-3 !py-2" position="right"
                 size="lg" hide-label hide-chevron />
             </div>
             <NuxtLink v-else to="/login"
@@ -135,6 +133,7 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
 const { cartItemCount, toggleCart } = useCart()
 const { isAuthenticated, logout } = useAuth()
 const { fetchCategories } = useCategories()
@@ -145,25 +144,31 @@ const showMobileMenu = ref(false)
 const showSearchModal = ref(false)
 const selectedLanguage = ref(currentLanguage.value)
 
-// Account dropdown menu items
-const accountMenuItems = [
+// Keep the SelectBox in sync if the locale is changed elsewhere
+// (e.g. via the mobile sidebar's switcher).
+watch(currentLanguage, (val) => {
+  selectedLanguage.value = val
+})
+
+// Account dropdown menu items — labels are translated, recomputed on locale change
+const accountMenuItems = computed(() => [
   {
-    label: 'Profile',
+    label: t('header.account.profile'),
     icon: 'heroicons:user-circle',
     action: () => navigateTo('/account')
   },
   {
-    label: 'Orders',
+    label: t('header.account.orders'),
     icon: 'heroicons:shopping-bag',
     action: () => navigateTo('/account/orders')
   },
   {
-    label: 'Logout',
+    label: t('header.account.logout'),
     icon: 'heroicons:arrow-right-on-rectangle',
     danger: true,
     action: () => logout()
   }
-]
+])
 
 const handleSearch = (query) => {
   if (query && query.trim()) {

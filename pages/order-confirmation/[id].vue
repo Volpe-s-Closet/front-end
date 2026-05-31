@@ -3,17 +3,17 @@
         <!-- Loading State -->
         <div v-if="isLoading" class="text-center py-12">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p class="mt-4 text-gray-600">Loading your order details...</p>
+            <p class="mt-4 text-gray-600">{{ $t('orderConfirmation.loading') }}</p>
         </div>
 
         <!-- Error State -->
         <div v-else-if="error" class="text-center py-12">
             <div class="bg-red-50 border border-red-200 rounded-lg p-6">
-                <h2 class="text-xl font-semibold text-red-800 mb-2">Order Not Found</h2>
+                <h2 class="text-xl font-semibold text-red-800 mb-2">{{ $t('orderConfirmation.notFoundTitle') }}</h2>
                 <p class="text-red-600 mb-4">{{ error }}</p>
                 <NuxtLink to="/"
                     class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                    Return to Home
+                    {{ $t('orderConfirmation.returnHome') }}
                 </NuxtLink>
             </div>
         </div>
@@ -27,36 +27,34 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
                 </div>
-                <h1 class="text-3xl font-bold text-green-800 mb-2">Order Confirmed!</h1>
-                <p class="text-green-700 mb-4">Thank you for your purchase. Your order has been received and is being
-                    processed.</p>
-                <p class="text-sm text-green-600">Order #{{ order.number || order.id }}</p>
+                <h1 class="text-3xl font-bold text-green-800 mb-2">{{ $t('orderConfirmation.successTitle') }}</h1>
+                <p class="text-green-700 mb-4">{{ $t('orderConfirmation.successHint') }}</p>
+                <p class="text-sm text-green-600">{{ $t('orderConfirmation.orderNumber', { number: order.number || order.id }) }}</p>
             </div>
 
             <!-- Order Details -->
             <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
                 <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
-                    <h2 class="text-lg font-semibold text-gray-900">Order Details</h2>
+                    <h2 class="text-lg font-semibold text-gray-900">{{ $t('orderConfirmation.orderDetails') }}</h2>
                 </div>
 
                 <div class="p-6 space-y-6">
                     <!-- Order Info Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Order Information
-                            </h3>
+                            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">{{ $t('orderConfirmation.orderInformation') }}</h3>
                             <dl class="space-y-2">
                                 <div class="flex justify-between">
-                                    <dt class="text-sm text-gray-600">Order Number:</dt>
+                                    <dt class="text-sm text-gray-600">{{ $t('orderConfirmation.labels.orderNumber') }}</dt>
                                     <dd class="text-sm font-medium text-gray-900">#{{ order.number || order.id }}</dd>
                                 </div>
                                 <div class="flex justify-between">
-                                    <dt class="text-sm text-gray-600">Date:</dt>
+                                    <dt class="text-sm text-gray-600">{{ $t('orderConfirmation.labels.date') }}</dt>
                                     <dd class="text-sm font-medium text-gray-900">{{ formatDate(order.date_created) }}
                                     </dd>
                                 </div>
                                 <div class="flex justify-between">
-                                    <dt class="text-sm text-gray-600">Status:</dt>
+                                    <dt class="text-sm text-gray-600">{{ $t('orderConfirmation.labels.status') }}</dt>
                                     <dd class="text-sm">
                                         <span :class="getOrderStatusClass(order.status)"
                                             class="px-2 py-1 rounded-full text-xs font-medium">
@@ -65,7 +63,7 @@
                                     </dd>
                                 </div>
                                 <div class="flex justify-between">
-                                    <dt class="text-sm text-gray-600">Total:</dt>
+                                    <dt class="text-sm text-gray-600">{{ $t('orderConfirmation.labels.total') }}</dt>
                                     <dd class="text-sm font-medium text-gray-900">${{ parseFloat(order.total).toFixed(2)
                                         }}</dd>
                                 </div>
@@ -73,12 +71,10 @@
                         </div>
 
                         <div>
-                            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Payment Method
-                            </h3>
+                            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">{{ $t('orderConfirmation.paymentMethod') }}</h3>
                             <p class="text-sm text-gray-900">{{ order.payment_method_title || 'N/A' }}</p>
 
-                            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2 mt-4">Shipping
-                                Address</h3>
+                            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2 mt-4">{{ $t('orderConfirmation.shippingAddress') }}</h3>
                             <div class="text-sm text-gray-900" v-if="order.shipping">
                                 <p>{{ order.shipping.first_name }} {{ order.shipping.last_name }}</p>
                                 <p v-if="order.shipping.company">{{ order.shipping.company }}</p>
@@ -93,7 +89,7 @@
 
                     <!-- Order Items -->
                     <div>
-                        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-4">Items Ordered</h3>
+                        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-4">{{ $t('orderConfirmation.items') }}</h3>
                         <div class="space-y-4">
                             <div v-for="item in order.line_items" :key="item.id"
                                 class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
@@ -107,8 +103,8 @@
                                 </div>
                                 <div class="flex-1">
                                     <h4 class="text-sm font-medium text-gray-900">{{ item.name }}</h4>
-                                    <p class="text-sm text-gray-600">Quantity: {{ item.quantity }}</p>
-                                    <p class="text-sm text-gray-600">Price: ${{ parseFloat(item.price).toFixed(2) }}</p>
+                                    <p class="text-sm text-gray-600">{{ $t('orderConfirmation.qty', { count: item.quantity }) }}</p>
+                                    <p class="text-sm text-gray-600">{{ $t('orderConfirmation.price', { price: '$' + parseFloat(item.price).toFixed(2) }) }}</p>
                                 </div>
                                 <div class="text-sm font-medium text-gray-900">
                                     ${{ parseFloat(item.total).toFixed(2) }}
@@ -121,22 +117,22 @@
                     <div class="border-t border-gray-200 pt-6">
                         <div class="space-y-2">
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">Subtotal:</span>
+                                <span class="text-gray-600">{{ $t('orderConfirmation.subtotal') }}</span>
                                 <span class="text-gray-900">${{ calculateSubtotal() }}</span>
                             </div>
                             <div v-if="order.shipping_lines && order.shipping_lines.length > 0"
                                 class="flex justify-between text-sm">
-                                <span class="text-gray-600">Shipping:</span>
+                                <span class="text-gray-600">{{ $t('orderConfirmation.shipping') }}</span>
                                 <span class="text-gray-900">${{ parseFloat(order.shipping_lines[0].total).toFixed(2)
                                     }}</span>
                             </div>
                             <div v-if="order.total_tax && parseFloat(order.total_tax) > 0"
                                 class="flex justify-between text-sm">
-                                <span class="text-gray-600">Tax:</span>
+                                <span class="text-gray-600">{{ $t('orderConfirmation.tax') }}</span>
                                 <span class="text-gray-900">${{ parseFloat(order.total_tax).toFixed(2) }}</span>
                             </div>
                             <div class="flex justify-between text-lg font-semibold border-t border-gray-200 pt-2">
-                                <span class="text-gray-900">Total:</span>
+                                <span class="text-gray-900">{{ $t('orderConfirmation.totalLabel') }}</span>
                                 <span class="text-gray-900">${{ parseFloat(order.total).toFixed(2) }}</span>
                             </div>
                         </div>
@@ -148,11 +144,11 @@
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <NuxtLink to="/account/orders"
                     class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    View All Orders
+                    {{ $t('orderConfirmation.viewAllOrders') }}
                 </NuxtLink>
                 <NuxtLink to="/"
                     class="inline-flex items-center justify-center px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">
-                    Continue Shopping
+                    {{ $t('orderConfirmation.continueShopping') }}
                 </NuxtLink>
             </div>
         </div>
@@ -161,6 +157,7 @@
 
 <script setup>
 const route = useRoute()
+const { t } = useI18n()
 const { getOrder, formatDate, getOrderStatusClass } = useCustomer()
 
 // Redirect to home if accessed without order ID
@@ -168,11 +165,10 @@ if (!route.params.id) {
     navigateTo('/')
 }
 
-// SEO
 useHead({
-    title: 'Order Confirmation - Your Store',
+    title: () => t('orderConfirmation.metaTitle'),
     meta: [
-        { name: 'description', content: 'Your order has been confirmed.' }
+        { name: 'description', content: () => t('orderConfirmation.metaDescription') }
     ]
 })
 
@@ -197,7 +193,7 @@ const loadOrder = async () => {
         order.value = orderData
     } catch (err) {
         console.error('Error loading order:', err)
-        error.value = 'Order not found or you do not have permission to view this order.'
+        error.value = t('orderConfirmation.notFoundFallback')
     } finally {
         isLoading.value = false
     }
@@ -205,13 +201,13 @@ const loadOrder = async () => {
 
 const formatStatus = (status) => {
     const statusMap = {
-        'pending': 'Pending Payment',
-        'processing': 'Processing',
-        'on-hold': 'On Hold',
-        'completed': 'Completed',
-        'cancelled': 'Cancelled',
-        'refunded': 'Refunded',
-        'failed': 'Failed'
+        'pending': t('orderStatus.pending'),
+        'processing': t('orderStatus.processing'),
+        'on-hold': t('orderStatus.onHold'),
+        'completed': t('orderStatus.completed'),
+        'cancelled': t('orderStatus.cancelled'),
+        'refunded': t('orderStatus.refunded'),
+        'failed': t('orderStatus.failed')
     }
     return statusMap[status] || status.charAt(0).toUpperCase() + status.slice(1)
 }

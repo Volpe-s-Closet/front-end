@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white rounded-lg shadow-sm p-6 h-fit sticky top-8">
-    <h2 class="text-xl font-semibold mb-6">Order Summary</h2>
+    <h2 class="text-xl font-semibold mb-6">{{ $t('checkout.summary.title') }}</h2>
 
     <template v-if="isMounted">
       <div class="space-y-4 mb-6">
@@ -10,7 +10,7 @@
             @error="handleImageError">
           <div class="flex-1">
             <h4 class="font-medium">{{ item.name }}</h4>
-            <p class="text-gray-600 text-sm">Qty: {{ item.quantity }}</p>
+            <p class="text-gray-600 text-sm">{{ $t('checkout.summary.qty', { count: item.quantity }) }}</p>
           </div>
           <div class="text-right">
             <p class="font-medium">{{ formatPrice(item.price * item.quantity) }}</p>
@@ -20,20 +20,20 @@
 
       <div class="border-t pt-4 space-y-2">
         <div class="flex justify-between">
-          <span>Subtotal</span>
+          <span>{{ $t('cart.subtotalLabel') }}</span>
           <span>{{ formatPrice(cartSubtotal) }}</span>
         </div>
         <div class="flex justify-between">
-          <span>Shipping</span>
+          <span>{{ $t('cart.shipping') }}</span>
           <span>{{ formatPrice(shippingCost) }}</span>
         </div>
         <div class="flex justify-between">
-          <span>Tax</span>
+          <span>{{ $t('cart.tax') }}</span>
           <span>{{ formatPrice(taxAmount) }}</span>
         </div>
         <div class="border-t pt-2">
           <div class="flex justify-between text-lg font-semibold">
-            <span>Total</span>
+            <span>{{ $t('cart.total') }}</span>
             <span>{{ formatPrice(orderTotal) }}</span>
           </div>
         </div>

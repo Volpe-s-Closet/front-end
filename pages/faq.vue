@@ -1,89 +1,97 @@
 <template>
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="text-center mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h1>
-      <p class="text-lg text-gray-600">Find answers to common questions about our store and services.</p>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ $t('faq.title') }}</h1>
+      <p class="text-lg text-gray-600">{{ $t('faq.subtitle') }}</p>
     </div>
 
     <div class="space-y-8">
       <div class="bg-white rounded-lg shadow-sm border p-6">
-        <h2 class="text-xl font-semibold text-gray-900 mb-4">Ordering & Payment</h2>
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ $t('faq.ordering.title') }}</h2>
         <div class="space-y-4">
           <div>
-            <h3 class="font-medium text-gray-900 mb-2">How do I place an order?</h3>
-            <p class="text-gray-600">Browse our products, add items to your cart, and proceed to checkout. You'll need to create an account or log in to complete your purchase.</p>
+            <h3 class="font-medium text-gray-900 mb-2">{{ $t('faq.ordering.q1') }}</h3>
+            <p class="text-gray-600">{{ $t('faq.ordering.a1') }}</p>
           </div>
           <div>
-            <h3 class="font-medium text-gray-900 mb-2">What payment methods do you accept?</h3>
-            <p class="text-gray-600">We accept all major credit cards, PayPal, and other secure payment methods through our payment processor.</p>
+            <h3 class="font-medium text-gray-900 mb-2">{{ $t('faq.ordering.q2') }}</h3>
+            <p class="text-gray-600">{{ $t('faq.ordering.a2') }}</p>
           </div>
           <div>
-            <h3 class="font-medium text-gray-900 mb-2">Is my payment information secure?</h3>
-            <p class="text-gray-600">Yes, all payment information is encrypted and processed through secure payment gateways. We never store your payment details on our servers.</p>
+            <h3 class="font-medium text-gray-900 mb-2">{{ $t('faq.ordering.q3') }}</h3>
+            <p class="text-gray-600">{{ $t('faq.ordering.a3') }}</p>
           </div>
         </div>
       </div>
 
       <div class="bg-white rounded-lg shadow-sm border p-6">
-        <h2 class="text-xl font-semibold text-gray-900 mb-4">Shipping & Delivery</h2>
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ $t('faq.shipping.title') }}</h2>
         <div class="space-y-4">
           <div>
-            <h3 class="font-medium text-gray-900 mb-2">How long does shipping take?</h3>
-            <p class="text-gray-600">Standard shipping typically takes 3-7 business days. Express shipping options are available at checkout for faster delivery.</p>
+            <h3 class="font-medium text-gray-900 mb-2">{{ $t('faq.shipping.q1') }}</h3>
+            <p class="text-gray-600">{{ $t('faq.shipping.a1') }}</p>
           </div>
           <div>
-            <h3 class="font-medium text-gray-900 mb-2">Do you ship internationally?</h3>
-            <p class="text-gray-600">Yes, we ship to most countries worldwide. Shipping costs and delivery times vary by location.</p>
+            <h3 class="font-medium text-gray-900 mb-2">{{ $t('faq.shipping.q2') }}</h3>
+            <p class="text-gray-600">{{ $t('faq.shipping.a2') }}</p>
           </div>
           <div>
-            <h3 class="font-medium text-gray-900 mb-2">How can I track my order?</h3>
-            <p class="text-gray-600">Once your order ships, you'll receive a tracking number via email. You can also check your order status in your account dashboard.</p>
+            <h3 class="font-medium text-gray-900 mb-2">{{ $t('faq.shipping.q3') }}</h3>
+            <p class="text-gray-600">{{ $t('faq.shipping.a3') }}</p>
           </div>
         </div>
       </div>
 
       <div class="bg-white rounded-lg shadow-sm border p-6">
-        <h2 class="text-xl font-semibold text-gray-900 mb-4">Returns & Exchanges</h2>
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ $t('faq.returns.title') }}</h2>
         <div class="space-y-4">
           <div>
-            <h3 class="font-medium text-gray-900 mb-2">What is your return policy?</h3>
-            <p class="text-gray-600">We offer a 30-day return policy for most items. Products must be in original condition with tags attached.</p>
+            <h3 class="font-medium text-gray-900 mb-2">{{ $t('faq.returns.q1') }}</h3>
+            <p class="text-gray-600">{{ $t('faq.returns.a1') }}</p>
           </div>
           <div>
-            <h3 class="font-medium text-gray-900 mb-2">How do I return an item?</h3>
-            <p class="text-gray-600">Contact our customer service team to initiate a return. We'll provide you with a return label and instructions.</p>
+            <h3 class="font-medium text-gray-900 mb-2">{{ $t('faq.returns.q2') }}</h3>
+            <p class="text-gray-600">{{ $t('faq.returns.a2') }}</p>
           </div>
           <div>
-            <h3 class="font-medium text-gray-900 mb-2">When will I receive my refund?</h3>
-            <p class="text-gray-600">Refunds are processed within 5-7 business days after we receive your returned item.</p>
+            <h3 class="font-medium text-gray-900 mb-2">{{ $t('faq.returns.q3') }}</h3>
+            <p class="text-gray-600">{{ $t('faq.returns.a3') }}</p>
           </div>
         </div>
       </div>
 
       <div class="bg-white rounded-lg shadow-sm border p-6">
-        <h2 class="text-xl font-semibold text-gray-900 mb-4">Account & Support</h2>
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ $t('faq.account.title') }}</h2>
         <div class="space-y-4">
           <div>
-            <h3 class="font-medium text-gray-900 mb-2">How do I create an account?</h3>
-            <p class="text-gray-600">Click on the user icon in the top right corner and select "Register" to create a new account.</p>
+            <h3 class="font-medium text-gray-900 mb-2">{{ $t('faq.account.q1') }}</h3>
+            <p class="text-gray-600">
+              {{ $t('faq.account.a1Pre') }} "{{ $t('faq.account.a1Action') }}" {{ $t('faq.account.a1Post') }}
+            </p>
           </div>
           <div>
-            <h3 class="font-medium text-gray-900 mb-2">I forgot my password. What should I do?</h3>
-            <p class="text-gray-600">On the login page, click "Forgot Password" and follow the instructions to reset your password.</p>
+            <h3 class="font-medium text-gray-900 mb-2">{{ $t('faq.account.q2') }}</h3>
+            <p class="text-gray-600">
+              {{ $t('faq.account.a2Pre') }} "{{ $t('faq.account.a2Action') }}" {{ $t('faq.account.a2Post') }}
+            </p>
           </div>
           <div>
-            <h3 class="font-medium text-gray-900 mb-2">How can I contact customer support?</h3>
-            <p class="text-gray-600">You can reach us through our <NuxtLink to="/contact" class="text-blue-600 hover:text-blue-800">contact page</NuxtLink> or email us directly at support@store.com.</p>
+            <h3 class="font-medium text-gray-900 mb-2">{{ $t('faq.account.q3') }}</h3>
+            <p class="text-gray-600">
+              {{ $t('faq.account.a3Pre') }}
+              <NuxtLink to="/contact" class="text-blue-600 hover:text-blue-800">{{ $t('faq.account.a3Link') }}</NuxtLink>
+              {{ $t('faq.account.a3Post') }}
+            </p>
           </div>
         </div>
       </div>
     </div>
 
     <div class="mt-12 text-center">
-      <p class="text-gray-600 mb-4">Still have questions?</p>
-      <BaseButton 
-        to="/contact" 
-        text="Contact Us"
+      <p class="text-gray-600 mb-4">{{ $t('faq.stillQuestions') }}</p>
+      <BaseButton
+        to="/contact"
+        :text="$t('faq.contactUs')"
         size="lg"
       />
     </div>
@@ -91,10 +99,11 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
 useHead({
-  title: 'FAQ - Store',
+  title: () => t('faq.metaTitle'),
   meta: [
-    { name: 'description', content: 'Frequently asked questions about our store, shipping, returns, and customer service.' }
+    { name: 'description', content: () => t('faq.metaDescription') }
   ]
 })
 </script>

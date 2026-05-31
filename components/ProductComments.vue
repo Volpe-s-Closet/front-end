@@ -15,7 +15,7 @@
             </svg>
           </div>
           <div class="flex-1">
-            <h4 class="text-sm font-medium text-blue-800">Your Review</h4>
+            <h4 class="text-sm font-medium text-blue-800">{{ $t('product.comments.yourReview') }}</h4>
             <div class="mt-1">
               <div class="flex items-center space-x-2 mb-2">
                 <div class="flex items-center">
@@ -24,12 +24,12 @@
                   </span>
                 </div>
                 <span class="text-xs text-blue-600">
-                  {{ userReview.status === 'approved' ? 'Published' : 'Pending Moderation' }}
+                  {{ userReview.status === 'approved' ? $t('product.comments.published') : $t('product.comments.pendingModeration') }}
                 </span>
               </div>
               <p class="text-sm text-blue-700" v-html="userReview.review"></p>
               <p class="text-xs text-blue-600 mt-2">
-                Submitted {{ formatDateTime(userReview.date_created) }}
+                {{ $t('product.comments.submittedOn', { date: formatDateTime(userReview.date_created) }) }}
               </p>
             </div>
           </div>
@@ -39,7 +39,7 @@
             @click="startEditingReview"
             class="text-xs text-blue-600 hover:text-blue-800 underline focus:outline-none"
           >
-            Edit
+            {{ $t('product.comments.edit') }}
           </button>
         </div>
       </div>
@@ -49,21 +49,21 @@
     <div v-if="canComment && (!hasUserReviewed || isEditingReview)" class="bg-gray-50 p-6 rounded-lg">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-semibold text-gray-900">
-          {{ hasUserReviewed ? 'Update Your Review' : 'Write a Review' }}
+          {{ hasUserReviewed ? $t('product.comments.updateReview') : $t('product.comments.writeReview') }}
         </h3>
         <button
           v-if="isEditingReview"
           @click="cancelEditingReview"
           class="text-sm text-gray-600 hover:text-gray-800 underline focus:outline-none"
         >
-          Cancel
+          {{ $t('product.comments.cancel') }}
         </button>
       </div>
       
       <form @submit.prevent="submitComment" class="space-y-4">
         <!-- Rating -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Rating *</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('product.comments.rating') }}</label>
           <div class="flex items-center space-x-1">
             <button
               v-for="star in 5"
@@ -81,7 +81,7 @@
         <!-- Comment Text -->
         <div>
           <label for="comment" class="block text-sm font-medium text-gray-700 mb-2">
-            Your Review *
+            {{ $t('product.comments.yourReviewLabel') }}
           </label>
           <textarea
             id="comment"
@@ -89,22 +89,22 @@
             rows="4"
             required
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-            placeholder="Share your thoughts about this product..."
+            :placeholder="$t('product.comments.reviewPlaceholder')"
           ></textarea>
         </div>
 
         <!-- Submit Button -->
         <div class="flex items-center justify-between">
           <div class="text-sm text-gray-600">
-            <span class="text-red-500">*</span> Required fields
+            <span class="text-red-500">*</span> {{ $t('product.comments.requiredFields') }}
             <div v-if="moderationRequired && !hasUserReviewed" class="text-xs text-gray-500 mt-1">
-              Reviews require approval before being published
+              {{ $t('product.comments.moderationNote') }}
             </div>
           </div>
           <BaseButton
             type="submit"
             :disabled="isSubmitting || !rating || !commentText.trim()"
-            :text="isSubmitting ? 'Submitting...' : (hasUserReviewed ? 'Update Review' : 'Submit Review')"
+            :text="isSubmitting ? $t('product.comments.submitting') : (hasUserReviewed ? $t('product.comments.update') : $t('product.comments.submit'))"
             class="bg-gray-900 hover:bg-gray-800 text-white"
           />
         </div>
@@ -117,7 +117,7 @@
         @click="isEditingReview = true"
         class="bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-medium transition-colors"
       >
-        Write a Review
+        {{ $t('product.comments.writeReviewBtn') }}
       </button>
     </div>
 
@@ -131,7 +131,9 @@
         </div>
         <div class="ml-3">
           <p class="text-sm text-blue-700">
-            Please <NuxtLink to="/login" class="font-medium underline hover:text-blue-600">log in</NuxtLink> to write a review.
+            {{ $t('product.comments.loginRequiredPre') }}
+            <NuxtLink to="/login" class="font-medium underline hover:text-blue-600">{{ $t('product.comments.loginRequiredLink') }}</NuxtLink>
+            {{ $t('product.comments.loginRequiredPost') }}
           </p>
         </div>
       </div>
@@ -149,7 +151,7 @@
         </div>
         <div class="ml-3">
           <p class="text-sm text-orange-700">
-            Only customers who have purchased this product can write a review.
+            {{ $t('product.comments.purchaseRequired') }}
           </p>
         </div>
       </div>
@@ -158,7 +160,7 @@
     <!-- Comments List -->
     <div v-if="comments && comments.length > 0" class="space-y-6">
       <h3 class="text-lg font-semibold text-gray-900">
-        Customer Reviews ({{ comments.length }})
+        {{ $t('product.comments.customerReviews', { count: comments.length }) }}
       </h3>
       
       <div class="space-y-6">
@@ -180,10 +182,10 @@
                   {{ formatDateTime(comment.date_created) }}
                 </span>
                 <span v-if="comment.verified" class="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                  Verified Purchase
+                  {{ $t('product.comments.verified') }}
                 </span>
                 <span v-if="comment.status === 'hold'" class="ml-2 bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">
-                  Pending Moderation
+                  {{ $t('product.comments.pendingModeration') }}
                 </span>
               </div>
             </div>
@@ -195,8 +197,8 @@
 
     <!-- No Comments Message -->
     <div v-else class="text-center py-8 text-gray-500">
-      <p class="text-lg">No reviews yet.</p>
-      <p class="text-sm">Be the first to review this product!</p>
+      <p class="text-lg">{{ $t('product.comments.noReviewsTitle') }}</p>
+      <p class="text-sm">{{ $t('product.comments.noReviewsHint') }}</p>
     </div>
   </div>
 </template>
@@ -215,6 +217,7 @@ const props = defineProps({
 
 const emit = defineEmits(['comment-added', 'refresh-comments'])
 
+const { t } = useI18n()
 const { user, isAuthenticated } = useAuth()
 const { createProductReview, checkPurchaseStatus, getReviewSettings } = useProducts()
 const { customerData, loadCustomerProfile } = useCustomer()
@@ -348,18 +351,18 @@ const submitComment = async () => {
     isEditingReview.value = false
     
     const { showNotification } = useNotifications()
-    const message = hasUserReviewed.value 
-      ? 'Review updated successfully!' 
-      : moderationRequired.value 
-        ? 'Review submitted successfully! It will appear after moderation.'
-        : 'Review submitted successfully!'
-    
+    const message = hasUserReviewed.value
+      ? t('product.comments.updateSuccess')
+      : moderationRequired.value
+        ? t('product.comments.createSuccessModerated')
+        : t('product.comments.createSuccess')
+
     showNotification(message, 'success')
 
   } catch (error) {
     console.error('Error submitting review:', error)
     const { showNotification } = useNotifications()
-    showNotification('Failed to submit review. Please try again.', 'error')
+    showNotification(t('product.comments.submitFailed'), 'error')
   } finally {
     isSubmitting.value = false
   }

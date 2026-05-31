@@ -164,19 +164,22 @@ const computedText = computed(() => {
   if (props.text) return props.text
   if (!props.action) return ''
 
+  // Localized fallback labels keyed off action. Callers that want a custom
+  // string still pass :text directly, so this only kicks in when omitted.
+  const { t } = useI18n()
   const texts = {
     // Form actions
-    submit: 'Submit',
-    reset: 'Reset',
-    cancel: 'Cancel',
-    save: 'Save Changes',
-    delete: 'Delete',
+    submit: t('common.submit'),
+    reset: t('common.reset'),
+    cancel: t('common.cancel'),
+    save: t('common.saveChanges'),
+    delete: t('common.delete'),
     // Cart actions
-    add: 'Add to Cart',
+    add: t('common.addToCart'),
     remove: '',
     increase: '',
     decrease: '',
-    clear: 'Clear Cart'
+    clear: t('cart.clearCart')
   }
   return texts[props.action] || ''
 })

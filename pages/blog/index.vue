@@ -4,9 +4,9 @@
     <div class="bg-white border-b">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="text-center">
-          <h1 class="text-4xl font-bold text-gray-900 mb-4">Blog</h1>
+          <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ $t('blog.title') }}</h1>
           <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover the latest insights, tips, and stories from our team
+            {{ $t('blog.subtitle') }}
           </p>
         </div>
       </div>
@@ -34,7 +34,7 @@
 
           <!-- Error State -->
           <div v-else-if="postsError" class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-            <p class="text-red-600">Failed to load blog posts. Please try again later.</p>
+            <p class="text-red-600">{{ $t('blog.loadFailed') }}</p>
           </div>
 
           <!-- Blog Posts Grid -->
@@ -45,23 +45,23 @@
           <!-- Empty State -->
           <div v-else class="bg-white rounded-lg shadow-sm p-12 text-center">
             <Icon name="heroicons:document-text" class="mx-auto h-12 w-12 text-gray-400 mb-4" />
-            <h3 class="text-lg font-medium text-gray-900 mb-2">No blog posts found</h3>
-            <p class="text-gray-500">Check back later for new content!</p>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">{{ $t('blog.noPosts') }}</h3>
+            <p class="text-gray-500">{{ $t('blog.checkBackLater') }}</p>
           </div>
 
           <!-- Pagination -->
           <div v-if="posts.length > 0" class="mt-12 flex justify-center">
             <nav class="flex items-center space-x-2">
-              <BaseButton v-if="currentPage > 1" @click="loadPage(currentPage - 1)" 
+              <BaseButton v-if="currentPage > 1" @click="loadPage(currentPage - 1)"
                 variant="outline" size="sm">
-                Previous
+                {{ $t('common.previous') }}
               </BaseButton>
               <span class="px-4 py-2 text-sm text-gray-700">
-                Page {{ currentPage }}
+                {{ $t('blog.page', { current: currentPage }) }}
               </span>
-              <BaseButton v-if="posts.length === postsPerPage" @click="loadPage(currentPage + 1)" 
+              <BaseButton v-if="posts.length === postsPerPage" @click="loadPage(currentPage + 1)"
                 variant="outline" size="sm">
-                Next
+                {{ $t('common.next') }}
               </BaseButton>
             </nav>
           </div>
@@ -70,7 +70,7 @@
         <!-- Sidebar -->
         <div class="lg:col-span-1">
           <div class="bg-white rounded-lg shadow-sm p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Categories</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ $t('blog.categoriesTitle') }}</h3>
             
             <!-- Categories Loading -->
             <div v-if="blogCategoriesLoading" class="space-y-2">
@@ -87,7 +87,7 @@
             </div>
 
             <!-- No Categories -->
-            <p v-else class="text-gray-500 text-sm">No categories available</p>
+            <p v-else class="text-gray-500 text-sm">{{ $t('blog.noCategories') }}</p>
           </div>
         </div>
       </div>
@@ -121,10 +121,11 @@ const loadPage = async (page) => {
 }
 
 // SEO
+const { t } = useI18n()
 useHead({
-  title: 'Blog',
+  title: () => t('blog.metaTitle'),
   meta: [
-    { name: 'description', content: 'Discover the latest insights, tips, and stories from our team' }
+    { name: 'description', content: () => t('blog.metaDescription') }
   ]
 })
 

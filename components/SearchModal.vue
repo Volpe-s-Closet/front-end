@@ -41,7 +41,7 @@
                   <input
                     ref="searchInput"
                     type="text"
-                    placeholder="Search products..."
+                    :placeholder="$t('search.placeholder')"
                     class="w-full pl-12 pr-12 py-4 text-lg border-0 bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors focus:outline-none"
                     v-model="localSearchQuery"
                     @keydown="handleKeydown"
@@ -91,10 +91,10 @@
                 >
                   <div class="p-6">
                     <div class="text-sm text-gray-500 mb-3">
-                      <span v-if="searchResults.length > 0">{{ searchResults.length }} results found</span>
-                      <span v-else-if="isSearching">Searching...</span>
-                      <span v-else>No results found</span>
-                      <span class="ml-2 text-xs">• Press Enter to view all results</span>
+                      <span v-if="searchResults.length > 0">{{ $t('search.resultsFound', { count: searchResults.length }) }}</span>
+                      <span v-else-if="isSearching">{{ $t('search.searching') }}</span>
+                      <span v-else>{{ $t('search.noResults') }}</span>
+                      <span class="ml-2 text-xs">· {{ $t('search.pressEnterAll') }}</span>
                     </div>
 
                     <!-- State swap: loading / results / empty -->
@@ -147,7 +147,7 @@
                               {{ result.name }}
                             </div>
                             <div class="text-sm text-gray-500 truncate">
-                              {{ result.category || 'Product' }}
+                              {{ result.category || $t('product.featuredBadge') }}
                             </div>
                           </div>
                           <div class="text-sm font-medium text-gray-900">
@@ -158,7 +158,7 @@
                         <!-- Show more results indicator -->
                         <div v-if="searchResults.length > 5" class="text-center py-2">
                           <span class="text-xs text-gray-500">
-                            +{{ searchResults.length - 5 }} more results • Press Enter to see all
+                            {{ $t('search.moreResults', { count: searchResults.length - 5 }) }}
                           </span>
                         </div>
                       </div>
@@ -171,8 +171,8 @@
                             <div class="h-8 w-8 mx-auto mb-2 bg-gray-200 rounded"></div>
                           </template>
                         </ClientOnly>
-                        <p class="text-sm">No products found for "{{ localSearchQuery }}"</p>
-                        <p class="text-xs mt-1">Try different keywords or press Enter to search all products</p>
+                        <p class="text-sm">{{ $t('search.noProductsFound', { query: localSearchQuery }) }}</p>
+                        <p class="text-xs mt-1">{{ $t('search.tryDifferent') }}</p>
                       </div>
                     </Transition>
                   </div>
@@ -186,26 +186,26 @@
                   <div class="flex items-center flex-wrap gap-x-4 gap-y-2">
                     <span class="flex items-center">
                       <kbd class="px-2 py-1 bg-white border border-gray-200 rounded text-xs">↑↓</kbd>
-                      <span class="ml-2">navigate</span>
+                      <span class="ml-2">{{ $t('search.hints.navigate') }}</span>
                     </span>
                     <span class="flex items-center">
                       <kbd class="px-2 py-1 bg-white border border-gray-200 rounded text-xs">Enter</kbd>
-                      <span class="ml-2">select</span>
+                      <span class="ml-2">{{ $t('search.hints.select') }}</span>
                     </span>
                     <span class="flex items-center">
                       <kbd class="px-2 py-1 bg-white border border-gray-200 rounded text-xs">Tab</kbd>
-                      <span class="ml-2">focus</span>
+                      <span class="ml-2">{{ $t('search.hints.focus') }}</span>
                     </span>
                     <span class="flex items-center">
                       <kbd class="px-2 py-1 bg-white border border-gray-200 rounded text-xs">Esc</kbd>
-                      <span class="ml-2">close</span>
+                      <span class="ml-2">{{ $t('search.hints.close') }}</span>
                     </span>
                   </div>
                 </div>
 
                 <!-- Mobile footer - helpful text -->
                 <div class="sm:hidden text-center text-xs text-gray-500">
-                  Type to search products
+                  {{ $t('search.typeToSearch') }}
                 </div>
               </div>
             </div>

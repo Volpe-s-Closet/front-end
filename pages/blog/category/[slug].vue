@@ -25,11 +25,11 @@
     <div v-else-if="error" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
         <Icon name="heroicons:exclamation-triangle" class="mx-auto h-12 w-12 text-red-400 mb-4" />
-        <h1 class="text-2xl font-bold text-red-900 mb-2">Category Not Found</h1>
-        <p class="text-red-600 mb-6">The blog category you're looking for doesn't exist.</p>
+        <h1 class="text-2xl font-bold text-red-900 mb-2">{{ $t('blog.category.notFoundTitle') }}</h1>
+        <p class="text-red-600 mb-6">{{ $t('blog.category.notFoundHint') }}</p>
         <NuxtLink to="/blog" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
           <Icon name="heroicons:arrow-left" class="mr-2 h-4 w-4" />
-          Back to Blog
+          {{ $t('blog.category.backToBlog') }}
         </NuxtLink>
       </div>
     </div>
@@ -40,16 +40,16 @@
       <div class="mb-8">
         <NuxtLink to="/blog" class="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
           <Icon name="heroicons:arrow-left" class="mr-2 h-4 w-4" />
-          Back to Blog
+          {{ $t('blog.category.backToBlog') }}
         </NuxtLink>
       </div>
 
       <!-- Category Header -->
       <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ category?.name || 'Category' }}</h1>
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ category?.name || $t('header.nav.blog') }}</h1>
         <p v-if="category?.description" class="text-xl text-gray-600" v-html="category.description"></p>
         <div class="mt-4 text-sm text-gray-500">
-          {{ posts.length }} {{ posts.length === 1 ? 'post' : 'posts' }} in this category
+          {{ posts.length === 1 ? $t('blog.category.postsCountSingular', { count: posts.length }) : $t('blog.category.postsCount', { count: posts.length }) }}
         </div>
       </div>
 
@@ -70,7 +70,7 @@
 
       <!-- Posts Error -->
       <div v-else-if="postsError" class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-        <p class="text-red-600">Failed to load posts for this category. Please try again later.</p>
+        <p class="text-red-600">{{ $t('blog.category.loadFailed') }}</p>
       </div>
 
       <!-- Posts Grid -->
@@ -81,26 +81,26 @@
       <!-- Empty State -->
       <div v-else class="bg-white rounded-lg shadow-sm p-12 text-center">
         <Icon name="heroicons:document-text" class="mx-auto h-12 w-12 text-gray-400 mb-4" />
-        <h3 class="text-lg font-medium text-gray-900 mb-2">No posts in this category</h3>
-        <p class="text-gray-500 mb-6">This category doesn't have any published posts yet.</p>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">{{ $t('blog.category.noPosts') }}</h3>
+        <p class="text-gray-500 mb-6">{{ $t('blog.category.noPostsHint') }}</p>
         <NuxtLink to="/blog" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-          Browse All Posts
+          {{ $t('blog.category.browseAll') }}
         </NuxtLink>
       </div>
 
       <!-- Pagination -->
       <div v-if="posts.length > 0" class="mt-12 flex justify-center">
         <nav class="flex items-center space-x-2">
-          <BaseButton v-if="currentPage > 1" @click="loadPage(currentPage - 1)" 
+          <BaseButton v-if="currentPage > 1" @click="loadPage(currentPage - 1)"
             variant="outline" size="sm">
-            Previous
+            {{ $t('common.previous') }}
           </BaseButton>
           <span class="px-4 py-2 text-sm text-gray-700">
-            Page {{ currentPage }}
+            {{ $t('blog.page', { current: currentPage }) }}
           </span>
-          <BaseButton v-if="posts.length === postsPerPage" @click="loadPage(currentPage + 1)" 
+          <BaseButton v-if="posts.length === postsPerPage" @click="loadPage(currentPage + 1)"
             variant="outline" size="sm">
-            Next
+            {{ $t('common.next') }}
           </BaseButton>
         </nav>
       </div>

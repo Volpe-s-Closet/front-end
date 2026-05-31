@@ -3,20 +3,20 @@
     <div class="max-w-md w-full space-y-8">
       <div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
+          {{ $t('auth.login.title') }}
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600">
-          Or
+          {{ $t('auth.login.or') }}
           <NuxtLink to="/register" class="font-medium text-blue-600 hover:text-blue-500">
-            create a new account
+            {{ $t('auth.login.createAccount') }}
           </NuxtLink>
         </p>
       </div>
-      
+
       <form @submit.prevent="handleLogin" class="mt-8 space-y-6">
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
-            <label for="email" class="sr-only">Email address</label>
+            <label for="email" class="sr-only">{{ $t('auth.login.emailAddress') }}</label>
             <input
               id="email"
               v-model="loginForm.email"
@@ -25,11 +25,11 @@
               autocomplete="email"
               required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-              placeholder="Email address"
+              :placeholder="$t('auth.login.emailAddress')"
             >
           </div>
           <div>
-            <label for="password" class="sr-only">Password</label>
+            <label for="password" class="sr-only">{{ $t('auth.login.password') }}</label>
             <input
               id="password"
               v-model="loginForm.password"
@@ -38,7 +38,7 @@
               autocomplete="current-password"
               required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-              placeholder="Password"
+              :placeholder="$t('auth.login.password')"
             >
           </div>
         </div>
@@ -53,13 +53,13 @@
               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             >
             <label for="remember-me" class="ml-2 block text-sm text-gray-900">
-              Remember me
+              {{ $t('auth.login.rememberMe') }}
             </label>
           </div>
 
           <div class="text-sm">
             <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
-              Forgot your password?
+              {{ $t('auth.login.forgotPassword') }}
             </a>
           </div>
         </div>
@@ -77,16 +77,16 @@
           <BaseButton
             action="submit"
             :loading="loading"
-            text="Sign in"
+            :text="$t('auth.login.submit')"
             full-width
           />
         </div>
 
         <div class="text-center">
           <p class="text-sm text-gray-600">
-            Don't have an account?
+            {{ $t('auth.login.noAccount') }}
             <NuxtLink to="/register" class="font-medium text-blue-600 hover:text-blue-500">
-              Sign up here
+              {{ $t('auth.login.signUpHere') }}
             </NuxtLink>
           </p>
         </div>
@@ -100,17 +100,13 @@ definePageMeta({
   middleware: 'guest'
 })
 
+const { t } = useI18n()
 const { login, isAuthenticated } = useAuth()
 
-// SEO
 useHead({
-  title: 'Login - Your Store',
-  meta: [
-    { name: 'description', content: 'Sign in to your account to access your orders and account settings.' }
-  ]
+  title: () => t('auth.login.title')
 })
 
-// Data
 const loginForm = ref({
   email: '',
   password: '',
@@ -120,23 +116,21 @@ const loginForm = ref({
 const loading = ref(false)
 const error = ref('')
 
-// Methods
 const handleLogin = async () => {
   loading.value = true
   error.value = ''
 
   try {
     const result = await login(loginForm.value.email, loginForm.value.password)
-    
+
     if (result.success) {
-      // Redirect to account page or return URL
       const returnUrl = useRoute().query.return || '/account'
       navigateTo(returnUrl)
     } else {
-      error.value = result.error || 'Login failed. Please check your credentials.'
+      error.value = result.error || t('auth.login.errors.failed')
     }
   } catch (err) {
-    error.value = 'An unexpected error occurred. Please try again.'
+    error.value = t('auth.login.errors.unexpected')
     console.error('Login error:', err)
   } finally {
     loading.value = false

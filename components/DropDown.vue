@@ -12,10 +12,10 @@
         size === 'lg' ? 'h-6 w-6' : 'h-5 w-5'
       ]" />
       <span v-if="!hideLabel" :class="size === 'xs' ? 'hidden xs:inline' : ''">
-        {{ triggerLabel }}
+        {{ resolvedTriggerLabel }}
       </span>
       <span v-if="size === 'xs' && hideLabel" class="xs:hidden">
-        {{ placeholder }}
+        {{ resolvedPlaceholder }}
       </span>
       <Icon v-if="!hideChevron" name="heroicons:chevron-down" class="h-4 w-4 text-gray-600" />
     </button>
@@ -63,10 +63,10 @@ const props = defineProps({
     }
   },
 
-  // Trigger button label
+  // Trigger button label (defaults to a localized "Menu" when omitted)
   triggerLabel: {
     type: String,
-    default: 'Menu'
+    default: ''
   },
 
   // Trigger button icon
@@ -89,10 +89,10 @@ const props = defineProps({
     validator: (value) => ['left', 'right'].includes(value)
   },
 
-  // Placeholder text for mobile when hideLabel is true
+  // Placeholder text for mobile when hideLabel is true (also localized)
   placeholder: {
     type: String,
-    default: 'Menu'
+    default: ''
   },
 
   // Hide the trigger label on mobile
@@ -131,6 +131,10 @@ const emit = defineEmits(['item-click'])
 // Reactive state
 const isOpen = ref(false)
 const dropdownRef = ref(null)
+
+const { t } = useI18n()
+const resolvedTriggerLabel = computed(() => props.triggerLabel || t('common.menu'))
+const resolvedPlaceholder = computed(() => props.placeholder || t('common.menu'))
 
 // Methods
 const toggleDropdown = () => {

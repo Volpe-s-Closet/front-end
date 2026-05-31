@@ -1,16 +1,16 @@
 <template>
     <div class="bg-white rounded-lg shadow-sm p-6">
-        <h2 class="text-xl font-semibold mb-6">Review Your Order</h2>
+        <h2 class="text-xl font-semibold mb-6">{{ $t('checkout.review.title') }}</h2>
 
         <div class="space-y-6">
             <div>
-                <h3 class="font-medium mb-2">Contact Information</h3>
+                <h3 class="font-medium mb-2">{{ $t('checkout.review.contactInformation') }}</h3>
                 <p class="text-gray-600">{{ checkoutData.billing.email }}</p>
                 <p class="text-gray-600">{{ checkoutData.billing.phone }}</p>
             </div>
 
             <div>
-                <h3 class="font-medium mb-2">Billing Address</h3>
+                <h3 class="font-medium mb-2">{{ $t('checkout.review.billingAddress') }}</h3>
                 <p class="text-gray-600">
                     {{ checkoutData.billing.first_name }} {{ checkoutData.billing.last_name }}<br>
                     {{ checkoutData.billing.address_1 }}<br>
@@ -22,18 +22,18 @@
             </div>
 
             <div>
-                <h3 class="font-medium mb-2">Payment Method</h3>
+                <h3 class="font-medium mb-2">{{ $t('checkout.review.paymentMethod') }}</h3>
                 <div v-if="selectedSavedCard" class="flex items-center space-x-3">
                     <Icon :name="getCardIcon(selectedSavedCard.card_type)" class="h-6 w-6 text-gray-600" />
                     <div>
                         <p class="text-gray-900 font-medium">
-                            {{ selectedSavedCard.card_type }} ending in {{ selectedSavedCard.last4 }}
+                            {{ $t('checkout.payment.endingIn', { cardType: selectedSavedCard.card_type, last4: selectedSavedCard.last4 }) }}
                         </p>
                         <p class="text-sm text-gray-600">
                             {{ selectedSavedCard.billing_name }}
                         </p>
                         <p class="text-sm text-gray-600">
-                            via {{ selectedPaymentGateway?.method_title || checkoutData.payment_method_title }}
+                            {{ $t('checkout.review.via', { gateway: selectedPaymentGateway?.method_title || checkoutData.payment_method_title }) }}
                         </p>
                     </div>
                 </div>
@@ -42,14 +42,13 @@
                     <Icon :name="getCardIcon(detectCardType(newCardForm.card_number))" class="h-6 w-6 text-gray-600" />
                     <div>
                         <p class="text-gray-900 font-medium">
-                            {{ detectCardType(newCardForm.card_number) }} ending in {{
-                                newCardForm.card_number.replace(/\s/g, '').slice(-4) }}
+                            {{ $t('checkout.payment.endingIn', { cardType: detectCardType(newCardForm.card_number), last4: newCardForm.card_number.replace(/\s/g, '').slice(-4) }) }}
                         </p>
                         <p class="text-sm text-gray-600">
                             {{ newCardForm.billing_name }}
                         </p>
                         <p class="text-sm text-gray-600">
-                            via {{ selectedPaymentGateway?.method_title || checkoutData.payment_method_title }}
+                            {{ $t('checkout.review.via', { gateway: selectedPaymentGateway?.method_title || checkoutData.payment_method_title }) }}
                         </p>
                     </div>
                 </div>
@@ -64,13 +63,13 @@
                         </p>
                     </div>
                 </div>
-                <p v-else class="text-gray-600">{{ checkoutData.payment_method_title || 'Credit Card' }}</p>
+                <p v-else class="text-gray-600">{{ checkoutData.payment_method_title || $t('checkout.review.creditCard') }}</p>
             </div>
 
             <div class="flex space-x-4">
-                <BaseButton @click="$emit('back')" variant="secondary" text="Back" full-width size="lg" />
+                <BaseButton @click="$emit('back')" variant="secondary" :text="$t('common.back')" full-width size="lg" />
                 <BaseButton @click="$emit('placeOrder')" :loading="isPlacingOrder" :disabled="isPlacingOrder"
-                    variant="success" text="Place Order" full-width size="lg" />
+                    variant="success" :text="$t('checkout.review.placeOrder')" full-width size="lg" />
             </div>
         </div>
     </div>

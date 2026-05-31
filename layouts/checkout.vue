@@ -5,10 +5,10 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <NuxtLink to="/" class="text-2xl font-bold text-gray-900">
-            Store
+            {{ $t('common.store') }}
           </NuxtLink>
           <div class="text-sm text-gray-600">
-            Secure Checkout
+            {{ $t('checkout.secureCheckout') }}
             <Icon name="heroicons:lock-closed" class="inline h-4 w-4 ml-1" />
           </div>
         </div>
@@ -24,7 +24,7 @@
     <footer class="bg-white border-t mt-8">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div class="text-center text-sm text-gray-500">
-          <p>&copy; 2025 Store. Secure checkout powered by SSL encryption.</p>
+          <p>{{ $t('footer.checkoutCopyright') }}</p>
         </div>
       </div>
     </footer>

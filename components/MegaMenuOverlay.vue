@@ -61,7 +61,7 @@
 
                 <div v-else class="flex flex-col">
                   <p class="text-sm text-gray-500 mb-4">
-                    Browse the entire {{ activeMenu.label.toLowerCase() }} collection.
+                    {{ $t('megaMenu.browseAll', { category: activeMenu.label.toLowerCase() }) }}
                   </p>
                   <NuxtLink
                     v-if="activeMenu.mainCategory"
@@ -69,7 +69,7 @@
                     class="inline-flex items-center self-start px-4 py-2 text-sm font-medium text-white bg-gray-900 hover:bg-gray-700 rounded-md transition-colors"
                     @click="closeNow"
                   >
-                    Shop {{ activeMenu.label }}
+                    {{ $t('megaMenu.shop', { category: activeMenu.label }) }}
                     <ClientOnly>
                       <Icon name="heroicons:arrow-right" class="ml-2 h-4 w-4" />
                       <template #fallback>
@@ -136,7 +136,7 @@
                     >
                       <div :key="captionKey">
                         <p class="text-xs uppercase tracking-wider text-white/80 mb-1">
-                          {{ hoveredSubcategoryId ? 'Explore' : 'Featured' }}
+                          {{ hoveredSubcategoryId ? $t('megaMenu.explore') : $t('megaMenu.featured') }}
                         </p>
                         <p class="text-lg font-semibold text-white">
                           {{ displayImageAlt }}
@@ -154,7 +154,7 @@
                   @click="closeNow"
                   @mouseenter="setHoveredSubcategory(null)"
                 >
-                  View all {{ activeMenu.label.toLowerCase() }}
+                  {{ $t('megaMenu.viewAll', { category: activeMenu.label.toLowerCase() }) }}
                   <ClientOnly>
                     <Icon
                       name="heroicons:arrow-right"

@@ -4,32 +4,17 @@
     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
       <div class="flex flex-col sm:flex-row gap-4">
         <div class="flex-1">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Search Orders</label>
-          <input v-model="searchQuery" type="text" placeholder="Search by order number..."
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.orders.searchOrders') }}</label>
+          <input v-model="searchQuery" type="text" :placeholder="$t('account.orders.searchPlaceholder')"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-          <SelectBox v-model="statusFilter" :options="[
-            { value: '', label: 'All Orders' },
-            { value: 'pending', label: 'Pending Payment' },
-            { value: 'processing', label: 'Processing' },
-            { value: 'on-hold', label: 'On Hold' },
-            { value: 'completed', label: 'Completed' },
-            { value: 'cancelled', label: 'Cancelled' },
-            { value: 'refunded', label: 'Refunded' },
-            { value: 'failed', label: 'Failed' },
-            { value: 'draft', label: 'Draft' }
-          ]" placeholder="All Orders" />
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.orders.status') }}</label>
+          <SelectBox v-model="statusFilter" :options="statusFilterOptions" :placeholder="$t('account.orders.filters.allOrders')" />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
-          <SelectBox v-model="dateFilter" :options="[
-            { value: '', label: 'All Time' },
-            { value: '30', label: 'Last 30 Days' },
-            { value: '90', label: 'Last 3 Months' },
-            { value: '365', label: 'Last Year' }
-          ]" placeholder="All Time" />
+          <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.orders.dateRange') }}</label>
+          <SelectBox v-model="dateFilter" :options="dateFilterOptions" :placeholder="$t('account.orders.filters.allTime')" />
         </div>
       </div>
     </div>
@@ -50,8 +35,8 @@
           <!-- Order Header -->
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
             <div>
-              <h3 class="text-lg font-semibold">Order #{{ order.number }}</h3>
-              <p class="text-gray-600">Placed on {{ formatDate(order.date_created) }}</p>
+              <h3 class="text-lg font-semibold">{{ $t('account.orders.orderNumber', { number: order.number }) }}</h3>
+              <p class="text-gray-600">{{ $t('account.orders.placedOn', { date: formatDate(order.date_created) }) }}</p>
             </div>
             <div class="text-right mt-2 sm:mt-0">
               <p class="text-lg font-semibold">{{ formatPrice(order.total) }}</p>
@@ -66,14 +51,14 @@
 
           <!-- Order Items -->
           <div class="border-t pt-4">
-            <h4 class="font-medium mb-3">Items ({{ order.line_items.length }})</h4>
+            <h4 class="font-medium mb-3">{{ $t('account.orders.items', { count: order.line_items.length }) }}</h4>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div v-for="item in order.line_items" :key="item.id" class="flex items-center space-x-3">
                 <img :src="item.image?.src || getPlaceholderImage()" :alt="item.name"
                   class="w-12 h-12 object-cover rounded" @error="handleImageError">
                 <div class="flex-1 min-w-0">
                   <p class="font-medium text-sm truncate">{{ item.name }}</p>
-                  <p class="text-gray-600 text-sm">Qty: {{ item.quantity }}</p>
+                  <p class="text-gray-600 text-sm">{{ $t('account.orders.qty', { count: item.quantity }) }}</p>
                   <p class="text-gray-900 text-sm">{{ formatPrice(item.total) }}</p>
                 </div>
               </div>
@@ -82,20 +67,20 @@
 
           <!-- Order Actions -->
           <div class="border-t pt-4 mt-4 flex flex-col sm:flex-row gap-3">
-            <BaseButton @click="openOrderDetails(order.id)" text="View Details" size="sm" />
+            <BaseButton @click="openOrderDetails(order.id)" :text="$t('account.orders.viewDetails')" size="sm" />
 
-            <BaseButton v-if="order.status === 'pending'" @click="openPaymentModal(order.id)" text="Pay Now"
+            <BaseButton v-if="order.status === 'pending'" @click="openPaymentModal(order.id)" :text="$t('account.orders.payNow')"
               variant="primary" size="sm" />
 
             <BaseButton v-if="order.status === 'completed'" @click="reorderItems(order)"
-              :loading="reorderingOrderId === order.id" :disabled="reorderingOrderId === order.id" text="Reorder"
+              :loading="reorderingOrderId === order.id" :disabled="reorderingOrderId === order.id" :text="$t('account.orders.reorder')"
               variant="secondary" size="sm" />
 
             <BaseButton v-if="['pending', 'processing'].includes(order.status)" @click="cancelOrder(order.id)"
-              :loading="processingOrderId === order.id" :disabled="processingOrderId === order.id" text="Cancel Order"
+              :loading="processingOrderId === order.id" :disabled="processingOrderId === order.id" :text="$t('account.orders.cancelOrder')"
               variant="danger" size="sm" />
 
-            <BaseButton v-if="order.status === 'completed'" :href="`/invoice/${order.id}`" text="Download Invoice"
+            <BaseButton v-if="order.status === 'completed'" :href="`/invoice/${order.id}`" :text="$t('account.orders.downloadInvoice')"
               variant="outline" size="sm" />
           </div>
         </div>
@@ -106,16 +91,16 @@
     <div v-else class="text-center py-16">
       <Icon name="heroicons:shopping-bag" class="h-24 w-24 text-gray-300 mx-auto mb-6" />
       <h2 class="text-2xl font-semibold text-gray-900 mb-4">
-        <span v-if="hasFilters">No orders match your filters</span>
-        <span v-else>No orders yet</span>
+        <span v-if="hasFilters">{{ $t('account.orders.noMatch') }}</span>
+        <span v-else>{{ $t('account.orders.noOrders') }}</span>
       </h2>
       <p class="text-gray-600 mb-8">
-        <span v-if="hasFilters">Try adjusting your search criteria.</span>
-        <span v-else>When you place orders, they'll appear here.</span>
+        <span v-if="hasFilters">{{ $t('account.orders.tryAdjusting') }}</span>
+        <span v-else>{{ $t('account.orders.willAppear') }}</span>
       </p>
       <div class="space-x-4">
-        <BaseButton v-if="hasFilters" @click="clearFilters" text="Clear Filters" variant="secondary" size="lg" />
-        <BaseButton to="/search" text="Start Shopping" size="lg" />
+        <BaseButton v-if="hasFilters" @click="clearFilters" :text="$t('account.orders.clearFilters')" variant="secondary" size="lg" />
+        <BaseButton to="/search" :text="$t('account.orders.startShopping')" size="lg" />
       </div>
     </div>
 
@@ -123,18 +108,17 @@
     <div v-if="filteredOrders.length > 0 && totalPages > 1" class="mt-8">
       <div class="flex items-center justify-between">
         <div class="text-sm text-gray-700">
-          Showing {{ (currentPage - 1) * ordersPerPage + 1 }} to {{ Math.min(currentPage * ordersPerPage,
-            filteredOrders.length) }} of {{ filteredOrders.length }} orders
+          {{ $t('account.orders.showing', { start: (currentPage - 1) * ordersPerPage + 1, end: Math.min(currentPage * ordersPerPage, filteredOrders.length), total: filteredOrders.length }) }}
         </div>
         <nav class="flex space-x-2">
           <BaseButton @click="currentPage = Math.max(1, currentPage - 1)" :disabled="currentPage === 1"
-            variant="outline" size="sm" text="Previous" />
+            variant="outline" size="sm" :text="$t('account.orders.previous')" />
 
           <BaseButton v-for="page in Math.min(totalPages, 5)" :key="page" @click="currentPage = page"
             :variant="page === currentPage ? 'primary' : 'outline'" size="sm" :text="page.toString()" />
 
           <BaseButton @click="currentPage = Math.min(totalPages, currentPage + 1)"
-            :disabled="currentPage === totalPages" variant="outline" size="sm" text="Next" />
+            :disabled="currentPage === totalPages" variant="outline" size="sm" :text="$t('account.orders.next')" />
         </nav>
       </div>
     </div>
@@ -154,6 +138,7 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { t } = useI18n()
 const { user } = useAuth()
 const {
   customerOrders,
@@ -168,11 +153,10 @@ const { handleImageError } = useProducts()
 const { addToCart } = useCart()
 const { formatPrice } = useCurrency()
 
-// SEO
 useHead({
-  title: 'Order History - Your Store',
+  title: () => t('account.orders.metaTitle'),
   meta: [
-    { name: 'description', content: 'View and manage your order history.' }
+    { name: 'description', content: () => t('account.orders.metaDescription') }
   ]
 })
 
@@ -192,6 +176,25 @@ const showPaymentModal = ref(false)
 const selectedOrderForPayment = ref(null)
 
 // Computed
+const statusFilterOptions = computed(() => [
+  { value: '', label: t('account.orders.filters.allOrders') },
+  { value: 'pending', label: t('account.orders.filters.pending') },
+  { value: 'processing', label: t('account.orders.filters.processing') },
+  { value: 'on-hold', label: t('account.orders.filters.onHold') },
+  { value: 'completed', label: t('account.orders.filters.completed') },
+  { value: 'cancelled', label: t('account.orders.filters.cancelled') },
+  { value: 'refunded', label: t('account.orders.filters.refunded') },
+  { value: 'failed', label: t('account.orders.filters.failed') },
+  { value: 'draft', label: t('account.orders.filters.draft') }
+])
+
+const dateFilterOptions = computed(() => [
+  { value: '', label: t('account.orders.filters.allTime') },
+  { value: '30', label: t('account.orders.filters.last30') },
+  { value: '90', label: t('account.orders.filters.last3Months') },
+  { value: '365', label: t('account.orders.filters.lastYear') }
+])
+
 const filteredOrders = computed(() => {
   let filtered = [...customerOrders.value]
 
@@ -339,14 +342,14 @@ const reorderItems = async (order) => {
     }
   } catch (error) {
     console.error('Error reordering items:', error)
-    alert('Failed to reorder items. Some products may no longer be available.')
+    alert(t('account.orders.reorderFailed'))
   } finally {
     reorderingOrderId.value = null
   }
 }
 
 const cancelOrder = async (orderId) => {
-  if (!confirm('Are you sure you want to cancel this order? This action cannot be undone.')) {
+  if (!confirm(t('account.orders.confirmCancel'))) {
     return
   }
 
@@ -365,18 +368,18 @@ const cancelOrder = async (orderId) => {
       // Refresh the entire orders list to get the latest data
       await fetchOrders()
 
-      alert('Order cancelled successfully')
+      alert(t('account.orders.cancelSuccess'))
     }
   } catch (error) {
     console.error('Error cancelling order:', error)
 
     // Show error message based on the error type
-    let errorMessage = 'Failed to cancel order. Please try again.'
+    let errorMessage = t('account.orders.cancelFailed')
 
     if (error.status === 404) {
-      errorMessage = 'Order not found or cannot be cancelled.'
+      errorMessage = t('account.orders.cancelNotFound')
     } else if (error.status === 403) {
-      errorMessage = 'You do not have permission to cancel this order.'
+      errorMessage = t('account.orders.cancelForbidden')
     } else if (error.data?.message) {
       errorMessage = error.data.message
     }

@@ -8,16 +8,16 @@
             <Icon name="heroicons:squares-2x2" class="h-8 w-8 text-gray-600" />
           </div>
           <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
-            Product Categories
+            {{ $t('categories.title') }}
           </h1>
           <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Browse our organized collection to find exactly what you're looking for
+            {{ $t('categories.subtitle') }}
           </p>
 
           <!-- Search Categories -->
           <div ref="searchContainer" class="max-w-md mx-auto">
             <div class="relative">
-              <input v-model="searchQuery" type="text" placeholder="Search categories..."
+              <input v-model="searchQuery" type="text" :placeholder="$t('categories.searchPlaceholder')"
                 class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-full text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm">
               <Icon name="heroicons:magnifying-glass"
                 class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -32,19 +32,19 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Section Header -->
         <div class="text-center mb-12" v-if="!searchQuery">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">All Categories</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ $t('categories.all') }}</h2>
           <p class="text-gray-600 max-w-2xl mx-auto">
-            Browse through our comprehensive selection of product categories
+            {{ $t('categories.allSubtitle') }}
           </p>
         </div>
 
         <!-- Search Results Header -->
         <div class="text-center mb-12" v-if="searchQuery">
           <h2 class="text-3xl font-bold text-gray-900 mb-4">
-            Search Results for "{{ searchQuery }}"
+            {{ $t('categories.searchResultsFor', { query: searchQuery }) }}
           </h2>
           <p class="text-gray-600">
-            {{ filteredCategories.length }} {{ filteredCategories.length === 1 ? 'category' : 'categories' }} found
+            {{ filteredCategories.length }} {{ filteredCategories.length === 1 ? $t('categories.categoryFound') : $t('categories.categoriesFound') }}
           </p>
         </div>
 
@@ -94,14 +94,14 @@
 
               <!-- Subcategories -->
               <div v-if="category.children?.length > 0" class="mb-4">
-                <p class="text-xs font-medium text-gray-500 mb-2">Subcategories</p>
+                <p class="text-xs font-medium text-gray-500 mb-2">{{ $t('categories.subcategories') }}</p>
                 <div class="flex flex-wrap gap-1">
                   <span v-for="child in category.children.slice(0, 3)" :key="child.id"
                     class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded font-medium">
                     {{ child.name }}
                   </span>
                   <span v-if="category.children.length > 3" class="text-xs text-gray-500 px-2 py-1">
-                    +{{ category.children.length - 3 }} more
+                    {{ $t('categories.moreCount', { count: category.children.length - 3 }) }}
                   </span>
                 </div>
               </div>
@@ -109,7 +109,7 @@
               <!-- Action Indicator -->
               <div class="flex items-center justify-between pt-3 border-t border-gray-100">
                 <span class="text-gray-700 font-medium text-sm">
-                  {{ category.count }} {{ category.count === 1 ? 'product' : 'products' }}
+                  {{ category.count }} {{ category.count === 1 ? $t('categories.product') : $t('categories.products') }}
                 </span>
                 <Icon name="heroicons:arrow-right"
                   class="h-4 w-4 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-1 transition-all duration-200" />
@@ -123,14 +123,14 @@
           <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
             <Icon name="heroicons:folder-open" class="h-8 w-8 text-gray-400" />
           </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-2">No categories found</h3>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ $t('categories.noFound') }}</h3>
           <p class="text-gray-600 mb-6">
-            <span v-if="searchQuery">Try adjusting your search terms or browse all categories.</span>
-            <span v-else>No categories are available at the moment.</span>
+            <span v-if="searchQuery">{{ $t('categories.tryAdjusting') }}</span>
+            <span v-else>{{ $t('categories.noneAvailable') }}</span>
           </p>
           <button v-if="searchQuery" @click="searchQuery = ''"
             class="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200">
-            Clear Search
+            {{ $t('common.clearSearch') }}
           </button>
         </div>
       </div>
@@ -140,9 +140,9 @@
     <section v-if="!searchQuery && popularCategories.length > 0" class="py-16 bg-gray-50 border-t border-gray-100">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-2xl font-bold text-gray-900 mb-2">Popular Categories</h2>
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ $t('categories.popular') }}</h2>
           <p class="text-gray-600">
-            Most browsed categories by our customers
+            {{ $t('categories.popularSubtitle') }}
           </p>
         </div>
 
@@ -167,13 +167,13 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
 const { categories, categoriesLoading, fetchCategories } = useCategories()
 
-// SEO
 useHead({
-  title: 'Product Categories - Explore Our Complete Collection',
+  title: () => t('categories.metaTitle'),
   meta: [
-    { name: 'description', content: 'Browse our comprehensive collection of product categories. Find exactly what you\'re looking for with our organized category system and popular selections.' }
+    { name: 'description', content: () => t('categories.metaDescription') }
   ]
 })
 

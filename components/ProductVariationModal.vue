@@ -12,7 +12,7 @@
         <!-- Header -->
         <div class="flex items-center justify-between p-6 border-b">
           <h3 class="text-lg font-semibold text-gray-900">
-            Choose Options for {{ product.name }}
+            {{ $t('product.variation.title', { name: product.name }) }}
           </h3>
           <BaseButton
             @click="closeModal"
@@ -48,7 +48,7 @@
           <!-- Loading State -->
           <div v-if="isLoadingVariations" class="mb-6 text-center py-4">
             <Icon name="heroicons:arrow-path" class="h-6 w-6 animate-spin mx-auto mb-2 text-blue-600" />
-            <p class="text-gray-600">Loading variations...</p>
+            <p class="text-gray-600">{{ $t('product.variation.loading') }}</p>
           </div>
 
           <!-- Variation Attributes -->
@@ -61,10 +61,10 @@
                 v-model="selectedAttributes[attribute.name]"
                 @change="updateSelectedVariation"
                 :options="[
-                  { value: '', label: `Choose ${attribute.name}` },
+                  { value: '', label: $t('product.chooseAttribute', { attribute: attribute.name }) },
                   ...attribute.options.map(option => ({ value: option, label: option }))
                 ]"
-                :placeholder="`Choose ${attribute.name}`"
+                :placeholder="$t('product.chooseAttribute', { attribute: attribute.name })"
                 button-class="w-full"
               />
             </div>
@@ -72,13 +72,13 @@
 
           <!-- No Variations Message -->
           <div v-else class="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
-            <p class="text-yellow-800 text-sm">This product doesn't have any variations available.</p>
+            <p class="text-yellow-800 text-sm">{{ $t('product.variation.noVariations') }}</p>
           </div>
 
           <!-- Quantity -->
           <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700 mb-2">
-              Quantity
+              {{ $t('product.quantity') }}
             </label>
             <div class="flex items-center space-x-3">
               <BaseButton
@@ -105,7 +105,7 @@
           <!-- Stock Status -->
           <div v-if="selectedVariation && selectedVariation.stock_status !== 'instock'" class="mb-4">
             <span class="text-red-600 text-sm font-medium">
-              {{ selectedVariation.stock_status === 'outofstock' ? 'Out of Stock' : 'Limited Stock' }}
+              {{ selectedVariation.stock_status === 'outofstock' ? $t('product.variation.outOfStock') : $t('product.variation.limitedStock') }}
             </span>
           </div>
 
@@ -125,7 +125,7 @@
             @click="handleAddToCart"
             :disabled="!canAddToCart || isAdding"
             :loading="isAdding"
-            text="Add to Cart"
+            :text="$t('common.addToCart')"
           />
         </div>
       </div>
@@ -147,6 +147,7 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'added-to-cart'])
 
+const { t } = useI18n()
 const { addToCart, openCart, formatPrice } = useCart()
 const { getProductImage, handleImageError, getProductVariations } = useProducts()
 
@@ -215,7 +216,7 @@ const loadVariations = async () => {
     availableVariations.value = await getProductVariations(props.product.id)
   } catch (error) {
     console.error('Error loading variations:', error)
-    errorMessage.value = 'Unable to load product variations.'
+    errorMessage.value = t('product.variation.loadFailed')
   } finally {
     isLoadingVariations.value = false
   }
@@ -246,7 +247,7 @@ const updateSelectedVariation = () => {
     selectedVariation.value = matchingVariation
   } else {
     selectedVariation.value = null
-    errorMessage.value = 'This combination is not available.'
+    errorMessage.value = t('product.variation.comboUnavailable')
   }
 }
 
@@ -289,7 +290,7 @@ const handleAddToCart = async () => {
     closeModal()
   } catch (error) {
     console.error('Error adding to cart:', error)
-    errorMessage.value = 'Failed to add item to cart. Please try again.'
+    errorMessage.value = t('product.variation.addFailed')
   } finally {
     isAdding.value = false
   }

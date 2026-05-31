@@ -9,7 +9,7 @@
         <!-- Header -->
         <div class="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
           <h2 class="text-2xl font-bold text-gray-900">
-            Order #{{ order?.number }}
+            {{ $t('orderModal.title', { number: order?.number }) }}
           </h2>
           <button @click="closeModal" class="text-gray-400 hover:text-gray-600">
             <Icon name="heroicons:x-mark" class="h-6 w-6" />
@@ -28,9 +28,9 @@
         <!-- Error State -->
         <div v-else-if="error" class="p-6 text-center">
           <Icon name="heroicons:exclamation-triangle" class="h-16 w-16 text-red-300 mx-auto mb-4" />
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Error Loading Order</h3>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $t('orderModal.errorTitle') }}</h3>
           <p class="text-gray-600 mb-4">{{ error }}</p>
-          <BaseButton @click="fetchOrder" text="Try Again" variant="outline" />
+          <BaseButton @click="fetchOrder" :text="$t('orderModal.tryAgain')" variant="outline" />
         </div>
 
         <!-- Order Details -->
@@ -39,7 +39,7 @@
           <div class="p-4 bg-gray-50 rounded-lg">
             <div class="flex items-center justify-between mb-4">
               <div>
-                <p class="text-sm text-gray-600">Placed on {{ formatDate(order.date_created) }}</p>
+                <p class="text-sm text-gray-600">{{ $t('orderModal.placedOn', { date: formatDate(order.date_created) }) }}</p>
                 <span :class="[
                   'inline-flex px-3 py-1 text-sm font-semibold rounded-full mt-2',
                   getOrderStatusClass(order.status)
@@ -49,7 +49,7 @@
               </div>
               <div class="text-right">
                 <p class="text-2xl font-bold">{{ formatPrice(order.total) }}</p>
-                <p class="text-gray-600">Total</p>
+                <p class="text-gray-600">{{ $t('orderModal.total') }}</p>
               </div>
             </div>
 
@@ -66,76 +66,75 @@
                     <!-- Status-specific content -->
                     <div v-if="order.status === 'pending'" class="space-y-3">
                       <div class="flex items-center justify-between text-sm">
-                        <span class="text-gray-600">Payment Due:</span>
+                        <span class="text-gray-600">{{ $t('orderModal.labels.paymentDue') }}</span>
                         <span class="font-medium">{{ formatPrice(order.total) }}</span>
                       </div>
-                      <BaseButton @click="payNow" text="Pay Now" size="sm" class="w-full" />
+                      <BaseButton @click="payNow" :text="$t('orderModal.actions.payNow')" size="sm" class="w-full" />
                     </div>
 
                     <div v-else-if="order.status === 'refunded'" class="space-y-2">
                       <div class="flex items-center justify-between text-sm">
-                        <span class="text-gray-600">Refunded Amount:</span>
+                        <span class="text-gray-600">{{ $t('orderModal.labels.refundedAmount') }}</span>
                         <span class="font-medium text-green-600">{{ formatPrice(getRefundedAmount(order)) }}</span>
                       </div>
                       <div v-if="order.date_modified" class="flex items-center justify-between text-sm">
-                        <span class="text-gray-600">Refund Date:</span>
+                        <span class="text-gray-600">{{ $t('orderModal.labels.refundDate') }}</span>
                         <span>{{ formatDate(order.date_modified) }}</span>
                       </div>
 
 
 
                       <div v-if="order.refunds && order.refunds.length > 0" class="mt-3">
-                        <p class="text-sm font-medium text-gray-700 mb-2">Refund Details:</p>
+                        <p class="text-sm font-medium text-gray-700 mb-2">{{ $t('orderModal.labels.refundDetails') }}</p>
                         <div v-for="refund in order.refunds" :key="refund.id"
                           class="text-sm text-gray-600 bg-gray-50 p-2 rounded">
                           <div class="flex justify-between">
-                            <span>Refund #{{ refund.id }}</span>
+                            <span>{{ $t('orderModal.labels.refundNumber', { id: refund.id }) }}</span>
                             <span class="font-medium">{{ formatPrice(refund.amount) }}</span>
                           </div>
-                          <p v-if="refund.reason" class="text-xs mt-1">Reason: {{ refund.reason }}</p>
+                          <p v-if="refund.reason" class="text-xs mt-1">{{ $t('orderModal.labels.reason', { reason: refund.reason }) }}</p>
                         </div>
                       </div>
 
                       <div v-else-if="getRefundedAmount(order) > 0" class="mt-3">
-                        <p class="text-sm text-gray-600">This order has been refunded but detailed refund information is
-                          not available.</p>
+                        <p class="text-sm text-gray-600">{{ $t('orderModal.labels.noRefundDetails') }}</p>
                       </div>
                     </div>
 
                     <div v-else-if="order.status === 'failed'" class="space-y-2">
                       <div v-if="order.customer_note" class="text-sm">
-                        <span class="text-gray-600">Failure Reason:</span>
+                        <span class="text-gray-600">{{ $t('orderModal.labels.failureReason') }}</span>
                         <p class="mt-1 text-red-600">{{ order.customer_note }}</p>
                       </div>
-                      <BaseButton @click="retryPayment" text="Retry Payment" variant="outline" size="sm" />
+                      <BaseButton @click="retryPayment" :text="$t('orderModal.actions.retryPayment')" variant="outline" size="sm" />
                     </div>
 
                     <div v-else-if="order.status === 'on-hold'" class="space-y-2">
                       <div v-if="order.customer_note" class="text-sm">
-                        <span class="text-gray-600">Hold Reason:</span>
+                        <span class="text-gray-600">{{ $t('orderModal.labels.holdReason') }}</span>
                         <p class="mt-1">{{ order.customer_note }}</p>
                       </div>
                     </div>
 
                     <div v-else-if="order.status === 'processing'" class="space-y-2">
                       <div class="flex items-center justify-between text-sm">
-                        <span class="text-gray-600">Estimated Delivery:</span>
+                        <span class="text-gray-600">{{ $t('orderModal.labels.estimatedDelivery') }}</span>
                         <span>{{ getEstimatedDelivery(order) }}</span>
                       </div>
                       <div v-if="order.tracking_number" class="flex items-center justify-between text-sm">
-                        <span class="text-gray-600">Tracking Number:</span>
+                        <span class="text-gray-600">{{ $t('orderModal.labels.trackingNumber') }}</span>
                         <span class="font-mono">{{ order.tracking_number }}</span>
                       </div>
                     </div>
 
                     <div v-else-if="order.status === 'completed'" class="space-y-2">
                       <div class="flex items-center justify-between text-sm">
-                        <span class="text-gray-600">Completed on:</span>
+                        <span class="text-gray-600">{{ $t('orderModal.labels.completedOn') }}</span>
                         <span>{{ formatDate(order.date_completed || order.date_modified) }}</span>
                       </div>
                       <div class="flex space-x-2">
-                        <BaseButton @click="downloadInvoice" text="Download Invoice" variant="outline" size="sm" />
-                        <BaseButton @click="leaveReview" text="Leave Review" variant="outline" size="sm" />
+                        <BaseButton @click="downloadInvoice" :text="$t('orderModal.actions.downloadInvoice')" variant="outline" size="sm" />
+                        <BaseButton @click="leaveReview" :text="$t('orderModal.actions.leaveReview')" variant="outline" size="sm" />
                       </div>
                     </div>
                   </div>
@@ -146,7 +145,7 @@
 
           <!-- Order Items -->
           <div>
-            <h3 class="text-lg font-semibold mb-4">Items Ordered</h3>
+            <h3 class="text-lg font-semibold mb-4">{{ $t('orderModal.items') }}</h3>
             <div class="space-y-3">
               <div v-for="item in order.line_items" :key="item.id"
                 class="flex items-center space-x-4 p-3 border rounded-lg">
@@ -154,7 +153,7 @@
                   class="w-12 h-12 object-cover rounded">
                 <div class="flex-1">
                   <h4 class="font-medium">{{ item.name }}</h4>
-                  <p class="text-sm text-gray-600">Qty: {{ item.quantity }} × {{ formatPrice(item.price) }}</p>
+                  <p class="text-sm text-gray-600">{{ $t('orderModal.qtyTimes', { qty: item.quantity, price: formatPrice(item.price) }) }}</p>
                 </div>
                 <div class="text-right">
                   <p class="font-semibold">{{ formatPrice(item.total) }}</p>
@@ -166,19 +165,19 @@
             <div class="border-t pt-4 mt-4">
               <div class="space-y-2">
                 <div class="flex justify-between">
-                  <span class="text-gray-600">Subtotal:</span>
+                  <span class="text-gray-600">{{ $t('orderModal.labels.subtotal') }}</span>
                   <span>{{ formatPrice(order.total - order.total_tax - order.shipping_total) }}</span>
                 </div>
                 <div v-if="order.shipping_total > 0" class="flex justify-between">
-                  <span class="text-gray-600">Shipping:</span>
+                  <span class="text-gray-600">{{ $t('orderModal.labels.shippingLabel') }}</span>
                   <span>{{ formatPrice(order.shipping_total) }}</span>
                 </div>
                 <div v-if="order.total_tax > 0" class="flex justify-between">
-                  <span class="text-gray-600">Tax:</span>
+                  <span class="text-gray-600">{{ $t('orderModal.labels.taxLabel') }}</span>
                   <span>{{ formatPrice(order.total_tax) }}</span>
                 </div>
                 <div class="flex justify-between font-semibold text-lg border-t pt-2">
-                  <span>Total:</span>
+                  <span>{{ $t('orderModal.labels.totalLabel') }}</span>
                   <span>{{ formatPrice(order.total) }}</span>
                 </div>
               </div>
@@ -189,7 +188,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Shipping Address -->
             <div v-if="order.shipping && hasShippingAddress(order.shipping)">
-              <h3 class="text-lg font-semibold mb-3">Shipping Address</h3>
+              <h3 class="text-lg font-semibold mb-3">{{ $t('orderModal.shippingAddress') }}</h3>
               <div class="text-gray-700 space-y-1">
                 <p v-if="order.shipping.first_name || order.shipping.last_name">
                   {{ order.shipping.first_name }} {{ order.shipping.last_name }}
@@ -207,7 +206,7 @@
 
             <!-- Billing Address -->
             <div v-if="order.billing && hasBillingAddress(order.billing)">
-              <h3 class="text-lg font-semibold mb-3">Billing Address</h3>
+              <h3 class="text-lg font-semibold mb-3">{{ $t('orderModal.billingAddress') }}</h3>
               <div class="text-gray-700 space-y-1">
                 <p v-if="order.billing.first_name || order.billing.last_name">
                   {{ order.billing.first_name }} {{ order.billing.last_name }}
@@ -221,10 +220,10 @@
                 </p>
                 <p v-if="order.billing.country">{{ order.billing.country }}</p>
                 <p v-if="order.billing.email" class="mt-2">
-                  <span class="text-gray-600">Email:</span> {{ order.billing.email }}
+                  <span class="text-gray-600">{{ $t('orderModal.labels.email') }}</span> {{ order.billing.email }}
                 </p>
                 <p v-if="order.billing.phone">
-                  <span class="text-gray-600">Phone:</span> {{ order.billing.phone }}
+                  <span class="text-gray-600">{{ $t('orderModal.labels.phone') }}</span> {{ order.billing.phone }}
                 </p>
               </div>
             </div>
@@ -232,11 +231,11 @@
 
           <!-- Payment Information -->
           <div v-if="order.payment_method_title">
-            <h3 class="text-lg font-semibold mb-3">Payment Information</h3>
+            <h3 class="text-lg font-semibold mb-3">{{ $t('orderModal.paymentInformation') }}</h3>
             <div class="text-gray-700">
-              <p><span class="text-gray-600">Payment Method:</span> {{ order.payment_method_title }}</p>
+              <p><span class="text-gray-600">{{ $t('orderModal.labels.paymentMethod') }}</span> {{ order.payment_method_title }}</p>
               <p v-if="order.transaction_id" class="mt-1">
-                <span class="text-gray-600">Transaction ID:</span> {{ order.transaction_id }}
+                <span class="text-gray-600">{{ $t('orderModal.labels.transactionId') }}</span> {{ order.transaction_id }}
               </p>
             </div>
           </div>
@@ -247,17 +246,17 @@
           <div class="flex justify-between items-center">
             <div class="flex space-x-3">
               <!-- Status-specific footer actions -->
-              <BaseButton v-if="order?.status === 'pending'" @click="payNow" text="Pay Now" />
-              <BaseButton v-if="order?.status === 'failed'" @click="retryPayment" text="Retry Payment"
+              <BaseButton v-if="order?.status === 'pending'" @click="payNow" :text="$t('orderModal.actions.payNow')" />
+              <BaseButton v-if="order?.status === 'failed'" @click="retryPayment" :text="$t('orderModal.actions.retryPayment')"
                 variant="outline" />
-              <BaseButton v-if="order?.status === 'completed'" @click="downloadInvoice" text="Download Invoice"
+              <BaseButton v-if="order?.status === 'completed'" @click="downloadInvoice" :text="$t('orderModal.actions.downloadInvoice')"
                 variant="outline" />
             </div>
 
             <div class="flex space-x-3">
-              <BaseButton @click="closeModal" text="Close" variant="outline" />
+              <BaseButton @click="closeModal" :text="$t('orderModal.actions.close')" variant="outline" />
               <BaseButton v-if="['completed', 'processing'].includes(order?.status)" @click="reorderItems"
-                :loading="reordering" text="Reorder" />
+                :loading="reordering" :text="$t('orderModal.actions.reorder')" />
             </div>
           </div>
         </div>
@@ -284,6 +283,7 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'reorder'])
 
+const { t } = useI18n()
 const { user } = useAuth()
 const { getOrder, getPlaceholderImage, customerData, loadCustomerProfile } = useCustomer()
 const { formatPrice } = useCurrency()
@@ -317,7 +317,7 @@ const fetchOrder = async () => {
     order.value = orderData
   } catch (err) {
     console.error('Error fetching order:', err)
-    error.value = err.statusMessage || err.message || 'Order not found or you do not have permission to view this order.'
+    error.value = err.statusMessage || err.message || t('orderModal.errorFallback')
   } finally {
     loading.value = false
   }
@@ -365,7 +365,7 @@ const reorderItems = async () => {
     }
   } catch (error) {
     console.error('Error reordering items:', error)
-    alert('Failed to reorder items. Some products may no longer be available.')
+    alert(t('orderModal.reorderFailed'))
   } finally {
     reordering.value = false
   }
@@ -397,7 +397,7 @@ const handlePaymentSuccess = (paymentResponse) => {
   // Refresh the order data to show updated status
   fetchOrder()
   // Show success message
-  alert('Payment completed successfully! Your order is now being processed.')
+  alert(t('orderModal.paymentSuccess'))
 }
 
 const closePaymentModal = () => {
@@ -450,44 +450,44 @@ const hasBillingAddress = (billing) => {
 const getStatusInfo = (order) => {
   const statusInfo = {
     'pending-payment': {
-      title: 'Payment Required',
-      description: 'Your order is waiting for payment. Complete your payment to process the order.'
+      title: t('orderModal.info.pending.title'),
+      description: t('orderModal.info.pending.description')
     },
     'pending_payment': {
-      title: 'Payment Required',
-      description: 'Your order is waiting for payment. Complete your payment to process the order.'
+      title: t('orderModal.info.pending.title'),
+      description: t('orderModal.info.pending.description')
     },
     'pending': {
-      title: 'Payment Required',
-      description: 'Your order is waiting for payment. Complete your payment to process the order.'
+      title: t('orderModal.info.pending.title'),
+      description: t('orderModal.info.pending.description')
     },
     'processing': {
-      title: 'Order Processing',
-      description: 'Your order is being prepared and will be shipped soon.'
+      title: t('orderModal.info.processing.title'),
+      description: t('orderModal.info.processing.description')
     },
     'on-hold': {
-      title: 'Order On Hold',
-      description: 'Your order has been put on hold. Please contact us for more information.'
+      title: t('orderModal.info.onHold.title'),
+      description: t('orderModal.info.onHold.description')
     },
     'completed': {
-      title: 'Order Completed',
-      description: 'Your order has been completed and delivered.'
+      title: t('orderModal.info.completed.title'),
+      description: t('orderModal.info.completed.description')
     },
     'cancelled': {
-      title: 'Order Cancelled',
-      description: 'This order has been cancelled.'
+      title: t('orderModal.info.cancelled.title'),
+      description: t('orderModal.info.cancelled.description')
     },
     'refunded': {
-      title: 'Order Refunded',
-      description: 'This order has been refunded. See details below.'
+      title: t('orderModal.info.refunded.title'),
+      description: t('orderModal.info.refunded.description')
     },
     'failed': {
-      title: 'Payment Failed',
-      description: 'The payment for this order failed. You can retry the payment.'
+      title: t('orderModal.info.failed.title'),
+      description: t('orderModal.info.failed.description')
     },
     'draft': {
-      title: 'Draft Order',
-      description: 'This is a draft order that has not been finalized.'
+      title: t('orderModal.info.draft.title'),
+      description: t('orderModal.info.draft.description')
     }
   }
 

@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout name="account">
         <div class="bg-white rounded-lg shadow-sm p-6">
-          <h2 class="text-xl font-semibold mb-6">Change Password</h2>
+          <h2 class="text-xl font-semibold mb-6">{{ $t('account.password.title') }}</h2>
 
           <!-- Success Message -->
           <div v-if="successMessage" class="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
@@ -21,7 +21,7 @@
 
           <form @submit.prevent="changePassword" class="space-y-6">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.password.currentPassword') }}</label>
               <input
                 v-model="passwordData.current_password"
                 type="password"
@@ -33,7 +33,7 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.password.newPassword') }}</label>
               <input
                 v-model="passwordData.new_password"
                 type="password"
@@ -43,11 +43,11 @@
                 :class="{ 'border-red-500': errors.new_password }"
               >
               <p v-if="errors.new_password" class="mt-1 text-sm text-red-600">{{ errors.new_password }}</p>
-              <p class="mt-1 text-sm text-gray-600">Password must be at least 8 characters long</p>
+              <p class="mt-1 text-sm text-gray-600">{{ $t('account.password.minLength') }}</p>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('account.password.confirmPassword') }}</label>
               <input
                 v-model="passwordData.confirm_password"
                 type="password"
@@ -60,10 +60,10 @@
 
             <!-- Password Strength Indicator -->
             <div v-if="passwordData.new_password" class="space-y-2">
-              <div class="text-sm font-medium text-gray-700">Password Strength:</div>
+              <div class="text-sm font-medium text-gray-700">{{ $t('account.password.strengthLabel') }}</div>
               <div class="flex space-x-1">
-                <div 
-                  v-for="i in 4" 
+                <div
+                  v-for="i in 4"
                   :key="i"
                   class="h-2 flex-1 rounded"
                   :class="getStrengthBarClass(i)"
@@ -79,25 +79,25 @@
                 action="save"
                 :loading="updating"
                 :disabled="updating || !isFormValid"
-                text="Change Password"
+                :text="$t('account.password.submit')"
               />
               <BaseButton
                 to="/account"
                 variant="secondary"
-                text="Cancel"
+                :text="$t('common.cancel')"
               />
             </div>
           </form>
 
           <!-- Security Tips -->
           <div class="mt-8 p-4 bg-blue-50 rounded-md">
-            <h3 class="text-sm font-medium text-blue-900 mb-2">Password Security Tips:</h3>
+            <h3 class="text-sm font-medium text-blue-900 mb-2">{{ $t('account.password.tipsTitle') }}</h3>
             <ul class="text-sm text-blue-800 space-y-1">
-              <li>• Use a combination of uppercase and lowercase letters</li>
-              <li>• Include numbers and special characters</li>
-              <li>• Avoid using personal information</li>
-              <li>• Don't reuse passwords from other accounts</li>
-              <li>• Consider using a password manager</li>
+              <li>· {{ $t('account.password.tips.tip1') }}</li>
+              <li>· {{ $t('account.password.tips.tip2') }}</li>
+              <li>· {{ $t('account.password.tips.tip3') }}</li>
+              <li>· {{ $t('account.password.tips.tip4') }}</li>
+              <li>· {{ $t('account.password.tips.tip5') }}</li>
             </ul>
           </div>
         </div>
@@ -109,13 +109,13 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const { t } = useI18n()
 const { user, changePassword: authChangePassword } = useAuth()
 
-// SEO
 useHead({
-  title: 'Change Password - Your Store',
+  title: () => t('account.password.metaTitle'),
   meta: [
-    { name: 'description', content: 'Change your account password securely.' }
+    { name: 'description', content: () => t('account.password.metaDescription') }
   ]
 })
 
@@ -162,19 +162,19 @@ const validateForm = () => {
   errors.value = {}
 
   if (!passwordData.value.current_password) {
-    errors.value.current_password = 'Current password is required'
+    errors.value.current_password = t('account.password.errors.currentRequired')
   }
 
   if (!passwordData.value.new_password) {
-    errors.value.new_password = 'New password is required'
+    errors.value.new_password = t('account.password.errors.newRequired')
   } else if (passwordData.value.new_password.length < 8) {
-    errors.value.new_password = 'Password must be at least 8 characters long'
+    errors.value.new_password = t('account.password.errors.tooShort')
   }
 
   if (!passwordData.value.confirm_password) {
-    errors.value.confirm_password = 'Please confirm your new password'
+    errors.value.confirm_password = t('account.password.errors.confirmRequired')
   } else if (passwordData.value.new_password !== passwordData.value.confirm_password) {
-    errors.value.confirm_password = 'Passwords do not match'
+    errors.value.confirm_password = t('account.password.errors.mismatch')
   }
 
   return Object.keys(errors.value).length === 0
@@ -194,8 +194,8 @@ const changePassword = async () => {
     )
 
     if (result.success) {
-      successMessage.value = 'Password changed successfully!'
-      
+      successMessage.value = t('account.password.success')
+
       // Reset form
       passwordData.value = {
         current_password: '',
@@ -214,7 +214,7 @@ const changePassword = async () => {
 
   } catch (error) {
     console.error('Error changing password:', error)
-    errorMessage.value = 'Failed to change password. Please try again.'
+    errorMessage.value = t('account.password.errors.failed')
   } finally {
     updating.value = false
   }
@@ -238,10 +238,10 @@ const getStrengthTextClass = () => {
 }
 
 const getStrengthText = () => {
-  if (passwordStrength.value <= 1) return 'Weak'
-  if (passwordStrength.value <= 2) return 'Fair'
-  if (passwordStrength.value <= 3) return 'Good'
-  return 'Strong'
+  if (passwordStrength.value <= 1) return t('account.password.strength.weak')
+  if (passwordStrength.value <= 2) return t('account.password.strength.fair')
+  if (passwordStrength.value <= 3) return t('account.password.strength.good')
+  return t('account.password.strength.strong')
 }
 
 // Clear messages when form changes

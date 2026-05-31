@@ -13,62 +13,62 @@
         <nav class="bg-white rounded-lg shadow-sm p-6">
           <ul class="space-y-2">
             <li>
-              <NuxtLink 
-                to="/account" 
+              <NuxtLink
+                to="/account"
                 class="flex items-center px-3 py-2 text-sm font-medium rounded-md"
                 :class="$route.path === '/account' ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'"
               >
                 <Icon name="heroicons:user" class="h-5 w-5 mr-3" />
-                Profile
+                {{ $t('account.nav.profile') }}
               </NuxtLink>
             </li>
             <li>
-              <NuxtLink 
-                to="/account/password" 
+              <NuxtLink
+                to="/account/password"
                 class="flex items-center px-3 py-2 text-sm font-medium rounded-md"
                 :class="$route.path === '/account/password' ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'"
               >
                 <Icon name="heroicons:lock-closed" class="h-5 w-5 mr-3" />
-                Password
+                {{ $t('account.nav.password') }}
               </NuxtLink>
             </li>
             <li>
-              <NuxtLink 
-                to="/account/orders" 
+              <NuxtLink
+                to="/account/orders"
                 class="flex items-center px-3 py-2 text-sm font-medium rounded-md"
                 :class="$route.path === '/account/orders' ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'"
               >
                 <Icon name="heroicons:shopping-bag" class="h-5 w-5 mr-3" />
-                Orders
+                {{ $t('account.nav.orders') }}
               </NuxtLink>
             </li>
             <li>
-              <NuxtLink 
-                to="/account/addresses" 
+              <NuxtLink
+                to="/account/addresses"
                 class="flex items-center px-3 py-2 text-sm font-medium rounded-md"
                 :class="$route.path === '/account/addresses' ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'"
               >
                 <Icon name="heroicons:map-pin" class="h-5 w-5 mr-3" />
-                Addresses
+                {{ $t('account.nav.addresses') }}
               </NuxtLink>
             </li>
             <li>
-              <NuxtLink 
-                to="/account/payment-methods" 
+              <NuxtLink
+                to="/account/payment-methods"
                 class="flex items-center px-3 py-2 text-sm font-medium rounded-md"
                 :class="$route.path === '/account/payment-methods' ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'"
               >
                 <Icon name="heroicons:credit-card" class="h-5 w-5 mr-3" />
-                Payment Methods
+                {{ $t('account.nav.paymentMethods') }}
               </NuxtLink>
             </li>
             <li>
-              <BaseButton 
+              <BaseButton
                 @click="logout"
                 variant="danger"
                 size="sm"
                 icon="heroicons:arrow-right-on-rectangle"
-                text="Logout"
+                :text="$t('account.nav.logout')"
                 full-width
               />
             </li>
@@ -86,29 +86,29 @@
 
 <script setup>
 const { logout } = useAuth()
+const { t } = useI18n()
+const route = useRoute()
 
-// Page metadata from the page component
+// Page metadata derived from the current route — reactive to locale changes.
 const pageTitle = computed(() => {
-  const route = useRoute()
-  const titles = {
-    '/account': 'My Account',
-    '/account/password': 'Change Password',
-    '/account/orders': 'Order History',
-    '/account/addresses': 'My Addresses',
-    '/account/payment-methods': 'Payment Methods'
+  const map = {
+    '/account': t('account.pageTitles.profile'),
+    '/account/password': t('account.pageTitles.password'),
+    '/account/orders': t('account.pageTitles.orders'),
+    '/account/addresses': t('account.pageTitles.addresses'),
+    '/account/payment-methods': t('account.pageTitles.paymentMethods')
   }
-  return titles[route.path] || 'My Account'
+  return map[route.path] || t('account.pageTitles.profile')
 })
 
 const pageDescription = computed(() => {
-  const route = useRoute()
-  const descriptions = {
-    '/account': 'Manage your account settings and view your order history',
-    '/account/password': 'Update your account password',
-    '/account/orders': 'Track and manage your orders',
-    '/account/addresses': 'Manage your billing and shipping addresses',
-    '/account/payment-methods': 'Manage your saved payment methods'
+  const map = {
+    '/account': t('account.pageDescriptions.profile'),
+    '/account/password': t('account.pageDescriptions.password'),
+    '/account/orders': t('account.pageDescriptions.orders'),
+    '/account/addresses': t('account.pageDescriptions.addresses'),
+    '/account/payment-methods': t('account.pageDescriptions.paymentMethods')
   }
-  return descriptions[route.path] || 'Manage your account'
+  return map[route.path] || t('account.pageDescriptions.profile')
 })
 </script>

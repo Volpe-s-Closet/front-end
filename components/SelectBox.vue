@@ -19,7 +19,7 @@
           {{ selectedOption.label }}
         </span>
         <span v-if="size === 'xs' && hideLabel && !flagOnly" class="xs:hidden">
-          {{ placeholder }}
+          {{ resolvedPlaceholder }}
         </span>
       </div>
       <Icon name="heroicons:chevron-down" class="h-4 w-4 text-gray-600 flex-shrink-0 ml-2" />
@@ -90,10 +90,11 @@ const props = defineProps({
     validator: (value) => ['left', 'right'].includes(value)
   },
 
-  // Placeholder text for mobile when hideLabel is true
+  // Placeholder text shown on mobile when hideLabel is true. Empty string =
+  // fall back to the localized default ("Select").
   placeholder: {
     type: String,
-    default: 'Select'
+    default: ''
   },
 
   // Hide the selected label on mobile
@@ -137,6 +138,9 @@ const dropdownRef = ref(null)
 const selectedOption = computed(() => {
   return props.options.find(option => option.value === props.modelValue) || props.options[0] || {}
 })
+
+const { t } = useI18n()
+const resolvedPlaceholder = computed(() => props.placeholder || t('common.select'))
 
 // Methods
 const toggleDropdown = (event) => {

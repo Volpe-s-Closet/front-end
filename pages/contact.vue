@@ -1,17 +1,17 @@
 <template>
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="text-center mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
-      <p class="text-lg text-gray-600">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ $t('contact.title') }}</h1>
+      <p class="text-lg text-gray-600">{{ $t('contact.subtitle') }}</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
       <!-- Contact Form -->
       <div class="bg-white rounded-lg shadow-sm border p-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Send us a message</h2>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">{{ $t('contact.sendMessage') }}</h2>
         <form @submit.prevent="submitForm" class="space-y-6">
           <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">{{ $t('contact.fullName') }}</label>
             <input
               type="text"
               id="name"
@@ -21,7 +21,7 @@
             >
           </div>
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">{{ $t('contact.emailAddress') }}</label>
             <input
               type="email"
               id="email"
@@ -31,96 +31,88 @@
             >
           </div>
           <div>
-            <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+            <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">{{ $t('contact.subject') }}</label>
             <SelectBox
               v-model="form.subject"
-              :options="[
-                { value: '', label: 'Select a subject' },
-                { value: 'general', label: 'General Inquiry' },
-                { value: 'order', label: 'Order Support' },
-                { value: 'shipping', label: 'Shipping Question' },
-                { value: 'return', label: 'Return/Exchange' },
-                { value: 'technical', label: 'Technical Issue' },
-                { value: 'other', label: 'Other' }
-              ]"
-              placeholder="Select a subject"
+              :options="subjectOptions"
+              :placeholder="$t('contact.subjects.select')"
               button-class="w-full"
             />
           </div>
           <div>
-            <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+            <label for="message" class="block text-sm font-medium text-gray-700 mb-2">{{ $t('contact.message') }}</label>
             <textarea
               id="message"
               v-model="form.message"
               rows="6"
               required
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Please describe your inquiry in detail..."
+              :placeholder="$t('contact.messagePlaceholder')"
             ></textarea>
           </div>
           <BaseButton
             action="submit"
             :loading="isSubmitting"
             :disabled="isSubmitting"
-            text="Send Message"
+            :text="$t('contact.send')"
             full-width
             size="lg"
           />
         </form>
-        
+
         <div v-if="submitted" class="mt-6 p-4 bg-green-50 border border-green-200 rounded-md">
-          <p class="text-green-800">Thank you for your message! We'll get back to you within 24 hours.</p>
+          <p class="text-green-800">{{ $t('contact.success') }}</p>
         </div>
       </div>
 
       <!-- Contact Information -->
       <div class="space-y-8">
         <div class="bg-white rounded-lg shadow-sm border p-8">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Get in touch</h2>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">{{ $t('contact.getInTouch') }}</h2>
           <div class="space-y-6">
             <div class="flex items-start">
               <Icon name="heroicons:envelope" class="h-6 w-6 text-blue-600 mt-1 mr-4" />
               <div>
-                <h3 class="font-medium text-gray-900">Email</h3>
-                <p class="text-gray-600">support@store.com</p>
-                <p class="text-sm text-gray-500">We typically respond within 24 hours</p>
+                <h3 class="font-medium text-gray-900">{{ $t('contact.email') }}</h3>
+                <p class="text-gray-600">{{ $t('contact.emailValue') }}</p>
+                <p class="text-sm text-gray-500">{{ $t('contact.emailHint') }}</p>
               </div>
             </div>
             <div class="flex items-start">
               <Icon name="heroicons:phone" class="h-6 w-6 text-blue-600 mt-1 mr-4" />
               <div>
-                <h3 class="font-medium text-gray-900">Phone</h3>
-                <p class="text-gray-600">+1 (555) 123-4567</p>
-                <p class="text-sm text-gray-500">Mon-Fri 9AM-6PM EST</p>
+                <h3 class="font-medium text-gray-900">{{ $t('contact.phone') }}</h3>
+                <p class="text-gray-600">{{ $t('contact.phoneValue') }}</p>
+                <p class="text-sm text-gray-500">{{ $t('contact.phoneHint') }}</p>
               </div>
             </div>
             <div class="flex items-start">
               <Icon name="heroicons:map-pin" class="h-6 w-6 text-blue-600 mt-1 mr-4" />
               <div>
-                <h3 class="font-medium text-gray-900">Address</h3>
-                <p class="text-gray-600">123 Commerce Street<br>Business District<br>City, State 12345</p>
+                <h3 class="font-medium text-gray-900">{{ $t('contact.address') }}</h3>
+                <p class="text-gray-600 whitespace-pre-line">{{ $t('contact.addressValue') }}</p>
               </div>
             </div>
           </div>
         </div>
 
         <div class="bg-white rounded-lg shadow-sm border p-8">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-6">Business Hours</h2>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">{{ $t('contact.businessHours') }}</h2>
           <div class="space-y-2">
             <div class="flex justify-between">
-              <span class="text-gray-600">Monday - Friday</span>
-              <span class="font-medium">9:00 AM - 6:00 PM</span>
+              <span class="text-gray-600">{{ $t('contact.monFri') }}</span>
+              <span class="font-medium">{{ $t('contact.monFriHours') }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600">Saturday</span>
-              <span class="font-medium">10:00 AM - 4:00 PM</span>
+              <span class="text-gray-600">{{ $t('contact.saturday') }}</span>
+              <span class="font-medium">{{ $t('contact.saturdayHours') }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600">Sunday</span>
-              <span class="font-medium">Closed</span>
+              <span class="text-gray-600">{{ $t('contact.sunday') }}</span>
+              <span class="font-medium">{{ $t('contact.sundayClosed') }}</span>
             </div>
           </div>
-          <p class="text-sm text-gray-500 mt-4">All times are in Eastern Standard Time (EST)</p>
+          <p class="text-sm text-gray-500 mt-4">{{ $t('contact.timezoneNote') }}</p>
         </div>
       </div>
     </div>
@@ -128,12 +120,24 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
+
 useHead({
-  title: 'Contact Us - Store',
+  title: () => t('contact.metaTitle'),
   meta: [
-    { name: 'description', content: 'Get in touch with our customer support team. We\'re here to help with any questions or concerns.' }
+    { name: 'description', content: () => t('contact.metaDescription') }
   ]
 })
+
+const subjectOptions = computed(() => [
+  { value: '', label: t('contact.subjects.select') },
+  { value: 'general', label: t('contact.subjects.general') },
+  { value: 'order', label: t('contact.subjects.order') },
+  { value: 'shipping', label: t('contact.subjects.shipping') },
+  { value: 'return', label: t('contact.subjects.return') },
+  { value: 'technical', label: t('contact.subjects.technical') },
+  { value: 'other', label: t('contact.subjects.other') }
+])
 
 const form = ref({
   name: '',
@@ -147,11 +151,11 @@ const submitted = ref(false)
 
 const submitForm = async () => {
   isSubmitting.value = true
-  
+
   try {
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 1000))
-    
+
     // Reset form
     form.value = {
       name: '',
@@ -159,14 +163,13 @@ const submitForm = async () => {
       subject: '',
       message: ''
     }
-    
+
     submitted.value = true
-    
+
     // Hide success message after 5 seconds
     setTimeout(() => {
       submitted.value = false
     }, 5000)
-    
   } catch (error) {
     console.error('Error submitting form:', error)
   } finally {

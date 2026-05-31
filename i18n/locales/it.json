@@ -1,0 +1,1097 @@
+{
+  "common": {
+    "loading": "Caricamento...",
+    "save": "Salva",
+    "saveChanges": "Salva modifiche",
+    "cancel": "Annulla",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "submit": "Invia",
+    "reset": "Reimposta",
+    "back": "Indietro",
+    "next": "Avanti",
+    "previous": "Precedente",
+    "close": "Chiudi",
+    "search": "Cerca",
+    "select": "Seleziona",
+    "yes": "Sì",
+    "no": "No",
+    "menu": "Menu",
+    "language": "Lingua",
+    "notProvided": "Non disponibile",
+    "tryAgain": "Riprova",
+    "viewDetails": "Vedi dettagli",
+    "readArticle": "Leggi l'articolo",
+    "readMore": "Leggi di più",
+    "viewAll": "Vedi tutti",
+    "loadMore": "Carica altri prodotti",
+    "addToCart": "Aggiungi al carrello",
+    "selectOptions": "Scegli opzioni",
+    "default": "Predefinito",
+    "applyFilters": "Applica filtri",
+    "clearFilters": "Cancella tutti i filtri",
+    "clearSearch": "Cancella ricerca",
+    "store": "Negozio"
+  },
+  "header": {
+    "newsBanner": "Se sei a Tenerife, per ordini superiori a 50 € ci spostiamo fino a un punto centrale della tua zona per consegnarti il tuo pacco di felicità in modo più comodo. Se il tuo ordine è di importo inferiore, ne parliamo per DM per trovare insieme la migliore opzione di consegna.",
+    "logoAlt": "Logo Volpe's Closet",
+    "nav": {
+      "bags": "Borse",
+      "accessories": "Accessori",
+      "promos": "Promo",
+      "blog": "Blog",
+      "aboutUs": "Chi siamo"
+    },
+    "account": {
+      "label": "Account",
+      "profile": "Profilo",
+      "orders": "Ordini",
+      "logout": "Esci"
+    }
+  },
+  "footer": {
+    "tagline": "La tua destinazione e-commerce di fiducia per prodotti di qualità.",
+    "shop": "Negozio",
+    "categories": "Categorie",
+    "allProducts": "Tutti i prodotti",
+    "account": "Account",
+    "myAccount": "Il mio account",
+    "orderHistory": "Storico ordini",
+    "support": "Supporto",
+    "contactUs": "Contattaci",
+    "faq": "FAQ",
+    "copyright": "© 2025 Store. Tutti i diritti riservati.",
+    "privacy": "Informativa sulla privacy",
+    "terms": "Termini e condizioni",
+    "checkoutCopyright": "© 2025 Store. Checkout sicuro con crittografia SSL."
+  },
+  "mobileSidebar": {
+    "all": "Tutti i {category}"
+  },
+  "megaMenu": {
+    "browseAll": "Sfoglia l'intera collezione {category}.",
+    "shop": "Acquista {category}",
+    "viewAll": "Vedi tutti i {category}",
+    "explore": "Esplora",
+    "featured": "In evidenza"
+  },
+  "search": {
+    "placeholder": "Cerca prodotti...",
+    "resultsFound": "{count} risultati trovati",
+    "searching": "Ricerca in corso...",
+    "noResults": "Nessun risultato trovato",
+    "pressEnterAll": "Premi Invio per vedere tutti i risultati",
+    "noProductsFound": "Nessun prodotto trovato per \"{query}\"",
+    "tryDifferent": "Prova parole chiave diverse o premi Invio per cercare tra tutti i prodotti",
+    "moreResults": "+{count} altri risultati · Premi Invio per vederli tutti",
+    "typeToSearch": "Digita per cercare prodotti",
+    "hints": {
+      "navigate": "naviga",
+      "select": "seleziona",
+      "focus": "focus",
+      "close": "chiudi"
+    }
+  },
+  "cart": {
+    "title": "Carrello",
+    "subtitle": "Controlla i tuoi articoli prima del checkout",
+    "empty": "Il tuo carrello è vuoto",
+    "emptyHint": "Sembra che tu non abbia ancora aggiunto articoli al carrello.",
+    "startShopping": "Inizia a comprare",
+    "loading": "Caricamento del carrello...",
+    "items": "Articoli nel carrello ({count})",
+    "subtotal": "Subtotale:",
+    "subtotalLabel": "Subtotale",
+    "shipping": "Spedizione",
+    "tax": "Tasse",
+    "calculatedAtCheckout": "Calcolato al checkout",
+    "total": "Totale",
+    "totalLabel": "Totale:",
+    "summary": "Riepilogo ordine",
+    "proceedToCheckout": "Procedi al checkout",
+    "viewCart": "Vedi carrello",
+    "checkout": "Checkout",
+    "continueShopping": "Continua lo shopping",
+    "secureCheckout": "Checkout sicuro con crittografia SSL",
+    "youMightAlsoLike": "Potrebbe interessarti anche",
+    "removeItem": "Rimuovi articolo",
+    "confirmClear": "Sei sicuro di voler svuotare il carrello? Questa azione non può essere annullata.",
+    "clearCart": "Svuota carrello"
+  },
+  "checkout": {
+    "secureCheckout": "Checkout sicuro",
+    "steps": {
+      "information": "Informazioni",
+      "payment": "Pagamento",
+      "review": "Revisione"
+    },
+    "contact": {
+      "title": "Informazioni di contatto",
+      "loadingAddresses": "Caricamento dei tuoi indirizzi salvati...",
+      "savedLoaded": "I tuoi indirizzi salvati sono stati caricati automaticamente",
+      "loginPrompt": "Hai un account? Accedi per compilare automaticamente i tuoi indirizzi",
+      "logIn": "Accedi",
+      "firstName": "Nome",
+      "lastName": "Cognome",
+      "email": "Indirizzo email",
+      "phone": "Numero di telefono",
+      "company": "Azienda (opzionale)",
+      "billingAddress": "Indirizzo di fatturazione",
+      "shippingAddress": "Indirizzo di spedizione",
+      "addressLine1": "Indirizzo riga 1",
+      "addressLine2": "Indirizzo riga 2",
+      "city": "Città",
+      "state": "Provincia",
+      "zip": "CAP",
+      "country": "Paese",
+      "selectCountry": "Seleziona paese",
+      "shipSameAddress": "Spedisci allo stesso indirizzo",
+      "continueToPayment": "Continua al pagamento"
+    },
+    "payment": {
+      "title": "Informazioni di pagamento",
+      "creditCardOnly": "Pagamento solo con carta di credito",
+      "creditCardOnlyHint": "Per sicurezza e comodità, accettiamo solo pagamenti con carta di credito.",
+      "savedMethods": "Metodi di pagamento salvati",
+      "manageCards": "Gestisci carte",
+      "endingIn": "{cardType} con terminazione {last4}",
+      "default": "Predefinita",
+      "expires": "Scade {month}/{year}",
+      "addNewCard": "Aggiungi nuova carta",
+      "useNewCard": "Usa nuova carta",
+      "paymentProcessor": "Gateway di pagamento",
+      "choosePaymentMethod": "Scegli metodo di pagamento",
+      "addNewCardSection": "Aggiungi nuova carta",
+      "cardDetails": "Dettagli carta",
+      "cardholderName": "Nome del titolare",
+      "cardNumber": "Numero di carta",
+      "expiryDate": "Data di scadenza",
+      "cvv": "CVV",
+      "saveCardForFuture": "Salva questa carta per acquisti futuri",
+      "saveCard": "Salva carta",
+      "cardSaved": "Carta salvata con successo",
+      "secure": "Pagamento sicuro",
+      "secureHint": "I tuoi dati di pagamento sono crittografati e sicuri. Utilizziamo misure di sicurezza standard del settore.",
+      "noMethods": "Nessun metodo di pagamento disponibile",
+      "noMethodsHint": "Contatta l'assistenza per completare il tuo ordine.",
+      "reviewOrder": "Rivedi l'ordine",
+      "duplicateCard": "Questa carta è già salvata. Selezionala dalle carte salvate o usa una carta diversa.",
+      "saveFailed": "Salvataggio della carta non riuscito. Riprova."
+    },
+    "review": {
+      "title": "Rivedi il tuo ordine",
+      "contactInformation": "Informazioni di contatto",
+      "billingAddress": "Indirizzo di fatturazione",
+      "paymentMethod": "Metodo di pagamento",
+      "via": "tramite {gateway}",
+      "creditCard": "Carta di credito",
+      "placeOrder": "Conferma ordine"
+    },
+    "summary": {
+      "title": "Riepilogo ordine",
+      "qty": "Qtà: {count}"
+    },
+    "errors": {
+      "placeOrder": "Si è verificato un errore durante l'invio dell'ordine. Riprova."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Accedi al tuo account",
+      "or": "Oppure",
+      "createAccount": "crea un nuovo account",
+      "emailAddress": "Indirizzo email",
+      "password": "Password",
+      "rememberMe": "Ricordami",
+      "forgotPassword": "Password dimenticata?",
+      "submit": "Accedi",
+      "noAccount": "Non hai un account?",
+      "signUpHere": "Registrati qui",
+      "errors": {
+        "failed": "Accesso non riuscito. Verifica le tue credenziali.",
+        "unexpected": "Si è verificato un errore imprevisto. Riprova."
+      }
+    },
+    "register": {
+      "title": "Crea il tuo account",
+      "or": "Oppure",
+      "signInExisting": "accedi al tuo account esistente",
+      "firstName": "Nome",
+      "lastName": "Cognome",
+      "email": "Indirizzo email",
+      "username": "Nome utente",
+      "password": "Password",
+      "confirmPassword": "Conferma password",
+      "agreeIntro": "Accetto i",
+      "termsOfService": "Termini di servizio",
+      "and": "e l'",
+      "privacyPolicy": "Informativa sulla privacy",
+      "submit": "Crea account",
+      "haveAccount": "Hai già un account?",
+      "signInHere": "Accedi qui",
+      "errors": {
+        "passwordsMismatch": "Le password non coincidono",
+        "passwordTooShort": "La password deve avere almeno 6 caratteri",
+        "agreeTerms": "Devi accettare i Termini di servizio e l'Informativa sulla privacy",
+        "failed": "Registrazione non riuscita. Riprova.",
+        "unexpected": "Si è verificato un errore imprevisto. Riprova."
+      },
+      "success": "Account creato con successo! Controlla la tua email per verificare l'account, poi potrai accedere."
+    }
+  },
+  "home": {
+    "title": "Home - Prodotti premium e ultime storie",
+    "metaDescription": "Scopri la nostra collezione curata di prodotti premium, best seller e nuovi arrivi. Leggi storie ispiratrici dalla nostra community.",
+    "hero": {
+      "headline": "Ciao mondo",
+      "subheadline": "Collezione curata di prodotti premium pensati per elevare il tuo stile di vita",
+      "exploreCollection": "Esplora la collezione",
+      "browseCategories": "Sfoglia le categorie"
+    },
+    "featured": {
+      "title": "Prodotti in evidenza",
+      "subtitle": "Selezioni scelte a mano per te"
+    },
+    "bestSellers": {
+      "title": "Più venduti",
+      "subtitle": "Prodotti amati da migliaia di clienti in tutto il mondo",
+      "viewAll": "Vedi tutti i più venduti"
+    },
+    "newArrivals": {
+      "title": "Nuovi arrivi",
+      "subtitle": "Nuove aggiunte alla nostra collezione, solo per te",
+      "badge": "NUOVO",
+      "viewAll": "Vedi tutti i nuovi arrivi"
+    },
+    "blog": {
+      "title": "Ultime storie",
+      "subtitle": "Approfondimenti, consigli e ispirazione dalla nostra community",
+      "minRead": "{count} min di lettura",
+      "viewAll": "Vedi tutti gli articoli"
+    },
+    "videoFallback": "Il tuo browser non supporta il tag video."
+  },
+  "about": {
+    "title": "Chi siamo",
+    "metaTitle": "Chi siamo - Store",
+    "metaDescription": "Scopri la nostra storia, la nostra missione e il nostro impegno nel portarti le migliori borse e accessori. Scopri cosa ci rende diversi e perché la qualità è importante per noi.",
+    "heroSubtitle": "Scopri la storia dietro la nostra passione per offrirti le migliori borse e accessori",
+    "ourStory": "La nostra storia",
+    "ourStoryParagraph1": "Fondato con la passione per la qualità e lo stile, il nostro negozio è dedicato a offrirti la migliore selezione di borse e accessori. Ciò che è iniziato come un piccolo sogno è cresciuto fino a diventare una destinazione di fiducia per persone attente alla moda che apprezzano l'artigianato e la cura dei dettagli.",
+    "ourStoryParagraph2": "Crediamo che la borsa o l'accessorio giusto possa trasformare non solo il tuo outfit, ma l'intera giornata. Per questo curiamo con attenzione ogni pezzo della nostra collezione, assicurandoci che ogni articolo soddisfi i nostri elevati standard di qualità, durata e stile.",
+    "ourMission": "La nostra missione",
+    "ourMissionParagraph1": "La nostra missione è semplice: offrire ai clienti prodotti eccezionali che combinano funzionalità e moda. Ci impegniamo a proporre una vasta gamma di borse e accessori adatti a stili di vita, preferenze e budget diversi.",
+    "ourMissionParagraph2": "Cerchiamo di creare un'esperienza di acquisto che non riguarda solo l'acquisto di prodotti, ma la scoperta di pezzi che si abbinano davvero al tuo stile personale e arricchiscono la tua vita quotidiana.",
+    "different": "Cosa ci rende diversi",
+    "features": {
+      "curated": {
+        "title": "Selezione curata",
+        "description": "Ogni prodotto è scelto a mano per qualità, design e funzionalità."
+      },
+      "quality": {
+        "title": "Garanzia di qualità",
+        "description": "Sosteniamo ogni prodotto con il nostro impegno per la qualità e la soddisfazione del cliente."
+      },
+      "service": {
+        "title": "Servizio personalizzato",
+        "description": "Il nostro team è dedicato a fornire assistenza personalizzata e consigli esperti."
+      },
+      "delivery": {
+        "title": "Consegna locale",
+        "description": "Servizio di consegna speciale a Tenerife per ordini superiori a €50 con comodi punti di ritiro."
+      }
+    },
+    "getInTouch": "Contattaci",
+    "getInTouchParagraph": "Ci farebbe piacere sentirti! Che tu abbia domande sui nostri prodotti, abbia bisogno di consigli di stile o voglia condividere il tuo feedback, non esitare a metterti in contatto con noi.",
+    "contactUs": "Contattaci",
+    "viewFaq": "Vedi le FAQ"
+  },
+  "contact": {
+    "title": "Contattaci",
+    "metaTitle": "Contattaci - Store",
+    "metaDescription": "Mettiti in contatto con il nostro team di assistenza clienti. Siamo qui per aiutarti con qualsiasi domanda o dubbio.",
+    "subtitle": "Saremmo felici di sentirti. Inviaci un messaggio e risponderemo il prima possibile.",
+    "sendMessage": "Inviaci un messaggio",
+    "fullName": "Nome e cognome",
+    "emailAddress": "Indirizzo email",
+    "subject": "Oggetto",
+    "subjects": {
+      "select": "Seleziona un oggetto",
+      "general": "Richiesta generale",
+      "order": "Assistenza ordini",
+      "shipping": "Domanda sulla spedizione",
+      "return": "Reso/Cambio",
+      "technical": "Problema tecnico",
+      "other": "Altro"
+    },
+    "message": "Messaggio",
+    "messagePlaceholder": "Descrivi la tua richiesta in dettaglio...",
+    "send": "Invia messaggio",
+    "success": "Grazie per il tuo messaggio! Ti risponderemo entro 24 ore.",
+    "getInTouch": "Mettiti in contatto",
+    "email": "Email",
+    "emailValue": "support{'@'}store.com",
+    "emailHint": "Solitamente rispondiamo entro 24 ore",
+    "phone": "Telefono",
+    "phoneValue": "+1 (555) 123-4567",
+    "phoneHint": "Lun-Ven 9:00-18:00 EST",
+    "address": "Indirizzo",
+    "addressValue": "123 Commerce Street\nBusiness District\nCity, State 12345",
+    "businessHours": "Orari di apertura",
+    "monFri": "Lunedì - Venerdì",
+    "monFriHours": "9:00 - 18:00",
+    "saturday": "Sabato",
+    "saturdayHours": "10:00 - 16:00",
+    "sunday": "Domenica",
+    "sundayClosed": "Chiuso",
+    "timezoneNote": "Tutti gli orari sono in fuso orario EST"
+  },
+  "faq": {
+    "title": "Domande frequenti",
+    "metaTitle": "FAQ - Store",
+    "metaDescription": "Domande frequenti sul nostro negozio, spedizioni, resi e servizio clienti.",
+    "subtitle": "Trova risposte alle domande più frequenti sul nostro negozio e sui nostri servizi.",
+    "ordering": {
+      "title": "Ordini e pagamenti",
+      "q1": "Come effettuo un ordine?",
+      "a1": "Sfoglia i nostri prodotti, aggiungi articoli al carrello e procedi al checkout. Dovrai creare un account o accedere per completare l'acquisto.",
+      "q2": "Quali metodi di pagamento accettate?",
+      "a2": "Accettiamo tutte le principali carte di credito, PayPal e altri metodi di pagamento sicuri tramite il nostro processore di pagamento.",
+      "q3": "Le mie informazioni di pagamento sono sicure?",
+      "a3": "Sì, tutte le informazioni di pagamento sono crittografate ed elaborate tramite gateway di pagamento sicuri. Non memorizziamo mai i dettagli di pagamento sui nostri server."
+    },
+    "shipping": {
+      "title": "Spedizione e consegna",
+      "q1": "Quanto tempo richiede la spedizione?",
+      "a1": "La spedizione standard richiede in genere 3-7 giorni lavorativi. Al checkout sono disponibili opzioni di spedizione espressa per consegne più rapide.",
+      "q2": "Spedite anche all'estero?",
+      "a2": "Sì, spediamo nella maggior parte dei paesi del mondo. Costi e tempi di consegna variano in base alla località.",
+      "q3": "Come posso tracciare il mio ordine?",
+      "a3": "Una volta spedito l'ordine, riceverai un numero di tracking via email. Puoi anche controllare lo stato dell'ordine nella dashboard del tuo account."
+    },
+    "returns": {
+      "title": "Resi e cambi",
+      "q1": "Qual è la vostra politica di reso?",
+      "a1": "Offriamo una politica di reso di 30 giorni per la maggior parte degli articoli. I prodotti devono essere in condizioni originali con etichette attaccate.",
+      "q2": "Come posso restituire un articolo?",
+      "a2": "Contatta il nostro team di assistenza clienti per avviare un reso. Ti forniremo un'etichetta di reso e le istruzioni.",
+      "q3": "Quando riceverò il rimborso?",
+      "a3": "I rimborsi vengono elaborati entro 5-7 giorni lavorativi dalla ricezione dell'articolo restituito."
+    },
+    "account": {
+      "title": "Account e supporto",
+      "q1": "Come creo un account?",
+      "a1Pre": "Clicca sull'icona dell'utente nell'angolo in alto a destra e seleziona",
+      "a1Action": "Registrati",
+      "a1Post": "per creare un nuovo account.",
+      "q2": "Ho dimenticato la password. Cosa devo fare?",
+      "a2Pre": "Nella pagina di accesso, clicca su",
+      "a2Action": "Password dimenticata",
+      "a2Post": "e segui le istruzioni per reimpostare la password.",
+      "q3": "Come posso contattare l'assistenza clienti?",
+      "a3Pre": "Puoi contattarci tramite la nostra",
+      "a3Link": "pagina di contatto",
+      "a3Post": "o inviarci un'email direttamente a support{'@'}store.com."
+    },
+    "stillQuestions": "Hai ancora domande?",
+    "contactUs": "Contattaci"
+  },
+  "privacy": {
+    "title": "Informativa sulla privacy",
+    "metaTitle": "Informativa sulla privacy - Store",
+    "metaDescription": "Scopri come raccogliamo, utilizziamo e proteggiamo i tuoi dati personali nella nostra informativa sulla privacy.",
+    "lastUpdated": "Ultimo aggiornamento: {date}",
+    "lastUpdatedDate": "1 gennaio 2025",
+    "intro": "Ci impegniamo a proteggere la tua privacy. Questa Informativa sulla privacy spiega come raccogliamo, utilizziamo e tuteliamo le tue informazioni quando utilizzi il nostro servizio.",
+    "sections": {
+      "collect": {
+        "heading": "1. Informazioni che raccogliamo",
+        "personalSubheading": "Informazioni personali",
+        "personalIntro": "Possiamo raccogliere informazioni personali che ci fornisci direttamente, come:",
+        "personal": [
+          "Nome e dati di contatto (email, telefono, indirizzo)",
+          "Credenziali dell'account (nome utente, password)",
+          "Informazioni di pagamento (elaborate in modo sicuro tramite fornitori terzi)",
+          "Storico ordini e preferenze",
+          "Preferenze di comunicazione"
+        ],
+        "autoSubheading": "Informazioni raccolte automaticamente",
+        "autoIntro": "Quando visiti il nostro sito web, possiamo raccogliere automaticamente:",
+        "auto": [
+          "Indirizzo IP e informazioni sul dispositivo",
+          "Tipo e versione del browser",
+          "Pagine visitate e tempo trascorso sul sito",
+          "Informazioni sul sito di provenienza",
+          "Cookie e tecnologie di tracciamento simili"
+        ]
+      },
+      "use": {
+        "heading": "2. Come utilizziamo le tue informazioni",
+        "intro": "Utilizziamo le informazioni raccolte per vari scopi, tra cui:",
+        "items": [
+          "Elaborare ed evadere i tuoi ordini",
+          "Fornire assistenza clienti e rispondere alle richieste",
+          "Migliorare il nostro sito e i nostri servizi",
+          "Inviare email promozionali e comunicazioni di marketing (con il tuo consenso)",
+          "Prevenire frodi e garantire la sicurezza",
+          "Adempiere agli obblighi di legge"
+        ]
+      },
+      "sharing": {
+        "heading": "3. Condivisione delle informazioni",
+        "intro": "Non vendiamo, scambiamo né noleggiamo i tuoi dati personali a terzi. Possiamo condividere le tue informazioni nelle seguenti circostanze:",
+        "items": [
+          "Con fornitori di servizi che ci aiutano a gestire la nostra attività (gateway di pagamento, corrieri)",
+          "Quando richiesto dalla legge o per tutelare i nostri diritti",
+          "In relazione a un trasferimento aziendale o a una fusione",
+          "Con il tuo consenso esplicito"
+        ]
+      },
+      "security": {
+        "heading": "4. Sicurezza dei dati",
+        "intro": "Adottiamo misure di sicurezza adeguate per proteggere i tuoi dati personali da accessi, alterazioni, divulgazioni o distruzioni non autorizzate. Tali misure includono:",
+        "items": [
+          "Crittografia SSL per la trasmissione dei dati",
+          "Server e database sicuri",
+          "Audit di sicurezza e aggiornamenti regolari",
+          "Accesso limitato alle informazioni personali al solo personale autorizzato"
+        ]
+      },
+      "cookies": {
+        "heading": "5. Cookie e tracciamento",
+        "intro": "Utilizziamo cookie e tecnologie simili per migliorare la tua esperienza di navigazione. I cookie ci aiutano a:",
+        "items": [
+          "Ricordare le tue preferenze e i dati di accesso",
+          "Analizzare il traffico e i modelli di utilizzo del sito",
+          "Fornire contenuti e raccomandazioni personalizzati",
+          "Migliorare le funzionalità del nostro sito"
+        ],
+        "outro": "Puoi gestire le impostazioni dei cookie tramite le preferenze del browser, ma disabilitare i cookie potrebbe influire sulla funzionalità del sito."
+      },
+      "rights": {
+        "heading": "6. I tuoi diritti",
+        "intro": "A seconda della tua posizione, potresti avere i seguenti diritti relativi ai tuoi dati personali:",
+        "items": [
+          "Accesso: richiedere una copia dei dati personali che conserviamo su di te",
+          "Rettifica: richiedere la correzione di informazioni inesatte o incomplete",
+          "Cancellazione: richiedere la cancellazione dei tuoi dati personali",
+          "Portabilità: richiedere il trasferimento dei tuoi dati a un altro servizio",
+          "Opt-out: annullare l'iscrizione alle comunicazioni di marketing"
+        ]
+      },
+      "thirdParty": {
+        "heading": "7. Link di terze parti",
+        "body": "Il nostro sito può contenere link a siti web di terze parti. Non siamo responsabili delle pratiche sulla privacy o dei contenuti di tali siti esterni. Ti invitiamo a leggere le informative sulla privacy di qualsiasi sito di terze parti che visiti."
+      },
+      "children": {
+        "heading": "8. Privacy dei minori",
+        "body": "I nostri servizi non sono destinati a bambini di età inferiore a 13 anni. Non raccogliamo consapevolmente dati personali di bambini di età inferiore a 13 anni. Se veniamo a conoscenza di aver raccolto tali informazioni, prenderemo provvedimenti per eliminarle prontamente."
+      },
+      "international": {
+        "heading": "9. Trasferimenti internazionali di dati",
+        "body": "Le tue informazioni potrebbero essere trasferite ed elaborate in paesi diversi dal tuo. Garantiamo che tali trasferimenti siano conformi alle leggi vigenti sulla protezione dei dati e implementiamo le opportune misure di sicurezza."
+      },
+      "changes": {
+        "heading": "10. Modifiche a questa informativa",
+        "body": "Possiamo aggiornare di tanto in tanto questa Informativa sulla privacy. Ti informeremo di eventuali modifiche sostanziali pubblicando la nuova informativa su questa pagina e aggiornando la data di \"Ultimo aggiornamento\"."
+      },
+      "contact": {
+        "heading": "11. Contattaci",
+        "pre": "Per qualsiasi domanda su questa Informativa sulla privacy o sulle nostre pratiche relative ai dati,",
+        "linkText": "contattaci",
+        "post": "o scrivici a privacy{'@'}store.com."
+      }
+    }
+  },
+  "terms": {
+    "title": "Termini e condizioni",
+    "metaTitle": "Termini e condizioni - Store",
+    "metaDescription": "Leggi i nostri termini e condizioni per l'utilizzo del nostro negozio e-commerce e dei nostri servizi.",
+    "lastUpdated": "Ultimo aggiornamento: {date}",
+    "lastUpdatedDate": "1 gennaio 2025",
+    "intro": "Leggi attentamente questi Termini e condizioni prima di utilizzare il nostro servizio. Accedendo o utilizzando il nostro servizio, accetti di essere vincolato da questi Termini.",
+    "sections": {
+      "acceptance": {
+        "heading": "1. Accettazione dei termini",
+        "body": "Accedendo e utilizzando questo sito, accetti di essere vincolato dai termini e dalle disposizioni di questo accordo. Se non accetti quanto sopra, ti preghiamo di non utilizzare questo servizio."
+      },
+      "license": {
+        "heading": "2. Licenza d'uso",
+        "intro": "È concessa l'autorizzazione a scaricare temporaneamente una copia dei materiali presenti sul nostro sito per uso personale e non commerciale, di sola visualizzazione transitoria. Questa è la concessione di una licenza, non un trasferimento di proprietà, e in base a questa licenza non puoi:",
+        "items": [
+          "modificare o copiare i materiali",
+          "utilizzare i materiali per qualsiasi scopo commerciale o per l'esposizione pubblica",
+          "tentare di decompilare il software contenuto nel sito",
+          "rimuovere note di copyright o altre indicazioni proprietarie dai materiali"
+        ]
+      },
+      "productInfo": {
+        "heading": "3. Informazioni sui prodotti",
+        "body": "Ci impegniamo a fornire informazioni accurate sui prodotti, comprese descrizioni, prezzi e disponibilità. Tuttavia, non garantiamo che le descrizioni dei prodotti o altri contenuti siano accurati, completi, affidabili, attuali o privi di errori."
+      },
+      "pricing": {
+        "heading": "4. Prezzi e pagamento",
+        "body": "Tutti i prezzi sono soggetti a modifiche senza preavviso. Ci riserviamo il diritto di modificare o interrompere i prodotti in qualsiasi momento. Il pagamento deve essere ricevuto prima della spedizione dei prodotti. Accettiamo vari metodi di pagamento come mostrato durante il checkout."
+      },
+      "shipping": {
+        "heading": "5. Spedizione e consegna",
+        "body": "Faremo ogni sforzo per spedire i prodotti entro i tempi specificati. Tuttavia, le date di consegna sono stime e non siamo responsabili dei ritardi causati dai corrieri o da altre circostanze al di fuori del nostro controllo."
+      },
+      "returns": {
+        "heading": "6. Resi e rimborsi",
+        "body": "Offriamo una politica di reso di 30 giorni per la maggior parte degli articoli. I prodotti devono essere restituiti in condizioni originali con tutto l'imballaggio e le etichette. I rimborsi saranno elaborati sul metodo di pagamento originale entro 5-7 giorni lavorativi dalla ricezione dell'articolo restituito."
+      },
+      "userAccounts": {
+        "heading": "7. Account utente",
+        "body": "Quando crei un account devi fornire informazioni accurate e complete. Sei responsabile della riservatezza delle credenziali del tuo account e di tutte le attività che si verificano sotto il tuo account."
+      },
+      "privacy": {
+        "heading": "8. Informativa sulla privacy",
+        "pre": "La tua privacy è importante per noi. Consulta la nostra",
+        "linkText": "Informativa sulla privacy",
+        "post": ", che disciplina anche il tuo utilizzo del sito, per comprendere le nostre pratiche."
+      },
+      "liability": {
+        "heading": "9. Limitazione di responsabilità",
+        "body": "In nessun caso la nostra azienda o i suoi fornitori saranno responsabili per danni (inclusi, senza limitazione, danni per perdita di dati o profitti, o per interruzione dell'attività) derivanti dall'uso o dall'impossibilità di utilizzare i materiali del nostro sito."
+      },
+      "law": {
+        "heading": "10. Legge applicabile",
+        "body": "Questi termini e condizioni sono regolati e interpretati in conformità con le leggi di [La tua giurisdizione] e ti sottometti irrevocabilmente alla giurisdizione esclusiva dei tribunali di tale stato o località."
+      },
+      "changes": {
+        "heading": "11. Modifiche ai termini",
+        "body": "Ci riserviamo il diritto di modificare questi termini in qualsiasi momento senza preavviso. Utilizzando questo sito, accetti di essere vincolato dalla versione corrente di questi Termini e condizioni."
+      },
+      "contact": {
+        "heading": "12. Informazioni di contatto",
+        "pre": "Per qualsiasi domanda su questi Termini e condizioni, ti invitiamo a",
+        "linkText": "contattarci",
+        "post": "."
+      }
+    }
+  },
+  "categories": {
+    "title": "Categorie di prodotti",
+    "metaTitle": "Categorie di prodotti - Esplora la nostra collezione completa",
+    "metaDescription": "Sfoglia la nostra collezione completa di categorie di prodotti. Trova esattamente ciò che cerchi grazie al nostro sistema di categorie organizzato e alle selezioni più popolari.",
+    "subtitle": "Sfoglia la nostra collezione organizzata per trovare esattamente ciò che cerchi",
+    "searchPlaceholder": "Cerca categorie...",
+    "all": "Tutte le categorie",
+    "allSubtitle": "Sfoglia la nostra ampia selezione di categorie di prodotti",
+    "searchResultsFor": "Risultati per \"{query}\"",
+    "categoriesFound": "categorie trovate",
+    "categoryFound": "categoria trovata",
+    "subcategories": "Sottocategorie",
+    "moreCount": "+{count} altre",
+    "products": "prodotti",
+    "product": "prodotto",
+    "noFound": "Nessuna categoria trovata",
+    "tryAdjusting": "Prova a modificare i termini di ricerca o sfoglia tutte le categorie.",
+    "noneAvailable": "Nessuna categoria disponibile al momento.",
+    "popular": "Categorie popolari",
+    "popularSubtitle": "Le categorie più sfogliate dai nostri clienti"
+  },
+  "category": {
+    "metaTitleFallback": "Categoria - Your Store",
+    "breadcrumbHome": "Home",
+    "breadcrumbCategories": "Categorie",
+    "productsAvailable": "{count} prodotti disponibili",
+    "subcategories": "Sottocategorie",
+    "items": "{count} articoli",
+    "showing": "Visualizzazione di {shown} prodotti su {total}",
+    "sortBy": "Ordina per:",
+    "noProducts": "Nessun prodotto trovato",
+    "noProductsHint": "Nessun prodotto corrisponde ai filtri attuali in questa categoria.",
+    "loadMore": "Carica altri prodotti"
+  },
+  "searchPage": {
+    "metaTitle": "Tutti i prodotti - Your Store",
+    "metaDescription": "Sfoglia tutti i prodotti del nostro negozio online.",
+    "resultsFor": "Risultati per \"{query}\"",
+    "allProducts": "Tutti i prodotti",
+    "sortBy": "Ordina per:",
+    "show": "Mostra:",
+    "perPage": "per pagina",
+    "showingResults": "Visualizzazione da {start} a {end} di {total} risultati",
+    "page": "Pagina {current} di {total}",
+    "prev": "Precedente",
+    "next": "Successivo",
+    "noProducts": "Nessun prodotto trovato",
+    "tryAdjustingSearch": "Prova a modificare i termini di ricerca o i filtri.",
+    "tryAdjustingFilters": "Nessun prodotto corrisponde ai filtri attuali.",
+    "sort": {
+      "default": "Predefinito",
+      "popularity": "Popolarità",
+      "rating": "Valutazione media",
+      "latest": "Più recenti",
+      "priceAsc": "Prezzo: dal più basso al più alto",
+      "priceDesc": "Prezzo: dal più alto al più basso"
+    },
+    "view": {
+      "grid": "Griglia",
+      "list": "Lista"
+    }
+  },
+  "filters": {
+    "title": "Filtri",
+    "priceRange": "Fascia di prezzo",
+    "minPrice": "Prezzo minimo",
+    "maxPrice": "Prezzo massimo",
+    "categories": "Categorie",
+    "availability": "Disponibilità",
+    "inStock": "Disponibile",
+    "onBackorder": "In riassortimento",
+    "onSale": "In offerta",
+    "featured": "Prodotti in evidenza",
+    "clearAll": "Cancella tutti i filtri",
+    "apply": "Applica filtri"
+  },
+  "product": {
+    "notFound": "Prodotto non trovato",
+    "notFoundHint": "Il prodotto che stai cercando non esiste.",
+    "backToHome": "Torna alla home",
+    "breadcrumbHome": "Home",
+    "reviews": "({count} recensioni)",
+    "saleBadge": "Saldo!",
+    "saleSmall": "Saldo",
+    "featuredBadge": "In evidenza",
+    "noReviews": "Ancora nessuna recensione",
+    "noDescription": "Nessuna descrizione disponibile",
+    "outOfStock": "Esaurito",
+    "inStock": "Disponibile",
+    "onBackorder": "In riassortimento",
+    "stockUnknown": "Sconosciuto",
+    "stockLeft": "({count} rimasti)",
+    "availability": "Disponibilità:",
+    "quantity": "Quantità:",
+    "selectOptionsBtn": "Scegli opzioni",
+    "addToCart": "Aggiungi al carrello",
+    "sku": "SKU:",
+    "categoriesLabel": "Categorie:",
+    "tagsLabel": "Tag:",
+    "tabDescription": "Descrizione",
+    "tabReviews": "Recensioni ({count})",
+    "youMightLike": "Potrebbe piacerti anche",
+    "moreFrom": "Altri da {category}",
+    "chooseAttribute": "Scegli {attribute}",
+    "variation": {
+      "title": "Scegli le opzioni per {name}",
+      "loading": "Caricamento varianti...",
+      "noVariations": "Questo prodotto non ha varianti disponibili.",
+      "limitedStock": "Disponibilità limitata",
+      "outOfStock": "Esaurito",
+      "comboUnavailable": "Questa combinazione non è disponibile.",
+      "loadFailed": "Impossibile caricare le varianti del prodotto.",
+      "addFailed": "Aggiunta al carrello non riuscita. Riprova."
+    },
+    "comments": {
+      "yourReview": "La tua recensione",
+      "published": "Pubblicata",
+      "pendingModeration": "In attesa di moderazione",
+      "submittedOn": "Inviata il {date}",
+      "edit": "Modifica",
+      "updateReview": "Aggiorna la tua recensione",
+      "writeReview": "Scrivi una recensione",
+      "writeReviewBtn": "Scrivi una recensione",
+      "cancel": "Annulla",
+      "rating": "Valutazione *",
+      "yourReviewLabel": "La tua recensione *",
+      "reviewPlaceholder": "Condividi la tua opinione su questo prodotto...",
+      "requiredFields": "Campi obbligatori",
+      "moderationNote": "Le recensioni richiedono approvazione prima della pubblicazione",
+      "submit": "Invia recensione",
+      "submitting": "Invio in corso...",
+      "update": "Aggiorna recensione",
+      "loginRequiredPre": "Per favore",
+      "loginRequiredLink": "accedi",
+      "loginRequiredPost": "per scrivere una recensione.",
+      "purchaseRequired": "Solo i clienti che hanno acquistato questo prodotto possono scrivere una recensione.",
+      "customerReviews": "Recensioni dei clienti ({count})",
+      "verified": "Acquisto verificato",
+      "noReviewsTitle": "Ancora nessuna recensione.",
+      "noReviewsHint": "Sii il primo a recensire questo prodotto!",
+      "updateSuccess": "Recensione aggiornata con successo!",
+      "createSuccessModerated": "Recensione inviata con successo! Apparirà dopo la moderazione.",
+      "createSuccess": "Recensione inviata con successo!",
+      "submitFailed": "Invio della recensione non riuscito. Riprova."
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "metaTitle": "Blog",
+    "metaDescription": "Scopri gli ultimi approfondimenti, consigli e storie dal nostro team",
+    "subtitle": "Scopri gli ultimi approfondimenti, consigli e storie dal nostro team",
+    "loadFailed": "Impossibile caricare gli articoli del blog. Riprova più tardi.",
+    "noPosts": "Nessun articolo trovato",
+    "checkBackLater": "Torna più tardi per nuovi contenuti!",
+    "categoriesTitle": "Categorie",
+    "noCategories": "Nessuna categoria disponibile",
+    "page": "Pagina {current}",
+    "post": {
+      "notFoundTitle": "Articolo non trovato",
+      "notFoundHint": "L'articolo che stai cercando non esiste o è stato rimosso.",
+      "backToBlog": "Torna al blog",
+      "tags": "Tag:",
+      "share": "Condividi:",
+      "related": "Articoli correlati"
+    },
+    "category": {
+      "notFoundTitle": "Categoria non trovata",
+      "notFoundHint": "La categoria del blog che stai cercando non esiste.",
+      "backToBlog": "Torna al blog",
+      "postsCount": "{count} articoli in questa categoria",
+      "postsCountSingular": "{count} articolo in questa categoria",
+      "loadFailed": "Impossibile caricare gli articoli per questa categoria. Riprova più tardi.",
+      "noPosts": "Nessun articolo in questa categoria",
+      "noPostsHint": "Questa categoria non ha ancora articoli pubblicati.",
+      "browseAll": "Sfoglia tutti gli articoli"
+    }
+  },
+  "account": {
+    "metaTitle": "Il mio account - Your Store",
+    "metaDescription": "Gestisci le impostazioni del tuo account e visualizza lo storico ordini.",
+    "nav": {
+      "profile": "Profilo",
+      "password": "Password",
+      "orders": "Ordini",
+      "addresses": "Indirizzi",
+      "paymentMethods": "Metodi di pagamento",
+      "logout": "Esci"
+    },
+    "pageTitles": {
+      "profile": "Il mio account",
+      "password": "Cambia password",
+      "orders": "Storico ordini",
+      "addresses": "I miei indirizzi",
+      "paymentMethods": "Metodi di pagamento"
+    },
+    "pageDescriptions": {
+      "profile": "Gestisci le impostazioni del tuo account e visualizza lo storico ordini",
+      "password": "Aggiorna la password del tuo account",
+      "orders": "Traccia e gestisci i tuoi ordini",
+      "addresses": "Gestisci i tuoi indirizzi di fatturazione e spedizione",
+      "paymentMethods": "Gestisci i tuoi metodi di pagamento salvati"
+    },
+    "profile": {
+      "title": "Informazioni del profilo",
+      "edit": "Modifica",
+      "cancel": "Annulla",
+      "firstName": "Nome",
+      "lastName": "Cognome",
+      "email": "Email",
+      "phone": "Numero di telefono",
+      "dateOfBirth": "Data di nascita",
+      "memberSince": "Membro dal"
+    },
+    "stats": {
+      "totalOrders": "Ordini totali",
+      "totalSpent": "Spesa totale",
+      "wishlistItems": "Articoli nei preferiti"
+    },
+    "recentOrders": {
+      "title": "Ordini recenti",
+      "viewAll": "Vedi tutti",
+      "noOrders": "Ancora nessun ordine",
+      "startShopping": "Inizia a comprare",
+      "orderNumber": "Ordine #{number}"
+    },
+    "addresses": {
+      "metaTitle": "I miei indirizzi - Your Store",
+      "metaDescription": "Gestisci i tuoi indirizzi di fatturazione e spedizione.",
+      "billing": "Indirizzo di fatturazione",
+      "shipping": "Indirizzo di spedizione",
+      "edit": "Modifica",
+      "add": "Aggiungi",
+      "noBilling": "Nessun indirizzo di fatturazione",
+      "noShipping": "Nessun indirizzo di spedizione",
+      "sameAsBilling": "Uguale all'indirizzo di fatturazione",
+      "editBilling": "Modifica indirizzo di fatturazione",
+      "editShipping": "Modifica indirizzo di spedizione",
+      "form": {
+        "firstName": "Nome",
+        "lastName": "Cognome",
+        "company": "Azienda",
+        "address1": "Indirizzo riga 1",
+        "address2": "Indirizzo riga 2",
+        "city": "Città",
+        "state": "Provincia",
+        "postcode": "CAP",
+        "country": "Paese",
+        "selectCountry": "Seleziona paese",
+        "phoneRequired": "Telefono *",
+        "phoneOptional": "Telefono (opzionale)",
+        "save": "Salva indirizzo"
+      },
+      "messages": {
+        "billingUpdated": "Indirizzo di fatturazione aggiornato con successo!",
+        "shippingUpdated": "Indirizzo di spedizione aggiornato con successo!",
+        "shippingMatched": "Indirizzo di spedizione aggiornato per corrispondere a quello di fatturazione!",
+        "loadFailed": "Caricamento degli indirizzi non riuscito",
+        "saveFailed": "Salvataggio dell'indirizzo non riuscito. Riprova.",
+        "copyFailed": "Aggiornamento dell'indirizzo di spedizione non riuscito",
+        "userNotAuth": "Utente non autenticato"
+      }
+    },
+    "orders": {
+      "metaTitle": "Storico ordini - Your Store",
+      "metaDescription": "Visualizza e gestisci lo storico dei tuoi ordini.",
+      "searchOrders": "Cerca ordini",
+      "searchPlaceholder": "Cerca per numero d'ordine...",
+      "status": "Stato",
+      "dateRange": "Intervallo di date",
+      "filters": {
+        "allOrders": "Tutti gli ordini",
+        "pending": "In attesa di pagamento",
+        "processing": "In elaborazione",
+        "onHold": "In sospeso",
+        "completed": "Completato",
+        "cancelled": "Annullato",
+        "refunded": "Rimborsato",
+        "failed": "Fallito",
+        "draft": "Bozza",
+        "allTime": "Tutti i periodi",
+        "last30": "Ultimi 30 giorni",
+        "last3Months": "Ultimi 3 mesi",
+        "lastYear": "Ultimo anno"
+      },
+      "orderNumber": "Ordine #{number}",
+      "placedOn": "Effettuato il {date}",
+      "items": "Articoli ({count})",
+      "qty": "Qtà: {count}",
+      "viewDetails": "Vedi dettagli",
+      "payNow": "Paga ora",
+      "reorder": "Riordina",
+      "cancelOrder": "Annulla ordine",
+      "downloadInvoice": "Scarica fattura",
+      "noMatch": "Nessun ordine corrisponde ai filtri",
+      "noOrders": "Ancora nessun ordine",
+      "tryAdjusting": "Prova a modificare i criteri di ricerca.",
+      "willAppear": "Quando effettui ordini, appariranno qui.",
+      "clearFilters": "Cancella filtri",
+      "startShopping": "Inizia a comprare",
+      "showing": "Visualizzazione da {start} a {end} di {total} ordini",
+      "previous": "Precedente",
+      "next": "Successivo",
+      "confirmCancel": "Sei sicuro di voler annullare questo ordine? Questa azione non può essere annullata.",
+      "cancelSuccess": "Ordine annullato con successo",
+      "cancelFailed": "Annullamento dell'ordine non riuscito. Riprova.",
+      "cancelNotFound": "Ordine non trovato o non annullabile.",
+      "cancelForbidden": "Non hai il permesso di annullare questo ordine.",
+      "reorderFailed": "Riordino non riuscito. Alcuni prodotti potrebbero non essere più disponibili."
+    },
+    "password": {
+      "metaTitle": "Cambia password - Your Store",
+      "metaDescription": "Cambia la password del tuo account in modo sicuro.",
+      "title": "Cambia password",
+      "currentPassword": "Password attuale",
+      "newPassword": "Nuova password",
+      "confirmPassword": "Conferma nuova password",
+      "minLength": "La password deve avere almeno 8 caratteri",
+      "strengthLabel": "Sicurezza della password:",
+      "strength": {
+        "weak": "Debole",
+        "fair": "Discreta",
+        "good": "Buona",
+        "strong": "Forte"
+      },
+      "submit": "Cambia password",
+      "tipsTitle": "Consigli per la sicurezza della password:",
+      "tips": {
+        "tip1": "Usa una combinazione di lettere maiuscole e minuscole",
+        "tip2": "Includi numeri e caratteri speciali",
+        "tip3": "Evita di usare informazioni personali",
+        "tip4": "Non riutilizzare password di altri account",
+        "tip5": "Considera l'uso di un password manager"
+      },
+      "errors": {
+        "currentRequired": "La password attuale è obbligatoria",
+        "newRequired": "La nuova password è obbligatoria",
+        "tooShort": "La password deve avere almeno 8 caratteri",
+        "confirmRequired": "Conferma la nuova password",
+        "mismatch": "Le password non coincidono",
+        "failed": "Cambio password non riuscito. Riprova."
+      },
+      "success": "Password cambiata con successo!"
+    },
+    "paymentMethods": {
+      "metaTitle": "Metodi di pagamento - Your Store",
+      "metaDescription": "Gestisci in modo sicuro i tuoi metodi di pagamento salvati.",
+      "addMethod": "Aggiungi metodo di pagamento",
+      "endingIn": "{cardType} con terminazione {last4}",
+      "default": "Predefinito",
+      "expires": "Scade {month}/{year}",
+      "setDefault": "Imposta come predefinito",
+      "edit": "Modifica",
+      "delete": "Elimina",
+      "noneTitle": "Nessun metodo di pagamento",
+      "noneHint": "Aggiungi un metodo di pagamento per rendere il checkout più rapido e semplice.",
+      "addFirst": "Aggiungi il tuo primo metodo di pagamento",
+      "editTitle": "Modifica metodo di pagamento",
+      "addTitle": "Aggiungi metodo di pagamento",
+      "form": {
+        "cardholderName": "Nome del titolare",
+        "cardNumber": "Numero della carta",
+        "expiryDate": "Data di scadenza",
+        "cvv": "CVV",
+        "setDefault": "Imposta come metodo di pagamento predefinito",
+        "addBtn": "Aggiungi metodo di pagamento",
+        "updateBtn": "Aggiorna metodo di pagamento"
+      },
+      "demoTitle": "Sistema di pagamento demo",
+      "demoNote": "Questa è una dimostrazione. In produzione, usa un processore di pagamento sicuro come Stripe o PayPal. Non memorizzare mai i dati reali della carta.",
+      "messages": {
+        "added": "Metodo di pagamento aggiunto con successo!",
+        "updated": "Metodo di pagamento aggiornato con successo!",
+        "deleted": "Metodo di pagamento eliminato con successo!",
+        "defaultUpdated": "Metodo di pagamento predefinito aggiornato!",
+        "saveFailed": "Salvataggio del metodo di pagamento non riuscito. Riprova.",
+        "deleteFailed": "Eliminazione del metodo di pagamento non riuscita. Riprova.",
+        "defaultFailed": "Aggiornamento del metodo di pagamento predefinito non riuscito. Riprova.",
+        "fillRequired": "Compila tutti i campi obbligatori",
+        "confirmDelete": "Sei sicuro di voler eliminare questo metodo di pagamento?"
+      }
+    }
+  },
+  "orderStatus": {
+    "pending": "In attesa di pagamento",
+    "pendingPayment": "In attesa di pagamento",
+    "processing": "In elaborazione",
+    "onHold": "In sospeso",
+    "completed": "Completato",
+    "cancelled": "Annullato",
+    "refunded": "Rimborsato",
+    "failed": "Fallito",
+    "draft": "Bozza"
+  },
+  "orderModal": {
+    "title": "Ordine #{number}",
+    "errorTitle": "Errore di caricamento dell'ordine",
+    "errorFallback": "Ordine non trovato o non hai il permesso di visualizzarlo.",
+    "tryAgain": "Riprova",
+    "placedOn": "Effettuato il {date}",
+    "total": "Totale",
+    "info": {
+      "pending": {
+        "title": "Pagamento richiesto",
+        "description": "Il tuo ordine è in attesa di pagamento. Completa il pagamento per processare l'ordine."
+      },
+      "processing": {
+        "title": "Ordine in elaborazione",
+        "description": "Il tuo ordine è in preparazione e verrà spedito a breve."
+      },
+      "onHold": {
+        "title": "Ordine in sospeso",
+        "description": "Il tuo ordine è stato messo in sospeso. Contattaci per maggiori informazioni."
+      },
+      "completed": {
+        "title": "Ordine completato",
+        "description": "Il tuo ordine è stato completato e consegnato."
+      },
+      "cancelled": {
+        "title": "Ordine annullato",
+        "description": "Questo ordine è stato annullato."
+      },
+      "refunded": {
+        "title": "Ordine rimborsato",
+        "description": "Questo ordine è stato rimborsato. Vedi i dettagli sotto."
+      },
+      "failed": {
+        "title": "Pagamento fallito",
+        "description": "Il pagamento per questo ordine è fallito. Puoi riprovare il pagamento."
+      },
+      "draft": {
+        "title": "Ordine in bozza",
+        "description": "Questo è un ordine in bozza non finalizzato."
+      }
+    },
+    "labels": {
+      "paymentDue": "Pagamento dovuto:",
+      "refundedAmount": "Importo rimborsato:",
+      "refundDate": "Data del rimborso:",
+      "refundDetails": "Dettagli del rimborso:",
+      "refundNumber": "Rimborso #{id}",
+      "reason": "Motivo: {reason}",
+      "noRefundDetails": "Questo ordine è stato rimborsato ma le informazioni dettagliate sul rimborso non sono disponibili.",
+      "failureReason": "Motivo del fallimento:",
+      "holdReason": "Motivo della sospensione:",
+      "estimatedDelivery": "Consegna stimata:",
+      "trackingNumber": "Numero di tracking:",
+      "completedOn": "Completato il:",
+      "paymentMethod": "Metodo di pagamento:",
+      "transactionId": "ID transazione:",
+      "subtotal": "Subtotale:",
+      "shippingLabel": "Spedizione:",
+      "taxLabel": "Tasse:",
+      "totalLabel": "Totale:",
+      "email": "Email:",
+      "phone": "Telefono:"
+    },
+    "actions": {
+      "payNow": "Paga ora",
+      "retryPayment": "Riprova pagamento",
+      "downloadInvoice": "Scarica fattura",
+      "leaveReview": "Lascia una recensione",
+      "close": "Chiudi",
+      "reorder": "Riordina"
+    },
+    "items": "Articoli ordinati",
+    "qtyTimes": "Qtà: {qty} × {price}",
+    "shippingAddress": "Indirizzo di spedizione",
+    "billingAddress": "Indirizzo di fatturazione",
+    "paymentInformation": "Informazioni di pagamento",
+    "paymentSuccess": "Pagamento completato con successo! Il tuo ordine è ora in elaborazione.",
+    "reorderFailed": "Riordino non riuscito. Alcuni prodotti potrebbero non essere più disponibili."
+  },
+  "orderPaymentModal": {
+    "title": "Completa il pagamento per l'ordine #{number}",
+    "amountDue": "Importo dovuto",
+    "orderDate": "Data dell'ordine",
+    "secureTitle": "Pagamento sicuro",
+    "secureNote": "Le tue informazioni di pagamento sono crittografate e sicure.",
+    "savedMethods": "Metodi di pagamento salvati",
+    "useNewCard": "Usa nuova carta",
+    "paymentProcessor": "Gateway di pagamento",
+    "choosePaymentMethod": "Scegli metodo di pagamento",
+    "paymentDetails": "Dettagli pagamento",
+    "saveForFuture": "Salva questa carta per acquisti futuri",
+    "saveCard": "Salva carta",
+    "cardSaved": "Carta salvata con successo",
+    "duplicateCard": "Questa carta è già salvata. Selezionala dalle carte salvate o usane una diversa.",
+    "failed": "Pagamento non riuscito. Riprova.",
+    "saveFailed": "Salvataggio della carta non riuscito. Riprova.",
+    "pay": "Paga",
+    "cancel": "Annulla"
+  },
+  "orderConfirmation": {
+    "metaTitle": "Conferma ordine - Your Store",
+    "metaDescription": "Il tuo ordine è stato confermato.",
+    "loading": "Caricamento dei dettagli dell'ordine...",
+    "notFoundTitle": "Ordine non trovato",
+    "notFoundFallback": "Ordine non trovato o non hai il permesso di visualizzarlo.",
+    "returnHome": "Torna alla home",
+    "successTitle": "Ordine confermato!",
+    "successHint": "Grazie per il tuo acquisto. Il tuo ordine è stato ricevuto ed è in elaborazione.",
+    "orderNumber": "Ordine #{number}",
+    "orderDetails": "Dettagli ordine",
+    "orderInformation": "Informazioni ordine",
+    "labels": {
+      "orderNumber": "Numero ordine:",
+      "date": "Data:",
+      "status": "Stato:",
+      "total": "Totale:"
+    },
+    "paymentMethod": "Metodo di pagamento",
+    "shippingAddress": "Indirizzo di spedizione",
+    "items": "Articoli ordinati",
+    "qty": "Quantità: {count}",
+    "price": "Prezzo: {price}",
+    "subtotal": "Subtotale:",
+    "shipping": "Spedizione:",
+    "tax": "Tasse:",
+    "totalLabel": "Totale:",
+    "viewAllOrders": "Vedi tutti gli ordini",
+    "continueShopping": "Continua lo shopping"
+  }
+}

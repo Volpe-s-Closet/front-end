@@ -1,147 +1,97 @@
 <template>
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="text-center mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">Privacy Policy</h1>
-      <p class="text-lg text-gray-600">Last updated: {{ lastUpdated }}</p>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ $t('privacy.title') }}</h1>
+      <p class="text-lg text-gray-600">{{ $t('privacy.lastUpdated', { date: $t('privacy.lastUpdatedDate') }) }}</p>
     </div>
 
     <div class="prose prose-lg max-w-none">
       <div class="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
-        <p class="text-green-800 mb-0">
-          We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our service.
-        </p>
+        <p class="text-green-800 mb-0">{{ $t('privacy.intro') }}</p>
       </div>
 
       <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">1. Information We Collect</h2>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">Personal Information</h3>
-        <p class="text-gray-700 mb-4">
-          We may collect personal information that you provide directly to us, such as:
-        </p>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ $t('privacy.sections.collect.heading') }}</h2>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">{{ $t('privacy.sections.collect.personalSubheading') }}</h3>
+        <p class="text-gray-700 mb-4">{{ $t('privacy.sections.collect.personalIntro') }}</p>
         <ul class="list-disc pl-6 text-gray-700 mb-4">
-          <li>Name and contact information (email, phone, address)</li>
-          <li>Account credentials (username, password)</li>
-          <li>Payment information (processed securely through third-party providers)</li>
-          <li>Order history and preferences</li>
-          <li>Communication preferences</li>
+          <li v-for="(item, idx) in tm('privacy.sections.collect.personal')" :key="`p-${idx}`">{{ rt(item) }}</li>
         </ul>
 
-        <h3 class="text-lg font-medium text-gray-900 mb-2">Automatically Collected Information</h3>
-        <p class="text-gray-700 mb-4">
-          When you visit our website, we may automatically collect:
-        </p>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">{{ $t('privacy.sections.collect.autoSubheading') }}</h3>
+        <p class="text-gray-700 mb-4">{{ $t('privacy.sections.collect.autoIntro') }}</p>
         <ul class="list-disc pl-6 text-gray-700 mb-4">
-          <li>IP address and device information</li>
-          <li>Browser type and version</li>
-          <li>Pages visited and time spent on site</li>
-          <li>Referring website information</li>
-          <li>Cookies and similar tracking technologies</li>
+          <li v-for="(item, idx) in tm('privacy.sections.collect.auto')" :key="`a-${idx}`">{{ rt(item) }}</li>
         </ul>
       </section>
 
       <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">2. How We Use Your Information</h2>
-        <p class="text-gray-700 mb-4">
-          We use the information we collect for various purposes, including:
-        </p>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ $t('privacy.sections.use.heading') }}</h2>
+        <p class="text-gray-700 mb-4">{{ $t('privacy.sections.use.intro') }}</p>
         <ul class="list-disc pl-6 text-gray-700 mb-4">
-          <li>Processing and fulfilling your orders</li>
-          <li>Providing customer support and responding to inquiries</li>
-          <li>Improving our website and services</li>
-          <li>Sending promotional emails and marketing communications (with your consent)</li>
-          <li>Preventing fraud and ensuring security</li>
-          <li>Complying with legal obligations</li>
+          <li v-for="(item, idx) in tm('privacy.sections.use.items')" :key="`u-${idx}`">{{ rt(item) }}</li>
         </ul>
       </section>
 
       <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">3. Information Sharing</h2>
-        <p class="text-gray-700 mb-4">
-          We do not sell, trade, or rent your personal information to third parties. We may share your information in the following circumstances:
-        </p>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ $t('privacy.sections.sharing.heading') }}</h2>
+        <p class="text-gray-700 mb-4">{{ $t('privacy.sections.sharing.intro') }}</p>
         <ul class="list-disc pl-6 text-gray-700 mb-4">
-          <li>With service providers who help us operate our business (payment processors, shipping companies)</li>
-          <li>When required by law or to protect our rights</li>
-          <li>In connection with a business transfer or merger</li>
-          <li>With your explicit consent</li>
+          <li v-for="(item, idx) in tm('privacy.sections.sharing.items')" :key="`s-${idx}`">{{ rt(item) }}</li>
         </ul>
       </section>
 
       <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">4. Data Security</h2>
-        <p class="text-gray-700 mb-4">
-          We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include:
-        </p>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ $t('privacy.sections.security.heading') }}</h2>
+        <p class="text-gray-700 mb-4">{{ $t('privacy.sections.security.intro') }}</p>
         <ul class="list-disc pl-6 text-gray-700 mb-4">
-          <li>SSL encryption for data transmission</li>
-          <li>Secure servers and databases</li>
-          <li>Regular security audits and updates</li>
-          <li>Limited access to personal information by authorized personnel only</li>
+          <li v-for="(item, idx) in tm('privacy.sections.security.items')" :key="`sec-${idx}`">{{ rt(item) }}</li>
         </ul>
       </section>
 
       <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">5. Cookies and Tracking</h2>
-        <p class="text-gray-700 mb-4">
-          We use cookies and similar technologies to enhance your browsing experience. Cookies help us:
-        </p>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ $t('privacy.sections.cookies.heading') }}</h2>
+        <p class="text-gray-700 mb-4">{{ $t('privacy.sections.cookies.intro') }}</p>
         <ul class="list-disc pl-6 text-gray-700 mb-4">
-          <li>Remember your preferences and login information</li>
-          <li>Analyze website traffic and usage patterns</li>
-          <li>Provide personalized content and recommendations</li>
-          <li>Improve our website functionality</li>
+          <li v-for="(item, idx) in tm('privacy.sections.cookies.items')" :key="`c-${idx}`">{{ rt(item) }}</li>
         </ul>
-        <p class="text-gray-700 mb-4">
-          You can control cookie settings through your browser preferences, but disabling cookies may affect website functionality.
-        </p>
+        <p class="text-gray-700 mb-4">{{ $t('privacy.sections.cookies.outro') }}</p>
       </section>
 
       <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">6. Your Rights</h2>
-        <p class="text-gray-700 mb-4">
-          Depending on your location, you may have the following rights regarding your personal information:
-        </p>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ $t('privacy.sections.rights.heading') }}</h2>
+        <p class="text-gray-700 mb-4">{{ $t('privacy.sections.rights.intro') }}</p>
         <ul class="list-disc pl-6 text-gray-700 mb-4">
-          <li>Access: Request a copy of the personal information we hold about you</li>
-          <li>Correction: Request correction of inaccurate or incomplete information</li>
-          <li>Deletion: Request deletion of your personal information</li>
-          <li>Portability: Request transfer of your data to another service</li>
-          <li>Opt-out: Unsubscribe from marketing communications</li>
+          <li v-for="(item, idx) in tm('privacy.sections.rights.items')" :key="`r-${idx}`">{{ rt(item) }}</li>
         </ul>
       </section>
 
       <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">7. Third-Party Links</h2>
-        <p class="text-gray-700 mb-4">
-          Our website may contain links to third-party websites. We are not responsible for the privacy practices or content of these external sites. We encourage you to review the privacy policies of any third-party sites you visit.
-        </p>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ $t('privacy.sections.thirdParty.heading') }}</h2>
+        <p class="text-gray-700 mb-4">{{ $t('privacy.sections.thirdParty.body') }}</p>
       </section>
 
       <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">8. Children's Privacy</h2>
-        <p class="text-gray-700 mb-4">
-          Our services are not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If we become aware that we have collected such information, we will take steps to delete it promptly.
-        </p>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ $t('privacy.sections.children.heading') }}</h2>
+        <p class="text-gray-700 mb-4">{{ $t('privacy.sections.children.body') }}</p>
       </section>
 
       <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">9. International Data Transfers</h2>
-        <p class="text-gray-700 mb-4">
-          Your information may be transferred to and processed in countries other than your own. We ensure that such transfers comply with applicable data protection laws and implement appropriate safeguards.
-        </p>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ $t('privacy.sections.international.heading') }}</h2>
+        <p class="text-gray-700 mb-4">{{ $t('privacy.sections.international.body') }}</p>
       </section>
 
       <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">10. Changes to This Policy</h2>
-        <p class="text-gray-700 mb-4">
-          We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on this page and updating the "Last updated" date.
-        </p>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ $t('privacy.sections.changes.heading') }}</h2>
+        <p class="text-gray-700 mb-4">{{ $t('privacy.sections.changes.body') }}</p>
       </section>
 
       <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">11. Contact Us</h2>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">{{ $t('privacy.sections.contact.heading') }}</h2>
         <p class="text-gray-700 mb-4">
-          If you have any questions about this Privacy Policy or our data practices, please <NuxtLink to="/contact" class="text-blue-600 hover:text-blue-800">contact us</NuxtLink> or email us at privacy@store.com.
+          {{ $t('privacy.sections.contact.pre') }}
+          <NuxtLink to="/contact" class="text-blue-600 hover:text-blue-800">{{ $t('privacy.sections.contact.linkText') }}</NuxtLink>
+          {{ $t('privacy.sections.contact.post') }}
         </p>
       </section>
     </div>
@@ -149,12 +99,12 @@
 </template>
 
 <script setup>
+const { t, tm, rt } = useI18n()
+
 useHead({
-  title: 'Privacy Policy - Store',
+  title: () => t('privacy.metaTitle'),
   meta: [
-    { name: 'description', content: 'Learn how we collect, use, and protect your personal information in our privacy policy.' }
+    { name: 'description', content: () => t('privacy.metaDescription') }
   ]
 })
-
-const lastUpdated = 'January 1, 2025'
 </script>

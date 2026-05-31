@@ -1,0 +1,1097 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "submit": "Submit",
+    "reset": "Reset",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "search": "Search",
+    "select": "Select",
+    "yes": "Yes",
+    "no": "No",
+    "menu": "Menu",
+    "language": "Language",
+    "notProvided": "Not provided",
+    "tryAgain": "Try Again",
+    "viewDetails": "View Details",
+    "readArticle": "Read Article",
+    "readMore": "Read More",
+    "viewAll": "View All",
+    "loadMore": "Load More Products",
+    "addToCart": "Add to Cart",
+    "selectOptions": "Select Options",
+    "default": "Default",
+    "applyFilters": "Apply Filters",
+    "clearFilters": "Clear All Filters",
+    "clearSearch": "Clear Search",
+    "store": "Store"
+  },
+  "header": {
+    "newsBanner": "If you're in Tenerife, for orders over €50 we'll come to a central point in your area to deliver your happiness package more comfortably. If your order is smaller, let's chat by DM to find the best delivery option together.",
+    "logoAlt": "Volpe's Closet Logo",
+    "nav": {
+      "bags": "Bags",
+      "accessories": "Accessories",
+      "promos": "Promos",
+      "blog": "Blog",
+      "aboutUs": "About Us"
+    },
+    "account": {
+      "label": "Account",
+      "profile": "Profile",
+      "orders": "Orders",
+      "logout": "Logout"
+    }
+  },
+  "footer": {
+    "tagline": "Your trusted ecommerce destination for quality products.",
+    "shop": "Shop",
+    "categories": "Categories",
+    "allProducts": "All Products",
+    "account": "Account",
+    "myAccount": "My Account",
+    "orderHistory": "Order History",
+    "support": "Support",
+    "contactUs": "Contact Us",
+    "faq": "FAQ",
+    "copyright": "© 2025 Store. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions",
+    "checkoutCopyright": "© 2025 Store. Secure checkout powered by SSL encryption."
+  },
+  "mobileSidebar": {
+    "all": "All {category}"
+  },
+  "megaMenu": {
+    "browseAll": "Browse the entire {category} collection.",
+    "shop": "Shop {category}",
+    "viewAll": "View all {category}",
+    "explore": "Explore",
+    "featured": "Featured"
+  },
+  "search": {
+    "placeholder": "Search products...",
+    "resultsFound": "{count} results found",
+    "searching": "Searching...",
+    "noResults": "No results found",
+    "pressEnterAll": "Press Enter to view all results",
+    "noProductsFound": "No products found for \"{query}\"",
+    "tryDifferent": "Try different keywords or press Enter to search all products",
+    "moreResults": "+{count} more results · Press Enter to see all",
+    "typeToSearch": "Type to search products",
+    "hints": {
+      "navigate": "navigate",
+      "select": "select",
+      "focus": "focus",
+      "close": "close"
+    }
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "subtitle": "Review your items before checkout",
+    "empty": "Your cart is empty",
+    "emptyHint": "Looks like you haven't added any items to your cart yet.",
+    "startShopping": "Start Shopping",
+    "loading": "Loading cart...",
+    "items": "Cart Items ({count})",
+    "subtotal": "Subtotal:",
+    "subtotalLabel": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax",
+    "calculatedAtCheckout": "Calculated at checkout",
+    "total": "Total",
+    "totalLabel": "Total:",
+    "summary": "Order Summary",
+    "proceedToCheckout": "Proceed to Checkout",
+    "viewCart": "View Cart",
+    "checkout": "Checkout",
+    "continueShopping": "Continue Shopping",
+    "secureCheckout": "Secure checkout with SSL encryption",
+    "youMightAlsoLike": "You might also like",
+    "removeItem": "Remove item",
+    "confirmClear": "Are you sure you want to clear your cart? This action cannot be undone.",
+    "clearCart": "Clear Cart"
+  },
+  "checkout": {
+    "secureCheckout": "Secure Checkout",
+    "steps": {
+      "information": "Information",
+      "payment": "Payment",
+      "review": "Review"
+    },
+    "contact": {
+      "title": "Contact Information",
+      "loadingAddresses": "Loading your saved addresses...",
+      "savedLoaded": "Your saved addresses have been loaded automatically",
+      "loginPrompt": "Have an account? Log in to auto-fill your addresses",
+      "logIn": "Log In",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "company": "Company (Optional)",
+      "billingAddress": "Billing Address",
+      "shippingAddress": "Shipping Address",
+      "addressLine1": "Address Line 1",
+      "addressLine2": "Address Line 2",
+      "city": "City",
+      "state": "State",
+      "zip": "ZIP Code",
+      "country": "Country",
+      "selectCountry": "Select Country",
+      "shipSameAddress": "Ship to same address",
+      "continueToPayment": "Continue to Payment"
+    },
+    "payment": {
+      "title": "Payment Information",
+      "creditCardOnly": "Credit Card Payment Only",
+      "creditCardOnlyHint": "For security and convenience, we only accept credit card payments.",
+      "savedMethods": "Saved Payment Methods",
+      "manageCards": "Manage Cards",
+      "endingIn": "{cardType} ending in {last4}",
+      "default": "Default",
+      "expires": "Expires {month}/{year}",
+      "addNewCard": "Add New Card",
+      "useNewCard": "Use New Card",
+      "paymentProcessor": "Payment Processor",
+      "choosePaymentMethod": "Choose Payment Method",
+      "addNewCardSection": "Add New Card",
+      "cardDetails": "Card Details",
+      "cardholderName": "Cardholder Name",
+      "cardNumber": "Card Number",
+      "expiryDate": "Expiry Date",
+      "cvv": "CVV",
+      "saveCardForFuture": "Save this card for future purchases",
+      "saveCard": "Save Card",
+      "cardSaved": "Card saved successfully",
+      "secure": "Secure Payment",
+      "secureHint": "Your payment information is encrypted and secure. We use industry-standard security measures.",
+      "noMethods": "No Payment Methods Available",
+      "noMethodsHint": "Please contact support to complete your order.",
+      "reviewOrder": "Review Order",
+      "duplicateCard": "This card is already saved. Please select it from your saved cards or use a different card.",
+      "saveFailed": "Failed to save card. Please try again."
+    },
+    "review": {
+      "title": "Review Your Order",
+      "contactInformation": "Contact Information",
+      "billingAddress": "Billing Address",
+      "paymentMethod": "Payment Method",
+      "via": "via {gateway}",
+      "creditCard": "Credit Card",
+      "placeOrder": "Place Order"
+    },
+    "summary": {
+      "title": "Order Summary",
+      "qty": "Qty: {count}"
+    },
+    "errors": {
+      "placeOrder": "There was an error placing your order. Please try again."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in to your account",
+      "or": "Or",
+      "createAccount": "create a new account",
+      "emailAddress": "Email address",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot your password?",
+      "submit": "Sign in",
+      "noAccount": "Don't have an account?",
+      "signUpHere": "Sign up here",
+      "errors": {
+        "failed": "Login failed. Please check your credentials.",
+        "unexpected": "An unexpected error occurred. Please try again."
+      }
+    },
+    "register": {
+      "title": "Create your account",
+      "or": "Or",
+      "signInExisting": "sign in to your existing account",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "username": "Username",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "agreeIntro": "I agree to the",
+      "termsOfService": "Terms of Service",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy",
+      "submit": "Create Account",
+      "haveAccount": "Already have an account?",
+      "signInHere": "Sign in here",
+      "errors": {
+        "passwordsMismatch": "Passwords do not match",
+        "passwordTooShort": "Password must be at least 6 characters long",
+        "agreeTerms": "You must agree to the Terms of Service and Privacy Policy",
+        "failed": "Registration failed. Please try again.",
+        "unexpected": "An unexpected error occurred. Please try again."
+      },
+      "success": "Account created successfully! Please check your email to verify your account, then you can sign in."
+    }
+  },
+  "home": {
+    "title": "Home - Premium Products & Latest Stories",
+    "metaDescription": "Discover our curated collection of premium products, best sellers, and latest arrivals. Read inspiring stories from our community.",
+    "hero": {
+      "headline": "Hello world",
+      "subheadline": "Curated collection of premium products designed to elevate your lifestyle",
+      "exploreCollection": "Explore Collection",
+      "browseCategories": "Browse Categories"
+    },
+    "featured": {
+      "title": "Featured Products",
+      "subtitle": "Handpicked selections just for you"
+    },
+    "bestSellers": {
+      "title": "Best Sellers",
+      "subtitle": "Products loved by thousands of customers worldwide",
+      "viewAll": "View All Best Sellers"
+    },
+    "newArrivals": {
+      "title": "New Arrivals",
+      "subtitle": "Fresh additions to our collection, just for you",
+      "badge": "NEW",
+      "viewAll": "View All New Arrivals"
+    },
+    "blog": {
+      "title": "Latest Stories",
+      "subtitle": "Insights, tips, and inspiration from our community",
+      "minRead": "{count} min read",
+      "viewAll": "View All Articles"
+    },
+    "videoFallback": "Your browser does not support the video tag."
+  },
+  "about": {
+    "title": "About Us",
+    "metaTitle": "About Us - Store",
+    "metaDescription": "Learn about our story, mission, and commitment to bringing you the finest bags and accessories. Discover what makes us different and why quality matters to us.",
+    "heroSubtitle": "Discover the story behind our passion for bringing you the finest bags and accessories",
+    "ourStory": "Our Story",
+    "ourStoryParagraph1": "Founded with a passion for quality and style, our store has been dedicated to bringing you the finest selection of bags and accessories. What started as a small dream has grown into a trusted destination for fashion-conscious individuals who appreciate craftsmanship and attention to detail.",
+    "ourStoryParagraph2": "We believe that the right bag or accessory can transform not just your outfit, but your entire day. That's why we carefully curate each piece in our collection, ensuring that every item meets our high standards for quality, durability, and style.",
+    "ourMission": "Our Mission",
+    "ourMissionParagraph1": "Our mission is simple: to provide our customers with exceptional products that combine functionality with fashion. We're committed to offering a diverse range of bags and accessories that cater to different lifestyles, preferences, and budgets.",
+    "ourMissionParagraph2": "We strive to create a shopping experience that's not just about purchasing products, but about discovering pieces that truly resonate with your personal style and enhance your daily life.",
+    "different": "What Makes Us Different",
+    "features": {
+      "curated": {
+        "title": "Curated Selection",
+        "description": "Every product is hand-picked for its quality, design, and functionality."
+      },
+      "quality": {
+        "title": "Quality Guarantee",
+        "description": "We stand behind every product with our commitment to quality and customer satisfaction."
+      },
+      "service": {
+        "title": "Personal Service",
+        "description": "Our team is dedicated to providing personalized assistance and expert advice."
+      },
+      "delivery": {
+        "title": "Local Delivery",
+        "description": "Special delivery service in Tenerife for orders over €50 with convenient pickup points."
+      }
+    },
+    "getInTouch": "Get in Touch",
+    "getInTouchParagraph": "We'd love to hear from you! Whether you have questions about our products, need styling advice, or want to share your feedback, don't hesitate to reach out.",
+    "contactUs": "Contact Us",
+    "viewFaq": "View FAQ"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "metaTitle": "Contact Us - Store",
+    "metaDescription": "Get in touch with our customer support team. We're here to help with any questions or concerns.",
+    "subtitle": "We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+    "sendMessage": "Send us a message",
+    "fullName": "Full Name",
+    "emailAddress": "Email Address",
+    "subject": "Subject",
+    "subjects": {
+      "select": "Select a subject",
+      "general": "General Inquiry",
+      "order": "Order Support",
+      "shipping": "Shipping Question",
+      "return": "Return/Exchange",
+      "technical": "Technical Issue",
+      "other": "Other"
+    },
+    "message": "Message",
+    "messagePlaceholder": "Please describe your inquiry in detail...",
+    "send": "Send Message",
+    "success": "Thank you for your message! We'll get back to you within 24 hours.",
+    "getInTouch": "Get in touch",
+    "email": "Email",
+    "emailValue": "support{'@'}store.com",
+    "emailHint": "We typically respond within 24 hours",
+    "phone": "Phone",
+    "phoneValue": "+1 (555) 123-4567",
+    "phoneHint": "Mon-Fri 9AM-6PM EST",
+    "address": "Address",
+    "addressValue": "123 Commerce Street\nBusiness District\nCity, State 12345",
+    "businessHours": "Business Hours",
+    "monFri": "Monday - Friday",
+    "monFriHours": "9:00 AM - 6:00 PM",
+    "saturday": "Saturday",
+    "saturdayHours": "10:00 AM - 4:00 PM",
+    "sunday": "Sunday",
+    "sundayClosed": "Closed",
+    "timezoneNote": "All times are in Eastern Standard Time (EST)"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "metaTitle": "FAQ - Store",
+    "metaDescription": "Frequently asked questions about our store, shipping, returns, and customer service.",
+    "subtitle": "Find answers to common questions about our store and services.",
+    "ordering": {
+      "title": "Ordering & Payment",
+      "q1": "How do I place an order?",
+      "a1": "Browse our products, add items to your cart, and proceed to checkout. You'll need to create an account or log in to complete your purchase.",
+      "q2": "What payment methods do you accept?",
+      "a2": "We accept all major credit cards, PayPal, and other secure payment methods through our payment processor.",
+      "q3": "Is my payment information secure?",
+      "a3": "Yes, all payment information is encrypted and processed through secure payment gateways. We never store your payment details on our servers."
+    },
+    "shipping": {
+      "title": "Shipping & Delivery",
+      "q1": "How long does shipping take?",
+      "a1": "Standard shipping typically takes 3-7 business days. Express shipping options are available at checkout for faster delivery.",
+      "q2": "Do you ship internationally?",
+      "a2": "Yes, we ship to most countries worldwide. Shipping costs and delivery times vary by location.",
+      "q3": "How can I track my order?",
+      "a3": "Once your order ships, you'll receive a tracking number via email. You can also check your order status in your account dashboard."
+    },
+    "returns": {
+      "title": "Returns & Exchanges",
+      "q1": "What is your return policy?",
+      "a1": "We offer a 30-day return policy for most items. Products must be in original condition with tags attached.",
+      "q2": "How do I return an item?",
+      "a2": "Contact our customer service team to initiate a return. We'll provide you with a return label and instructions.",
+      "q3": "When will I receive my refund?",
+      "a3": "Refunds are processed within 5-7 business days after we receive your returned item."
+    },
+    "account": {
+      "title": "Account & Support",
+      "q1": "How do I create an account?",
+      "a1Pre": "Click on the user icon in the top right corner and select",
+      "a1Action": "Register",
+      "a1Post": "to create a new account.",
+      "q2": "I forgot my password. What should I do?",
+      "a2Pre": "On the login page, click",
+      "a2Action": "Forgot Password",
+      "a2Post": "and follow the instructions to reset your password.",
+      "q3": "How can I contact customer support?",
+      "a3Pre": "You can reach us through our",
+      "a3Link": "contact page",
+      "a3Post": "or email us directly at support{'@'}store.com."
+    },
+    "stillQuestions": "Still have questions?",
+    "contactUs": "Contact Us"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "metaTitle": "Privacy Policy - Store",
+    "metaDescription": "Learn how we collect, use, and protect your personal information in our privacy policy.",
+    "lastUpdated": "Last updated: {date}",
+    "lastUpdatedDate": "January 1, 2025",
+    "intro": "We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our service.",
+    "sections": {
+      "collect": {
+        "heading": "1. Information We Collect",
+        "personalSubheading": "Personal Information",
+        "personalIntro": "We may collect personal information that you provide directly to us, such as:",
+        "personal": [
+          "Name and contact information (email, phone, address)",
+          "Account credentials (username, password)",
+          "Payment information (processed securely through third-party providers)",
+          "Order history and preferences",
+          "Communication preferences"
+        ],
+        "autoSubheading": "Automatically Collected Information",
+        "autoIntro": "When you visit our website, we may automatically collect:",
+        "auto": [
+          "IP address and device information",
+          "Browser type and version",
+          "Pages visited and time spent on site",
+          "Referring website information",
+          "Cookies and similar tracking technologies"
+        ]
+      },
+      "use": {
+        "heading": "2. How We Use Your Information",
+        "intro": "We use the information we collect for various purposes, including:",
+        "items": [
+          "Processing and fulfilling your orders",
+          "Providing customer support and responding to inquiries",
+          "Improving our website and services",
+          "Sending promotional emails and marketing communications (with your consent)",
+          "Preventing fraud and ensuring security",
+          "Complying with legal obligations"
+        ]
+      },
+      "sharing": {
+        "heading": "3. Information Sharing",
+        "intro": "We do not sell, trade, or rent your personal information to third parties. We may share your information in the following circumstances:",
+        "items": [
+          "With service providers who help us operate our business (payment processors, shipping companies)",
+          "When required by law or to protect our rights",
+          "In connection with a business transfer or merger",
+          "With your explicit consent"
+        ]
+      },
+      "security": {
+        "heading": "4. Data Security",
+        "intro": "We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include:",
+        "items": [
+          "SSL encryption for data transmission",
+          "Secure servers and databases",
+          "Regular security audits and updates",
+          "Limited access to personal information by authorized personnel only"
+        ]
+      },
+      "cookies": {
+        "heading": "5. Cookies and Tracking",
+        "intro": "We use cookies and similar technologies to enhance your browsing experience. Cookies help us:",
+        "items": [
+          "Remember your preferences and login information",
+          "Analyze website traffic and usage patterns",
+          "Provide personalized content and recommendations",
+          "Improve our website functionality"
+        ],
+        "outro": "You can control cookie settings through your browser preferences, but disabling cookies may affect website functionality."
+      },
+      "rights": {
+        "heading": "6. Your Rights",
+        "intro": "Depending on your location, you may have the following rights regarding your personal information:",
+        "items": [
+          "Access: Request a copy of the personal information we hold about you",
+          "Correction: Request correction of inaccurate or incomplete information",
+          "Deletion: Request deletion of your personal information",
+          "Portability: Request transfer of your data to another service",
+          "Opt-out: Unsubscribe from marketing communications"
+        ]
+      },
+      "thirdParty": {
+        "heading": "7. Third-Party Links",
+        "body": "Our website may contain links to third-party websites. We are not responsible for the privacy practices or content of these external sites. We encourage you to review the privacy policies of any third-party sites you visit."
+      },
+      "children": {
+        "heading": "8. Children's Privacy",
+        "body": "Our services are not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If we become aware that we have collected such information, we will take steps to delete it promptly."
+      },
+      "international": {
+        "heading": "9. International Data Transfers",
+        "body": "Your information may be transferred to and processed in countries other than your own. We ensure that such transfers comply with applicable data protection laws and implement appropriate safeguards."
+      },
+      "changes": {
+        "heading": "10. Changes to This Policy",
+        "body": "We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on this page and updating the \"Last updated\" date."
+      },
+      "contact": {
+        "heading": "11. Contact Us",
+        "pre": "If you have any questions about this Privacy Policy or our data practices, please",
+        "linkText": "contact us",
+        "post": "or email us at privacy{'@'}store.com."
+      }
+    }
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "metaTitle": "Terms and Conditions - Store",
+    "metaDescription": "Read our terms and conditions for using our ecommerce store and services.",
+    "lastUpdated": "Last updated: {date}",
+    "lastUpdatedDate": "January 1, 2025",
+    "intro": "Please read these Terms and Conditions carefully before using our service. By accessing or using our service, you agree to be bound by these Terms.",
+    "sections": {
+      "acceptance": {
+        "heading": "1. Acceptance of Terms",
+        "body": "By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service."
+      },
+      "license": {
+        "heading": "2. Use License",
+        "intro": "Permission is granted to temporarily download one copy of the materials on our website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:",
+        "items": [
+          "modify or copy the materials",
+          "use the materials for any commercial purpose or for any public display",
+          "attempt to reverse engineer any software contained on the website",
+          "remove any copyright or other proprietary notations from the materials"
+        ]
+      },
+      "productInfo": {
+        "heading": "3. Product Information",
+        "body": "We strive to provide accurate product information, including descriptions, pricing, and availability. However, we do not warrant that product descriptions or other content is accurate, complete, reliable, current, or error-free."
+      },
+      "pricing": {
+        "heading": "4. Pricing and Payment",
+        "body": "All prices are subject to change without notice. We reserve the right to modify or discontinue products at any time. Payment must be received before products are shipped. We accept various payment methods as displayed during checkout."
+      },
+      "shipping": {
+        "heading": "5. Shipping and Delivery",
+        "body": "We will make every effort to ship products within the timeframe specified. However, delivery dates are estimates and we are not responsible for delays caused by shipping carriers or other circumstances beyond our control."
+      },
+      "returns": {
+        "heading": "6. Returns and Refunds",
+        "body": "We offer a 30-day return policy for most items. Products must be returned in original condition with all packaging and tags. Refunds will be processed to the original payment method within 5-7 business days of receiving the returned item."
+      },
+      "userAccounts": {
+        "heading": "7. User Accounts",
+        "body": "When you create an account, you must provide accurate and complete information. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account."
+      },
+      "privacy": {
+        "heading": "8. Privacy Policy",
+        "pre": "Your privacy is important to us. Please review our",
+        "linkText": "Privacy Policy",
+        "post": ", which also governs your use of the website, to understand our practices."
+      },
+      "liability": {
+        "heading": "9. Limitation of Liability",
+        "body": "In no event shall our company or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on our website."
+      },
+      "law": {
+        "heading": "10. Governing Law",
+        "body": "These terms and conditions are governed by and construed in accordance with the laws of [Your Jurisdiction] and you irrevocably submit to the exclusive jurisdiction of the courts in that state or location."
+      },
+      "changes": {
+        "heading": "11. Changes to Terms",
+        "body": "We reserve the right to revise these terms at any time without notice. By using this website, you are agreeing to be bound by the then current version of these Terms and Conditions."
+      },
+      "contact": {
+        "heading": "12. Contact Information",
+        "pre": "If you have any questions about these Terms and Conditions, please",
+        "linkText": "contact us",
+        "post": "."
+      }
+    }
+  },
+  "categories": {
+    "title": "Product Categories",
+    "metaTitle": "Product Categories - Explore Our Complete Collection",
+    "metaDescription": "Browse our comprehensive collection of product categories. Find exactly what you're looking for with our organized category system and popular selections.",
+    "subtitle": "Browse our organized collection to find exactly what you're looking for",
+    "searchPlaceholder": "Search categories...",
+    "all": "All Categories",
+    "allSubtitle": "Browse through our comprehensive selection of product categories",
+    "searchResultsFor": "Search Results for \"{query}\"",
+    "categoriesFound": "categories found",
+    "categoryFound": "category found",
+    "subcategories": "Subcategories",
+    "moreCount": "+{count} more",
+    "products": "products",
+    "product": "product",
+    "noFound": "No categories found",
+    "tryAdjusting": "Try adjusting your search terms or browse all categories.",
+    "noneAvailable": "No categories are available at the moment.",
+    "popular": "Popular Categories",
+    "popularSubtitle": "Most browsed categories by our customers"
+  },
+  "category": {
+    "metaTitleFallback": "Category - Your Store",
+    "breadcrumbHome": "Home",
+    "breadcrumbCategories": "Categories",
+    "productsAvailable": "{count} products available",
+    "subcategories": "Subcategories",
+    "items": "{count} items",
+    "showing": "Showing {shown} of {total} products",
+    "sortBy": "Sort by:",
+    "noProducts": "No products found",
+    "noProductsHint": "No products match your current filters in this category.",
+    "loadMore": "Load More Products"
+  },
+  "searchPage": {
+    "metaTitle": "All Products - Your Store",
+    "metaDescription": "Browse all products in our online store.",
+    "resultsFor": "Search Results for \"{query}\"",
+    "allProducts": "All Products",
+    "sortBy": "Sort by:",
+    "show": "Show:",
+    "perPage": "per page",
+    "showingResults": "Showing {start} to {end} of {total} results",
+    "page": "Page {current} of {total}",
+    "prev": "Prev",
+    "next": "Next",
+    "noProducts": "No products found",
+    "tryAdjustingSearch": "Try adjusting your search terms or filters.",
+    "tryAdjustingFilters": "No products match your current filters.",
+    "sort": {
+      "default": "Default",
+      "popularity": "Popularity",
+      "rating": "Average Rating",
+      "latest": "Latest",
+      "priceAsc": "Price: Low to High",
+      "priceDesc": "Price: High to Low"
+    },
+    "view": {
+      "grid": "Grid",
+      "list": "List"
+    }
+  },
+  "filters": {
+    "title": "Filters",
+    "priceRange": "Price Range",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price",
+    "categories": "Categories",
+    "availability": "Availability",
+    "inStock": "In Stock",
+    "onBackorder": "On Backorder",
+    "onSale": "On Sale",
+    "featured": "Featured Products",
+    "clearAll": "Clear All Filters",
+    "apply": "Apply Filters"
+  },
+  "product": {
+    "notFound": "Product Not Found",
+    "notFoundHint": "The product you're looking for doesn't exist.",
+    "backToHome": "Back to Home",
+    "breadcrumbHome": "Home",
+    "reviews": "({count} reviews)",
+    "saleBadge": "Sale!",
+    "saleSmall": "Sale",
+    "featuredBadge": "Featured",
+    "noReviews": "No reviews yet",
+    "noDescription": "No description available",
+    "outOfStock": "Out of Stock",
+    "inStock": "In Stock",
+    "onBackorder": "On Backorder",
+    "stockUnknown": "Unknown",
+    "stockLeft": "({count} left)",
+    "availability": "Availability:",
+    "quantity": "Quantity:",
+    "selectOptionsBtn": "Select Options",
+    "addToCart": "Add to Cart",
+    "sku": "SKU:",
+    "categoriesLabel": "Categories:",
+    "tagsLabel": "Tags:",
+    "tabDescription": "Description",
+    "tabReviews": "Reviews ({count})",
+    "youMightLike": "You might also like",
+    "moreFrom": "More from {category}",
+    "chooseAttribute": "Choose {attribute}",
+    "variation": {
+      "title": "Choose Options for {name}",
+      "loading": "Loading variations...",
+      "noVariations": "This product doesn't have any variations available.",
+      "limitedStock": "Limited Stock",
+      "outOfStock": "Out of Stock",
+      "comboUnavailable": "This combination is not available.",
+      "loadFailed": "Unable to load product variations.",
+      "addFailed": "Failed to add item to cart. Please try again."
+    },
+    "comments": {
+      "yourReview": "Your Review",
+      "published": "Published",
+      "pendingModeration": "Pending Moderation",
+      "submittedOn": "Submitted {date}",
+      "edit": "Edit",
+      "updateReview": "Update Your Review",
+      "writeReview": "Write a Review",
+      "writeReviewBtn": "Write a Review",
+      "cancel": "Cancel",
+      "rating": "Rating *",
+      "yourReviewLabel": "Your Review *",
+      "reviewPlaceholder": "Share your thoughts about this product...",
+      "requiredFields": "Required fields",
+      "moderationNote": "Reviews require approval before being published",
+      "submit": "Submit Review",
+      "submitting": "Submitting...",
+      "update": "Update Review",
+      "loginRequiredPre": "Please",
+      "loginRequiredLink": "log in",
+      "loginRequiredPost": "to write a review.",
+      "purchaseRequired": "Only customers who have purchased this product can write a review.",
+      "customerReviews": "Customer Reviews ({count})",
+      "verified": "Verified Purchase",
+      "noReviewsTitle": "No reviews yet.",
+      "noReviewsHint": "Be the first to review this product!",
+      "updateSuccess": "Review updated successfully!",
+      "createSuccessModerated": "Review submitted successfully! It will appear after moderation.",
+      "createSuccess": "Review submitted successfully!",
+      "submitFailed": "Failed to submit review. Please try again."
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "metaTitle": "Blog",
+    "metaDescription": "Discover the latest insights, tips, and stories from our team",
+    "subtitle": "Discover the latest insights, tips, and stories from our team",
+    "loadFailed": "Failed to load blog posts. Please try again later.",
+    "noPosts": "No blog posts found",
+    "checkBackLater": "Check back later for new content!",
+    "categoriesTitle": "Categories",
+    "noCategories": "No categories available",
+    "page": "Page {current}",
+    "post": {
+      "notFoundTitle": "Post Not Found",
+      "notFoundHint": "The blog post you're looking for doesn't exist or has been removed.",
+      "backToBlog": "Back to Blog",
+      "tags": "Tags:",
+      "share": "Share:",
+      "related": "Related Posts"
+    },
+    "category": {
+      "notFoundTitle": "Category Not Found",
+      "notFoundHint": "The blog category you're looking for doesn't exist.",
+      "backToBlog": "Back to Blog",
+      "postsCount": "{count} posts in this category",
+      "postsCountSingular": "{count} post in this category",
+      "loadFailed": "Failed to load posts for this category. Please try again later.",
+      "noPosts": "No posts in this category",
+      "noPostsHint": "This category doesn't have any published posts yet.",
+      "browseAll": "Browse All Posts"
+    }
+  },
+  "account": {
+    "metaTitle": "My Account - Your Store",
+    "metaDescription": "Manage your account settings and view your order history.",
+    "nav": {
+      "profile": "Profile",
+      "password": "Password",
+      "orders": "Orders",
+      "addresses": "Addresses",
+      "paymentMethods": "Payment Methods",
+      "logout": "Logout"
+    },
+    "pageTitles": {
+      "profile": "My Account",
+      "password": "Change Password",
+      "orders": "Order History",
+      "addresses": "My Addresses",
+      "paymentMethods": "Payment Methods"
+    },
+    "pageDescriptions": {
+      "profile": "Manage your account settings and view your order history",
+      "password": "Update your account password",
+      "orders": "Track and manage your orders",
+      "addresses": "Manage your billing and shipping addresses",
+      "paymentMethods": "Manage your saved payment methods"
+    },
+    "profile": {
+      "title": "Profile Information",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "dateOfBirth": "Date of Birth",
+      "memberSince": "Member Since"
+    },
+    "stats": {
+      "totalOrders": "Total Orders",
+      "totalSpent": "Total Spent",
+      "wishlistItems": "Wishlist Items"
+    },
+    "recentOrders": {
+      "title": "Recent Orders",
+      "viewAll": "View All",
+      "noOrders": "No orders yet",
+      "startShopping": "Start Shopping",
+      "orderNumber": "Order #{number}"
+    },
+    "addresses": {
+      "metaTitle": "My Addresses - Your Store",
+      "metaDescription": "Manage your billing and shipping addresses.",
+      "billing": "Billing Address",
+      "shipping": "Shipping Address",
+      "edit": "Edit",
+      "add": "Add",
+      "noBilling": "No billing address added",
+      "noShipping": "No shipping address added",
+      "sameAsBilling": "Same as billing address",
+      "editBilling": "Edit Billing Address",
+      "editShipping": "Edit Shipping Address",
+      "form": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "company": "Company",
+        "address1": "Address Line 1",
+        "address2": "Address Line 2",
+        "city": "City",
+        "state": "State/Province",
+        "postcode": "Postal Code",
+        "country": "Country",
+        "selectCountry": "Select Country",
+        "phoneRequired": "Phone *",
+        "phoneOptional": "Phone (Optional)",
+        "save": "Save Address"
+      },
+      "messages": {
+        "billingUpdated": "Billing address updated successfully!",
+        "shippingUpdated": "Shipping address updated successfully!",
+        "shippingMatched": "Shipping address updated to match billing address!",
+        "loadFailed": "Failed to load addresses",
+        "saveFailed": "Failed to save address. Please try again.",
+        "copyFailed": "Failed to update shipping address",
+        "userNotAuth": "User not authenticated"
+      }
+    },
+    "orders": {
+      "metaTitle": "Order History - Your Store",
+      "metaDescription": "View and manage your order history.",
+      "searchOrders": "Search Orders",
+      "searchPlaceholder": "Search by order number...",
+      "status": "Status",
+      "dateRange": "Date Range",
+      "filters": {
+        "allOrders": "All Orders",
+        "pending": "Pending Payment",
+        "processing": "Processing",
+        "onHold": "On Hold",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "refunded": "Refunded",
+        "failed": "Failed",
+        "draft": "Draft",
+        "allTime": "All Time",
+        "last30": "Last 30 Days",
+        "last3Months": "Last 3 Months",
+        "lastYear": "Last Year"
+      },
+      "orderNumber": "Order #{number}",
+      "placedOn": "Placed on {date}",
+      "items": "Items ({count})",
+      "qty": "Qty: {count}",
+      "viewDetails": "View Details",
+      "payNow": "Pay Now",
+      "reorder": "Reorder",
+      "cancelOrder": "Cancel Order",
+      "downloadInvoice": "Download Invoice",
+      "noMatch": "No orders match your filters",
+      "noOrders": "No orders yet",
+      "tryAdjusting": "Try adjusting your search criteria.",
+      "willAppear": "When you place orders, they'll appear here.",
+      "clearFilters": "Clear Filters",
+      "startShopping": "Start Shopping",
+      "showing": "Showing {start} to {end} of {total} orders",
+      "previous": "Previous",
+      "next": "Next",
+      "confirmCancel": "Are you sure you want to cancel this order? This action cannot be undone.",
+      "cancelSuccess": "Order cancelled successfully",
+      "cancelFailed": "Failed to cancel order. Please try again.",
+      "cancelNotFound": "Order not found or cannot be cancelled.",
+      "cancelForbidden": "You do not have permission to cancel this order.",
+      "reorderFailed": "Failed to reorder items. Some products may no longer be available."
+    },
+    "password": {
+      "metaTitle": "Change Password - Your Store",
+      "metaDescription": "Change your account password securely.",
+      "title": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "minLength": "Password must be at least 8 characters long",
+      "strengthLabel": "Password Strength:",
+      "strength": {
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong"
+      },
+      "submit": "Change Password",
+      "tipsTitle": "Password Security Tips:",
+      "tips": {
+        "tip1": "Use a combination of uppercase and lowercase letters",
+        "tip2": "Include numbers and special characters",
+        "tip3": "Avoid using personal information",
+        "tip4": "Don't reuse passwords from other accounts",
+        "tip5": "Consider using a password manager"
+      },
+      "errors": {
+        "currentRequired": "Current password is required",
+        "newRequired": "New password is required",
+        "tooShort": "Password must be at least 8 characters long",
+        "confirmRequired": "Please confirm your new password",
+        "mismatch": "Passwords do not match",
+        "failed": "Failed to change password. Please try again."
+      },
+      "success": "Password changed successfully!"
+    },
+    "paymentMethods": {
+      "metaTitle": "Payment Methods - Your Store",
+      "metaDescription": "Manage your saved payment methods securely.",
+      "addMethod": "Add Payment Method",
+      "endingIn": "{cardType} ending in {last4}",
+      "default": "Default",
+      "expires": "Expires {month}/{year}",
+      "setDefault": "Set as Default",
+      "edit": "Edit",
+      "delete": "Delete",
+      "noneTitle": "No payment methods",
+      "noneHint": "Add a payment method to make checkout faster and easier.",
+      "addFirst": "Add Your First Payment Method",
+      "editTitle": "Edit Payment Method",
+      "addTitle": "Add Payment Method",
+      "form": {
+        "cardholderName": "Cardholder Name",
+        "cardNumber": "Card Number",
+        "expiryDate": "Expiry Date",
+        "cvv": "CVV",
+        "setDefault": "Set as default payment method",
+        "addBtn": "Add Payment Method",
+        "updateBtn": "Update Payment Method"
+      },
+      "demoTitle": "Demo Payment System",
+      "demoNote": "This is a demonstration. In production, use a secure payment processor like Stripe or PayPal. Never store actual card details.",
+      "messages": {
+        "added": "Payment method added successfully!",
+        "updated": "Payment method updated successfully!",
+        "deleted": "Payment method deleted successfully!",
+        "defaultUpdated": "Default payment method updated!",
+        "saveFailed": "Failed to save payment method. Please try again.",
+        "deleteFailed": "Failed to delete payment method. Please try again.",
+        "defaultFailed": "Failed to update default payment method. Please try again.",
+        "fillRequired": "Please fill in all required fields",
+        "confirmDelete": "Are you sure you want to delete this payment method?"
+      }
+    }
+  },
+  "orderStatus": {
+    "pending": "Pending Payment",
+    "pendingPayment": "Pending Payment",
+    "processing": "Processing",
+    "onHold": "On Hold",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "refunded": "Refunded",
+    "failed": "Failed",
+    "draft": "Draft"
+  },
+  "orderModal": {
+    "title": "Order #{number}",
+    "errorTitle": "Error Loading Order",
+    "errorFallback": "Order not found or you do not have permission to view this order.",
+    "tryAgain": "Try Again",
+    "placedOn": "Placed on {date}",
+    "total": "Total",
+    "info": {
+      "pending": {
+        "title": "Payment Required",
+        "description": "Your order is waiting for payment. Complete your payment to process the order."
+      },
+      "processing": {
+        "title": "Order Processing",
+        "description": "Your order is being prepared and will be shipped soon."
+      },
+      "onHold": {
+        "title": "Order On Hold",
+        "description": "Your order has been put on hold. Please contact us for more information."
+      },
+      "completed": {
+        "title": "Order Completed",
+        "description": "Your order has been completed and delivered."
+      },
+      "cancelled": {
+        "title": "Order Cancelled",
+        "description": "This order has been cancelled."
+      },
+      "refunded": {
+        "title": "Order Refunded",
+        "description": "This order has been refunded. See details below."
+      },
+      "failed": {
+        "title": "Payment Failed",
+        "description": "The payment for this order failed. You can retry the payment."
+      },
+      "draft": {
+        "title": "Draft Order",
+        "description": "This is a draft order that has not been finalized."
+      }
+    },
+    "labels": {
+      "paymentDue": "Payment Due:",
+      "refundedAmount": "Refunded Amount:",
+      "refundDate": "Refund Date:",
+      "refundDetails": "Refund Details:",
+      "refundNumber": "Refund #{id}",
+      "reason": "Reason: {reason}",
+      "noRefundDetails": "This order has been refunded but detailed refund information is not available.",
+      "failureReason": "Failure Reason:",
+      "holdReason": "Hold Reason:",
+      "estimatedDelivery": "Estimated Delivery:",
+      "trackingNumber": "Tracking Number:",
+      "completedOn": "Completed on:",
+      "paymentMethod": "Payment Method:",
+      "transactionId": "Transaction ID:",
+      "subtotal": "Subtotal:",
+      "shippingLabel": "Shipping:",
+      "taxLabel": "Tax:",
+      "totalLabel": "Total:",
+      "email": "Email:",
+      "phone": "Phone:"
+    },
+    "actions": {
+      "payNow": "Pay Now",
+      "retryPayment": "Retry Payment",
+      "downloadInvoice": "Download Invoice",
+      "leaveReview": "Leave Review",
+      "close": "Close",
+      "reorder": "Reorder"
+    },
+    "items": "Items Ordered",
+    "qtyTimes": "Qty: {qty} × {price}",
+    "shippingAddress": "Shipping Address",
+    "billingAddress": "Billing Address",
+    "paymentInformation": "Payment Information",
+    "paymentSuccess": "Payment completed successfully! Your order is now being processed.",
+    "reorderFailed": "Failed to reorder items. Some products may no longer be available."
+  },
+  "orderPaymentModal": {
+    "title": "Complete Payment for Order #{number}",
+    "amountDue": "Amount Due",
+    "orderDate": "Order Date",
+    "secureTitle": "Secure Payment",
+    "secureNote": "Your payment information is encrypted and secure.",
+    "savedMethods": "Saved Payment Methods",
+    "useNewCard": "Use New Card",
+    "paymentProcessor": "Payment Processor",
+    "choosePaymentMethod": "Choose Payment Method",
+    "paymentDetails": "Payment Details",
+    "saveForFuture": "Save this card for future purchases",
+    "saveCard": "Save Card",
+    "cardSaved": "Card saved successfully",
+    "duplicateCard": "This card is already saved. Please select it from your saved cards or use a different card.",
+    "failed": "Payment failed. Please try again.",
+    "saveFailed": "Failed to save card. Please try again.",
+    "pay": "Pay",
+    "cancel": "Cancel"
+  },
+  "orderConfirmation": {
+    "metaTitle": "Order Confirmation - Your Store",
+    "metaDescription": "Your order has been confirmed.",
+    "loading": "Loading your order details...",
+    "notFoundTitle": "Order Not Found",
+    "notFoundFallback": "Order not found or you do not have permission to view this order.",
+    "returnHome": "Return to Home",
+    "successTitle": "Order Confirmed!",
+    "successHint": "Thank you for your purchase. Your order has been received and is being processed.",
+    "orderNumber": "Order #{number}",
+    "orderDetails": "Order Details",
+    "orderInformation": "Order Information",
+    "labels": {
+      "orderNumber": "Order Number:",
+      "date": "Date:",
+      "status": "Status:",
+      "total": "Total:"
+    },
+    "paymentMethod": "Payment Method",
+    "shippingAddress": "Shipping Address",
+    "items": "Items Ordered",
+    "qty": "Quantity: {count}",
+    "price": "Price: {price}",
+    "subtotal": "Subtotal:",
+    "shipping": "Shipping:",
+    "tax": "Tax:",
+    "totalLabel": "Total:",
+    "viewAllOrders": "View All Orders",
+    "continueShopping": "Continue Shopping"
+  }
+}

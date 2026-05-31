@@ -3,8 +3,8 @@
     <!-- Page Header -->
     <div class="mb-8">
       <h1 class="text-3xl font-bold text-gray-900 mb-4">
-        <span v-if="searchQuery">Search Results for "{{ searchQuery }}"</span>
-        <span v-else>All Products</span>
+        <span v-if="searchQuery">{{ $t('searchPage.resultsFor', { query: searchQuery }) }}</span>
+        <span v-else>{{ $t('searchPage.allProducts') }}</span>
       </h1>
     </div>
 
@@ -32,7 +32,7 @@
               <GroupButtons v-if="viewMode === 'grid'" v-model="gridSize" :options="mobileGridSizeOptions" size="xs" />
 
               <!-- Sort -->
-              <SelectBox v-model="sortBy" :options="sortOptions" size="xs" position="left" placeholder="Sort" hide-label
+              <SelectBox v-model="sortBy" :options="sortOptions" size="xs" position="left" :placeholder="$t('common.search')" hide-label
                 @change="handleSortChange" />
             </div>
           </div>
@@ -53,7 +53,7 @@
 
               <!-- Right: Sort -->
               <div class="flex items-center space-x-3">
-                <span class="text-sm font-medium text-gray-700">Sort by:</span>
+                <span class="text-sm font-medium text-gray-700">{{ $t('searchPage.sortBy') }}</span>
                 <SelectBox v-model="sortBy" :options="sortOptions" size="sm" position="right"
                   @change="handleSortChange" />
               </div>
@@ -96,12 +96,12 @@
           <!-- No Results -->
           <div v-else key="empty" class="text-center py-12">
             <Icon name="heroicons:magnifying-glass" class="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <h3 class="text-lg font-medium text-gray-900 mb-2">No products found</h3>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">{{ $t('searchPage.noProducts') }}</h3>
             <p class="text-gray-600 mb-4">
-              <span v-if="searchQuery">Try adjusting your search terms or filters.</span>
-              <span v-else>No products match your current filters.</span>
+              <span v-if="searchQuery">{{ $t('searchPage.tryAdjustingSearch') }}</span>
+              <span v-else>{{ $t('searchPage.tryAdjustingFilters') }}</span>
             </p>
-            <BaseButton @click="clearAllFilters" text="Clear All Filters" />
+            <BaseButton @click="clearAllFilters" :text="$t('common.clearFilters')" />
           </div>
         </Transition>
 
@@ -113,7 +113,7 @@
             <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
               <!-- Items per page -->
               <div class="flex items-center space-x-2">
-                <label class="text-sm font-medium text-gray-700">Show:</label>
+                <label class="text-sm font-medium text-gray-700">{{ $t('searchPage.show') }}</label>
                 <SelectBox v-model="perPage" @change="handlePerPageChange" :options="[
                   { value: 6, label: '6' },
                   { value: 12, label: '12' },
@@ -121,15 +121,13 @@
                   { value: 36, label: '36' },
                   { value: 48, label: '48' }
                 ]" placeholder="12" size="sm" />
-                <span class="text-sm text-gray-600">per page</span>
+                <span class="text-sm text-gray-600">{{ $t('searchPage.perPage') }}</span>
               </div>
 
               <!-- Results Info -->
               <div class="text-sm text-gray-700 text-center sm:text-right">
                 <span v-if="!loading">
-                  Showing <span class="font-medium">{{ startItem }}</span> to <span class="font-medium">{{ endItem
-                    }}</span> of
-                  <span class="font-medium">{{ totalProducts }}</span> results
+                  {{ $t('searchPage.showingResults', { start: startItem, end: endItem, total: totalProducts }) }}
                 </span>
               </div>
             </div>
@@ -139,14 +137,14 @@
               <!-- Mobile Pagination -->
               <div class="flex flex-1 justify-between items-center sm:hidden">
                 <BaseButton @click="goToPage(currentPage - 1)" :disabled="currentPage <= 1" variant="outline" size="sm"
-                  icon="heroicons:chevron-left" text="Prev" />
+                  icon="heroicons:chevron-left" :text="$t('searchPage.prev')" />
 
                 <span class="text-sm text-gray-700">
-                  Page {{ currentPage }} of {{ totalPages }}
+                  {{ $t('searchPage.page', { current: currentPage, total: totalPages }) }}
                 </span>
 
                 <BaseButton @click="goToPage(currentPage + 1)" :disabled="currentPage >= totalPages" variant="outline"
-                  size="sm" text="Next">
+                  size="sm" :text="$t('searchPage.next')">
                   <Icon name="heroicons:chevron-right" class="h-4 w-4 ml-1" />
                 </BaseButton>
               </div>
@@ -183,16 +181,16 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const { getProducts, getProductAttributes, getAttributeTerms } = useProducts()
 const { categories, fetchCategories } = useCategories()
 
-// SEO
 useHead({
-  title: 'All Products - Your Store',
+  title: () => t('searchPage.metaTitle'),
   meta: [
-    { name: 'description', content: 'Browse all products in our online store.' }
+    { name: 'description', content: () => t('searchPage.metaDescription') }
   ]
 })
 
@@ -213,21 +211,21 @@ const searchQuery = ref(route.query.q || '')
 const sortBy = ref('menu_order')
 const activeFilters = ref({})
 
-// Sort options with icons
-const sortOptions = [
-  { value: 'menu_order', label: 'Default', icon: 'heroicons:bars-3' },
-  { value: 'popularity', label: 'Popularity', icon: 'heroicons:fire' },
-  { value: 'rating', label: 'Average Rating', icon: 'heroicons:star' },
-  { value: 'date', label: 'Latest', icon: 'heroicons:clock' },
-  { value: 'price', label: 'Price: Low to High', icon: 'heroicons:arrow-up' },
-  { value: 'price-desc', label: 'Price: High to Low', icon: 'heroicons:arrow-down' }
-]
+// Sort options with icons (translated, recomputed on locale change)
+const sortOptions = computed(() => [
+  { value: 'menu_order', label: t('searchPage.sort.default'), icon: 'heroicons:bars-3' },
+  { value: 'popularity', label: t('searchPage.sort.popularity'), icon: 'heroicons:fire' },
+  { value: 'rating', label: t('searchPage.sort.rating'), icon: 'heroicons:star' },
+  { value: 'date', label: t('searchPage.sort.latest'), icon: 'heroicons:clock' },
+  { value: 'price', label: t('searchPage.sort.priceAsc'), icon: 'heroicons:arrow-up' },
+  { value: 'price-desc', label: t('searchPage.sort.priceDesc'), icon: 'heroicons:arrow-down' }
+])
 
 // View mode options
-const viewModeOptions = [
-  { value: 'grid', label: 'Grid', icon: 'heroicons:squares-2x2' },
-  { value: 'list', label: 'List', icon: 'heroicons:list-bullet' }
-]
+const viewModeOptions = computed(() => [
+  { value: 'grid', label: t('searchPage.view.grid'), icon: 'heroicons:squares-2x2' },
+  { value: 'list', label: t('searchPage.view.list'), icon: 'heroicons:list-bullet' }
+])
 
 // Grid size options for mobile (1-2 columns)
 const mobileGridSizeOptions = [

@@ -5,11 +5,11 @@
       <nav class="flex mb-4" aria-label="Breadcrumb">
         <ol class="flex items-center space-x-2">
           <li>
-            <NuxtLink to="/" class="text-gray-500 hover:text-gray-700">Home</NuxtLink>
+            <NuxtLink to="/" class="text-gray-500 hover:text-gray-700">{{ $t('category.breadcrumbHome') }}</NuxtLink>
           </li>
           <Icon name="heroicons:chevron-right" class="h-4 w-4 text-gray-400" />
           <li>
-            <NuxtLink to="/categories" class="text-gray-500 hover:text-gray-700">Categories</NuxtLink>
+            <NuxtLink to="/categories" class="text-gray-500 hover:text-gray-700">{{ $t('category.breadcrumbCategories') }}</NuxtLink>
           </li>
           <Icon name="heroicons:chevron-right" class="h-4 w-4 text-gray-400" />
           <li class="text-gray-900 font-medium">{{ category?.name }}</li>
@@ -27,7 +27,7 @@
         <div class="flex-1">
           <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ category.name }}</h1>
           <p v-if="category.description" class="text-gray-600 mb-4" v-html="category.description"></p>
-          <p class="text-sm text-gray-500">{{ category.count }} products available</p>
+          <p class="text-sm text-gray-500">{{ $t('category.productsAvailable', { count: category.count }) }}</p>
         </div>
       </div>
 
@@ -39,7 +39,7 @@
 
     <!-- Subcategories -->
     <div v-if="subcategories.length > 0" class="mb-8">
-      <h2 class="text-xl font-semibold mb-4">Subcategories</h2>
+      <h2 class="text-xl font-semibold mb-4">{{ $t('category.subcategories') }}</h2>
       <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
         <NuxtLink 
           v-for="subcategory in subcategories" 
@@ -51,7 +51,7 @@
             <Icon name="heroicons:tag" class="h-6 w-6 text-blue-600" />
           </div>
           <h3 class="font-medium text-sm">{{ subcategory.name }}</h3>
-          <p class="text-xs text-gray-600 mt-1">{{ subcategory.count }} items</p>
+          <p class="text-xs text-gray-600 mt-1">{{ $t('category.items', { count: subcategory.count }) }}</p>
         </NuxtLink>
       </div>
     </div>
@@ -73,24 +73,17 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <div class="text-gray-600">
             <span v-if="!loading">
-              Showing {{ products.length }} of {{ totalProducts }} products
+              {{ $t('category.showing', { shown: products.length, total: totalProducts }) }}
             </span>
           </div>
           
           <div class="flex items-center space-x-4">
-            <label class="text-sm font-medium text-gray-700">Sort by:</label>
+            <label class="text-sm font-medium text-gray-700">{{ $t('category.sortBy') }}</label>
             <SelectBox
               v-model="sortBy"
               @change="handleSortChange"
-              :options="[
-                { value: 'menu_order', label: 'Default' },
-                { value: 'popularity', label: 'Popularity' },
-                { value: 'rating', label: 'Average Rating' },
-                { value: 'date', label: 'Latest' },
-                { value: 'price', label: 'Price: Low to High' },
-                { value: 'price-desc', label: 'Price: High to Low' }
-              ]"
-              placeholder="Default"
+              :options="sortOptions"
+              :placeholder="$t('searchPage.sort.default')"
               size="sm"
             />
           </div>
@@ -117,11 +110,11 @@
         <!-- No Results -->
         <div v-else class="text-center py-12">
           <Icon name="heroicons:magnifying-glass" class="h-16 w-16 text-gray-300 mx-auto mb-4" />
-          <h3 class="text-lg font-medium text-gray-900 mb-2">No products found</h3>
-          <p class="text-gray-600 mb-4">No products match your current filters in this category.</p>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">{{ $t('category.noProducts') }}</h3>
+          <p class="text-gray-600 mb-4">{{ $t('category.noProductsHint') }}</p>
           <BaseButton 
             @click="clearAllFilters"
-            text="Clear All Filters"
+            :text="$t('common.clearFilters')"
           />
         </div>
 
@@ -131,7 +124,7 @@
             @click="loadMore"
             :loading="loadingMore"
             :disabled="loadingMore"
-            text="Load More Products"
+            :text="$t('category.loadMore')"
             variant="secondary"
             size="lg"
           />
@@ -143,19 +136,14 @@
 
 <script setup>
 const route = useRoute()
+const { t } = useI18n()
 const { getProducts, getProductAttributes, getAttributeTerms } = useProducts()
 const { getCategories, getCategory } = useCategories()
 
 // SEO
 const category = ref(null)
 useHead(() => ({
-  title: category.value ? `${category.value.name} - Your Store` : 'Category - Your Store',
-  meta: [
-    { 
-      name: 'description', 
-      content: category.value?.description || `Browse products in the ${category.value?.name} category.`
-    }
-  ]
+  title: () => category.value ? category.value.name : t('category.metaTitleFallback')
 }))
 
 // Data
@@ -169,6 +157,15 @@ const perPage = 12
 // Search and filters
 const sortBy = ref('menu_order')
 const activeFilters = ref({})
+
+const sortOptions = computed(() => [
+  { value: 'menu_order', label: t('searchPage.sort.default') },
+  { value: 'popularity', label: t('searchPage.sort.popularity') },
+  { value: 'rating', label: t('searchPage.sort.rating') },
+  { value: 'date', label: t('searchPage.sort.latest') },
+  { value: 'price', label: t('searchPage.sort.priceAsc') },
+  { value: 'price-desc', label: t('searchPage.sort.priceDesc') }
+])
 
 // Loading states
 const loading = ref(true)

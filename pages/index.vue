@@ -6,7 +6,7 @@
         <video autoplay loop muted playsinline class="w-full max-w-[1920px] h-auto object-cover" poster="">
           <source src="https://admin.volpescloset.com/wp-content/uploads/2025/10/6661930-uhd_4096_2160_25fps.mp4"
             type="video/mp4">
-          Your browser does not support the video tag.
+          {{ $t('home.videoFallback') }}
         </video>
       </div>
     </section>
@@ -17,19 +17,19 @@
         <!-- Hero Content -->
         <div class="text-center mb-12">
           <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
-            Hola mundo
+            {{ $t('home.hero.headline') }}
           </h1>
           <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Curated collection of premium products designed to elevate your lifestyle
+            {{ $t('home.hero.subheadline') }}
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <NuxtLink to="/search"
               class="bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
-              Explore Collection
+              {{ $t('home.hero.exploreCollection') }}
             </NuxtLink>
             <NuxtLink to="/categories"
               class="border border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
-              Browse Categories
+              {{ $t('home.hero.browseCategories') }}
             </NuxtLink>
           </div>
         </div>
@@ -37,8 +37,8 @@
         <!-- Featured Products Slider -->
         <div class="relative">
           <div class="text-center mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-2">Featured Products</h2>
-            <p class="text-gray-600">Handpicked selections just for you</p>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ $t('home.featured.title') }}</h2>
+            <p class="text-gray-600">{{ $t('home.featured.subtitle') }}</p>
           </div>
 
           <div v-if="featuredLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -67,7 +67,7 @@
                         <span class="text-xl font-bold text-gray-900" v-html="product.price_html"></span>
                         <span
                           class="bg-gray-900 group-hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
-                          View Details
+                          {{ $t('common.viewDetails') }}
                         </span>
                       </div>
                     </NuxtLink>
@@ -102,9 +102,9 @@
     <section class="py-16 bg-gray-50 border-t border-gray-100">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">Best Sellers</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ $t('home.bestSellers.title') }}</h2>
           <p class="text-gray-600 max-w-2xl mx-auto">
-            Products loved by thousands of customers worldwide
+            {{ $t('home.bestSellers.subtitle') }}
           </p>
         </div>
 
@@ -134,7 +134,7 @@
                 <span class="text-xl font-bold text-gray-900" v-html="product.price_html"></span>
                 <span
                   class="bg-gray-900 group-hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
-                  View Details
+                  {{ $t('common.viewDetails') }}
                 </span>
               </div>
             </div>
@@ -144,7 +144,7 @@
         <div class="text-center mt-10">
           <NuxtLink to="/search?orderby=popularity"
             class="inline-flex items-center bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
-            View All Best Sellers
+            {{ $t('home.bestSellers.viewAll') }}
             <Icon name="heroicons:arrow-right" class="ml-2 h-4 w-4" />
           </NuxtLink>
         </div>
@@ -155,9 +155,9 @@
     <section class="py-16 bg-white border-t border-gray-100">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">New Arrivals</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ $t('home.newArrivals.title') }}</h2>
           <p class="text-gray-600 max-w-2xl mx-auto">
-            Fresh additions to our collection, just for you
+            {{ $t('home.newArrivals.subtitle') }}
           </p>
         </div>
 
@@ -174,7 +174,7 @@
             class="group bg-white border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden cursor-pointer block">
             <!-- New Badge -->
             <div class="absolute top-3 left-3 z-10 bg-gray-900 text-white text-xs font-bold px-2 py-1 rounded-full">
-              NEW
+              {{ $t('home.newArrivals.badge') }}
             </div>
 
             <div class="p-5">
@@ -187,7 +187,7 @@
                 <span class="text-xl font-bold text-gray-900" v-html="product.price_html"></span>
                 <span
                   class="bg-gray-900 group-hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
-                  View Details
+                  {{ $t('common.viewDetails') }}
                 </span>
               </div>
             </div>
@@ -197,7 +197,7 @@
         <div class="text-center mt-10">
           <NuxtLink to="/search?orderby=date"
             class="inline-flex items-center bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
-            View All New Arrivals
+            {{ $t('home.newArrivals.viewAll') }}
             <Icon name="heroicons:arrow-right" class="ml-2 h-4 w-4" />
           </NuxtLink>
         </div>
@@ -208,9 +208,9 @@
     <section class="py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">Latest Stories</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ $t('home.blog.title') }}</h2>
           <p class="text-gray-600 max-w-2xl mx-auto">
-            Insights, tips, and inspiration from our community
+            {{ $t('home.blog.subtitle') }}
           </p>
         </div>
 
@@ -241,7 +241,7 @@
               <div class="flex items-center text-sm text-gray-500 mb-3">
                 <time :datetime="post.date">{{ formatPostDate(post.date) }}</time>
                 <span class="mx-2">•</span>
-                <span class="text-purple-600 font-medium">{{ getReadTime(post) }} min read</span>
+                <span class="text-purple-600 font-medium">{{ $t('home.blog.minRead', { count: getReadTime(post) }) }}</span>
               </div>
 
               <!-- Post Title -->
@@ -257,7 +257,7 @@
               <!-- Read More -->
               <NuxtLink :to="`/blog/${post.slug}`"
                 class="inline-flex items-center text-gray-700 hover:text-gray-900 font-semibold group-hover:translate-x-1 transition-all duration-200">
-                Read Article
+                {{ $t('common.readArticle') }}
                 <Icon name="heroicons:arrow-right" class="ml-2 h-4 w-4" />
               </NuxtLink>
             </div>
@@ -267,7 +267,7 @@
         <div class="text-center mt-10">
           <NuxtLink to="/blog"
             class="inline-flex items-center bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
-            View All Articles
+            {{ $t('home.blog.viewAll') }}
             <Icon name="heroicons:arrow-right" class="ml-2 h-4 w-4" />
           </NuxtLink>
         </div>
@@ -277,11 +277,14 @@
 </template>
 
 <script setup>
-// SEO
+const { t, locale } = useI18n()
+
+// SEO — uses computed so the head updates when the locale changes.
 useHead({
-  title: 'Home - Premium Products & Latest Stories',
+  title: () => t('home.title'),
   meta: [
-    { name: 'description', content: 'Discover our curated collection of premium products, best sellers, and latest arrivals. Read inspiring stories from our community.' }
+    { name: 'description', content: () => t('home.metaDescription') },
+    { name: 'lang', content: () => locale.value }
   ]
 })
 
