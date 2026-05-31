@@ -61,38 +61,49 @@
           </div>
         </div>
 
-        <!-- Loading State -->
-        <div v-if="loading" :class="getGridClasses()">
-          <div v-for="i in perPage" :key="i" class="bg-white rounded-lg shadow-md p-4 animate-pulse">
-            <div class="bg-gray-300 h-48 rounded mb-4"></div>
-            <div class="bg-gray-300 h-4 rounded mb-2"></div>
-            <div class="bg-gray-300 h-4 rounded w-2/3"></div>
+        <!-- Loading / Results / Empty (smooth state swap) -->
+        <Transition
+          mode="out-in"
+          enter-active-class="transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          enter-from-class="opacity-0 translate-y-2"
+          enter-to-class="opacity-100 translate-y-0"
+          leave-active-class="transition-all duration-200 ease-in"
+          leave-from-class="opacity-100 translate-y-0"
+          leave-to-class="opacity-0 -translate-y-1"
+        >
+          <!-- Loading State -->
+          <div v-if="loading" key="loading" :class="getGridClasses()">
+            <div v-for="i in perPage" :key="i" class="bg-white rounded-lg shadow-md p-4 animate-pulse">
+              <div class="bg-gray-300 h-48 rounded mb-4"></div>
+              <div class="bg-gray-300 h-4 rounded mb-2"></div>
+              <div class="bg-gray-300 h-4 rounded w-2/3"></div>
+            </div>
           </div>
-        </div>
 
-        <!-- Products Display -->
-        <div v-else-if="products.length > 0">
-          <!-- Grid View -->
-          <div v-if="viewMode === 'grid'" :class="getGridClasses()">
-            <ProductCard v-for="product in products" :key="product.id" :product="product" />
+          <!-- Products Display -->
+          <div v-else-if="products.length > 0" key="results">
+            <!-- Grid View -->
+            <div v-if="viewMode === 'grid'" :class="getGridClasses()">
+              <ProductCard v-for="product in products" :key="product.id" :product="product" />
+            </div>
+
+            <!-- List View -->
+            <div v-else class="space-y-4">
+              <ProductCard v-for="product in products" :key="product.id" :product="product" :view-mode="'list'" />
+            </div>
           </div>
 
-          <!-- List View -->
-          <div v-else class="space-y-4">
-            <ProductCard v-for="product in products" :key="product.id" :product="product" :view-mode="'list'" />
+          <!-- No Results -->
+          <div v-else key="empty" class="text-center py-12">
+            <Icon name="heroicons:magnifying-glass" class="h-16 w-16 text-gray-300 mx-auto mb-4" />
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No products found</h3>
+            <p class="text-gray-600 mb-4">
+              <span v-if="searchQuery">Try adjusting your search terms or filters.</span>
+              <span v-else>No products match your current filters.</span>
+            </p>
+            <BaseButton @click="clearAllFilters" text="Clear All Filters" />
           </div>
-        </div>
-
-        <!-- No Results -->
-        <div v-else class="text-center py-12">
-          <Icon name="heroicons:magnifying-glass" class="h-16 w-16 text-gray-300 mx-auto mb-4" />
-          <h3 class="text-lg font-medium text-gray-900 mb-2">No products found</h3>
-          <p class="text-gray-600 mb-4">
-            <span v-if="searchQuery">Try adjusting your search terms or filters.</span>
-            <span v-else>No products match your current filters.</span>
-          </p>
-          <BaseButton @click="clearAllFilters" text="Clear All Filters" />
-        </div>
+        </Transition>
 
         <!-- Pagination and Controls -->
         <div v-if="products.length > 0" class="mt-6 sm:mt-8">
