@@ -118,6 +118,9 @@
     <!-- Mobile Sidebar -->
     <MobileSidebar :is-open="showMobileMenu" @close="closeMobileMenu" />
 
+    <!-- Mega Menu Overlay (shared panel for all desktop mega menus) -->
+    <MegaMenuOverlay />
+
     <!-- Search Modal -->
     <SearchModal :is-open="showSearchModal" @close="closeSearchModal" :search-query="searchQuery" @search="handleSearch"
       @clear-search="clearSearch" />
