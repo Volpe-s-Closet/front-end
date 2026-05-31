@@ -1,141 +1,115 @@
 <template>
-  <Transition enter-active-class="transition-transform duration-300 ease-out" enter-from-class="-translate-x-full"
-    enter-to-class="translate-x-0" leave-active-class="transition-transform duration-300 ease-in"
-    leave-from-class="translate-x-0" leave-to-class="-translate-x-full">
-    <div v-if="isOpen" class="fixed top-0 left-0 h-full w-80 bg-white shadow-xl z-40 md:hidden overflow-y-auto">
+  <Transition
+    enter-active-class="transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+    enter-from-class="-translate-x-full"
+    enter-to-class="translate-x-0"
+    leave-active-class="transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+    leave-from-class="translate-x-0"
+    leave-to-class="-translate-x-full"
+  >
+    <div
+      v-if="isOpen"
+      class="fixed top-0 left-0 h-full w-80 bg-white shadow-xl z-40 md:hidden overflow-y-auto flex flex-col"
+    >
       <!-- Header -->
       <div class="flex items-center justify-between p-4 border-b border-gray-200">
         <h2 class="text-lg font-semibold text-gray-900">Menu</h2>
-        <BaseButton @click="$emit('close')" variant="ghost" size="sm" icon="heroicons:x-mark"
-          class="text-gray-500 hover:text-gray-700" />
+        <BaseButton
+          @click="$emit('close')"
+          variant="ghost"
+          size="sm"
+          icon="heroicons:x-mark"
+          class="text-gray-500 hover:text-gray-700"
+        />
       </div>
 
       <!-- Navigation Links -->
-      <nav class="p-4">
-        <div class="space-y-2">
-          <!-- Bags Section -->
-          <div class="space-y-2">
-            <!-- Bags Header -->
-            <button @click="toggleBagsExpanded"
-              class="flex items-center justify-between w-full px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
-              <div class="flex items-center">
-                Bags
-              </div>
+      <nav class="p-4 flex-1">
+        <div class="space-y-1">
+          <!-- Category Sections -->
+          <div v-for="section in sections" :key="section.slug" class="space-y-1">
+            <!-- Section Header -->
+            <button
+              @click="toggleSection(section.slug)"
+              class="flex items-center justify-between w-full px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+              :class="{ 'text-gray-900': isExpanded(section.slug) }"
+            >
+              <span>{{ section.label }}</span>
               <ClientOnly>
-                <Icon :name="bagsExpanded ? 'heroicons:chevron-up' : 'heroicons:chevron-down'"
-                  class="h-4 w-4 text-gray-400" />
+                <Icon
+                  name="heroicons:chevron-down"
+                  class="h-4 w-4 text-gray-400 transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                  :class="{ 'rotate-180': isExpanded(section.slug) }"
+                />
                 <template #fallback>
                   <div class="h-4 w-4 bg-gray-200 rounded"></div>
                 </template>
               </ClientOnly>
             </button>
 
-            <!-- Bags Dropdown -->
-            <div v-if="bagsExpanded" class="ml-8 space-y-1">
-              <NuxtLink :to="bagsCategory ? `/category/${bagsCategory.slug}` : '/'"
-                class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-                @click="$emit('close')">
-                All Bags
-              </NuxtLink>
+            <!-- Section Dropdown -->
+            <Transition
+              :css="false"
+              @before-enter="onCollapseBeforeEnter"
+              @enter="onCollapseEnter"
+              @leave="onCollapseLeave"
+            >
+              <div v-if="isExpanded(section.slug)" class="ml-4 overflow-hidden">
+                <div class="space-y-1 pt-1 pb-2">
+                  <NuxtLink
+                    :to="getCategory(section.slug) ? `/category/${getCategory(section.slug).slug}` : '/'"
+                    class="group/item relative flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+                    @click="$emit('close')"
+                  >
+                    <span
+                      class="absolute left-0 top-1.5 bottom-1.5 w-0.5 rounded-full bg-gray-900 origin-top scale-y-0 transition-transform duration-200 group-hover/item:scale-y-100"
+                    />
+                    <span class="transition-transform duration-200 group-hover/item:translate-x-0.5">
+                      All {{ section.label }}
+                    </span>
+                  </NuxtLink>
 
-              <template v-if="bagsCategory && bagsCategory.children" v-for="subcategory in bagsCategory.children" :key="subcategory.id">
-                <NuxtLink :to="`/category/${subcategory.slug}`"
-                  class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-                  @click="$emit('close')">
-                  {{ subcategory.name }}
-                </NuxtLink>
-              </template>
-            </div>
-          </div>
-
-          <!-- Accessories Section -->
-          <div class="space-y-2">
-            <!-- Accessories Header -->
-            <button @click="toggleAccessoriesExpanded"
-              class="flex items-center justify-between w-full px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
-              <div class="flex items-center">
-                Accessories
+                  <NuxtLink
+                    v-for="subcategory in getCategory(section.slug)?.children || []"
+                    :key="subcategory.id"
+                    :to="`/category/${subcategory.slug}`"
+                    class="group/item relative flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+                    @click="$emit('close')"
+                  >
+                    <span
+                      class="absolute left-0 top-1.5 bottom-1.5 w-0.5 rounded-full bg-gray-900 origin-top scale-y-0 transition-transform duration-200 group-hover/item:scale-y-100"
+                    />
+                    <span class="transition-transform duration-200 group-hover/item:translate-x-0.5">
+                      {{ subcategory.name }}
+                    </span>
+                  </NuxtLink>
+                </div>
               </div>
-              <ClientOnly>
-                <Icon :name="accessoriesExpanded ? 'heroicons:chevron-up' : 'heroicons:chevron-down'"
-                  class="h-4 w-4 text-gray-400" />
-                <template #fallback>
-                  <div class="h-4 w-4 bg-gray-200 rounded"></div>
-                </template>
-              </ClientOnly>
-            </button>
-
-            <!-- Accessories Dropdown -->
-            <div v-if="accessoriesExpanded" class="ml-8 space-y-1">
-              <NuxtLink :to="accessoriesCategory ? `/category/${accessoriesCategory.slug}` : '/'"
-                class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-                @click="$emit('close')">
-                All Accessories
-              </NuxtLink>
-
-              <template v-if="accessoriesCategory && accessoriesCategory.children" v-for="subcategory in accessoriesCategory.children" :key="subcategory.id">
-                <NuxtLink :to="`/category/${subcategory.slug}`"
-                  class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-                  @click="$emit('close')">
-                  {{ subcategory.name }}
-                </NuxtLink>
-              </template>
-            </div>
-          </div>
-
-          <!-- Promos Section -->
-          <div class="space-y-2">
-            <!-- Promos Header -->
-            <button @click="togglePromosExpanded"
-              class="flex items-center justify-between w-full px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
-              <div class="flex items-center">
-                Promos
-              </div>
-              <ClientOnly>
-                <Icon :name="promosExpanded ? 'heroicons:chevron-up' : 'heroicons:chevron-down'"
-                  class="h-4 w-4 text-gray-400" />
-                <template #fallback>
-                  <div class="h-4 w-4 bg-gray-200 rounded"></div>
-                </template>
-              </ClientOnly>
-            </button>
-
-            <!-- Promos Dropdown -->
-            <div v-if="promosExpanded" class="ml-8 space-y-1">
-              <NuxtLink :to="promosCategory ? `/category/${promosCategory.slug}` : '/'"
-                class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-                @click="$emit('close')">
-                All Promos
-              </NuxtLink>
-
-              <template v-if="promosCategory && promosCategory.children" v-for="subcategory in promosCategory.children" :key="subcategory.id">
-                <NuxtLink :to="`/category/${subcategory.slug}`"
-                  class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-                  @click="$emit('close')">
-                  {{ subcategory.name }}
-                </NuxtLink>
-              </template>
-            </div>
+            </Transition>
           </div>
 
           <!-- Blog Link -->
-          <NuxtLink to="/blog"
-            class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-            @click="$emit('close')">
-            Blog
+          <NuxtLink
+            to="/blog"
+            class="group/link flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+            @click="$emit('close')"
+          >
+            <span class="transition-transform duration-200 group-hover/link:translate-x-0.5">Blog</span>
           </NuxtLink>
 
           <!-- About Us Link -->
-          <NuxtLink to="/about"
-            class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-            @click="$emit('close')">
-            About Us
+          <NuxtLink
+            to="/about"
+            class="group/link flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+            @click="$emit('close')"
+          >
+            <span class="transition-transform duration-200 group-hover/link:translate-x-0.5">About Us</span>
           </NuxtLink>
         </div>
       </nav>
 
       <!-- Language Switcher (Mobile only) -->
-      <div class="p-4 border-t border-gray-200 mt-auto">
+      <div class="p-4 border-t border-gray-200">
         <div class="mb-2">
           <span class="text-sm font-medium text-gray-700">Language</span>
         </div>
@@ -149,7 +123,6 @@
           flag-only
         />
       </div>
-
     </div>
   </Transition>
 </template>
@@ -166,42 +139,85 @@ const emit = defineEmits(['close'])
 
 const { categories, fetchCategories } = useCategories()
 const { currentLanguage, languages, setLanguage } = useLanguage()
-const bagsExpanded = ref(false)
-const accessoriesExpanded = ref(false)
-const promosExpanded = ref(false)
 const selectedLanguage = ref(currentLanguage.value)
 
-// Get specific categories by slug
-const bagsCategory = computed(() => {
-  return categories.value.find(cat => cat.slug === 'bolsos')
-})
+// Single source of truth for the category sections rendered in the sidebar.
+const sections = [
+  { slug: 'bolsos', label: 'Bags' },
+  { slug: 'accesorios', label: 'Accessories' },
+  { slug: 'promos', label: 'Promos' }
+]
 
-const accessoriesCategory = computed(() => {
-  return categories.value.find(cat => cat.slug === 'accesorios')
-})
+const expanded = ref({})
 
-const promosCategory = computed(() => {
-  return categories.value.find(cat => cat.slug === 'promos')
-})
+const isExpanded = (slug) => !!expanded.value[slug]
 
-const toggleBagsExpanded = () => {
-  bagsExpanded.value = !bagsExpanded.value
+const toggleSection = (slug) => {
+  expanded.value = { ...expanded.value, [slug]: !expanded.value[slug] }
 }
 
-const toggleAccessoriesExpanded = () => {
-  accessoriesExpanded.value = !accessoriesExpanded.value
-}
-
-const togglePromosExpanded = () => {
-  promosExpanded.value = !promosExpanded.value
-}
+const getCategory = (slug) => categories.value.find(cat => cat.slug === slug)
 
 const handleLanguageChange = (option) => {
   setLanguage(option.value)
   selectedLanguage.value = option.value
 }
 
-// Close sidebar when clicking outside or pressing escape
+// Smooth expand/collapse via JS hooks. Mirrors the easing/timing used by the
+// MegaMenu overlay so the sidebar feels like part of the same animation system.
+const COLLAPSE_EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
+const COLLAPSE_DURATION = 260
+
+const onCollapseBeforeEnter = (el) => {
+  el.style.maxHeight = '0px'
+  el.style.opacity = '0'
+}
+
+const onCollapseEnter = (el, done) => {
+  const target = el.scrollHeight
+  el.style.transition = `max-height ${COLLAPSE_DURATION}ms ${COLLAPSE_EASE}, opacity ${COLLAPSE_DURATION}ms ${COLLAPSE_EASE}`
+  // Force reflow so the browser registers the starting state
+  void el.offsetWidth
+  el.style.maxHeight = `${target}px`
+  el.style.opacity = '1'
+
+  const cleanup = () => {
+    el.style.transition = ''
+    el.style.maxHeight = ''
+    el.style.opacity = ''
+    el.removeEventListener('transitionend', onEnd)
+    done()
+  }
+  const onEnd = (e) => {
+    if (e.target === el && e.propertyName === 'max-height') cleanup()
+  }
+  el.addEventListener('transitionend', onEnd)
+  // Safety fallback in case transitionend doesn't fire
+  setTimeout(cleanup, COLLAPSE_DURATION + 80)
+}
+
+const onCollapseLeave = (el, done) => {
+  const current = el.scrollHeight
+  el.style.maxHeight = `${current}px`
+  el.style.opacity = '1'
+  void el.offsetWidth
+
+  el.style.transition = `max-height ${COLLAPSE_DURATION - 40}ms ${COLLAPSE_EASE}, opacity ${COLLAPSE_DURATION - 40}ms ease-in`
+  el.style.maxHeight = '0px'
+  el.style.opacity = '0'
+
+  const cleanup = () => {
+    el.removeEventListener('transitionend', onEnd)
+    done()
+  }
+  const onEnd = (e) => {
+    if (e.target === el && e.propertyName === 'max-height') cleanup()
+  }
+  el.addEventListener('transitionend', onEnd)
+  setTimeout(cleanup, COLLAPSE_DURATION + 80)
+}
+
+// Close sidebar when pressing escape
 onMounted(() => {
   const handleEscape = (e) => {
     if (e.key === 'Escape' && props.isOpen) {
